@@ -1,21 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light Theme - Based on the off-white/cream UI */
+  --background: #fdfcf8; 
+  --foreground: #0d120f; 
+
+  /* Brand Colors from the image */
+  --brand-neon: #aeff00; /* Bright neon green used in highlights */
+  --brand-dark: #101612; /* Deep dark green/black used in cards and footer */
+  --brand-muted: #f0f0ea; /* Slightly darker cream for secondary areas/borders */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  
+  /* Custom Tailwind Color Classes (e.g., bg-brand-neon, text-brand-dark) */
+  --color-brand-neon: var(--brand-neon);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-muted: var(--brand-muted);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Dark Theme - Reverses the colors, using the deep dark footer color as background */
+    --background: #101612;
+    --foreground: #fdfcf8;
   }
 }
 
@@ -23,4 +36,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  /* Optional: image e text gulo ektu smooth and crisp lagche */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
