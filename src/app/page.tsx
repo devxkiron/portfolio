@@ -3,6 +3,7 @@ import { HeroSection } from './_components/hero';
 import { ProjectsSection } from './_components/projects';
 import { ProcessSection } from './_components/process';
 import { ArchitectureSection } from './_components/architecture';
+import { TechStackSection } from './_components/tech-stack';
 import { ClientStoriesSection } from './_components/client-stories';
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
       <ProcessSection />
       <ArchitectureSection />
       <ClientStoriesSection />
+      <TechStackSection />
     </main>
   );
 }
