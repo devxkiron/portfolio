@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Star, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { GlassSurface } from '@/components/ui/glass-surface';
 import type { ClientStory } from './types';
 
 interface TestimonialCardProps {
@@ -20,7 +21,22 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({
   onNext,
 }) => {
   return (
-    <div className="relative w-full max-w-md sm:max-w-lg rounded-2xl border border-zinc-800/90 bg-[#08120b]/90 p-5 sm:p-6 shadow-[0_24px_64px_rgba(0,0,0,0.85),0_0_1px_rgba(255,255,255,0.15)] backdrop-blur-2xl transition-all duration-300">
+    <GlassSurface
+      borderRadius={24}
+      borderWidth={0.06}
+      brightness={35}
+      opacity={0.92}
+      blur={14}
+      displace={0.6}
+      backgroundOpacity={0.32}
+      saturation={1.4}
+      distortionScale={-160}
+      redOffset={0}
+      greenOffset={12}
+      blueOffset={24}
+      className="w-full max-w-md sm:max-w-lg shadow-[0_24px_64px_rgba(0,0,0,0.92),0_0_1px_rgba(255,255,255,0.2)] transition-all duration-300"
+      contentClassName="p-5 sm:p-6 flex flex-col justify-between"
+    >
       {/* Top Row: Stars + Rating + Verified + Metric Pill */}
       <div className="flex items-center justify-between gap-3">
         {/* Rating Section */}
@@ -92,6 +108,6 @@ export const TestimonialCard: React.FC<TestimonialCardProps> = ({
           </button>
         </div>
       </div>
-    </div>
+    </GlassSurface>
   );
 };
