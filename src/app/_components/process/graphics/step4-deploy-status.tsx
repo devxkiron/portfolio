@@ -37,13 +37,12 @@ export const Step4DeployStatus: React.FC = () => {
       `}</style>
 
       {/* Top Stream Panel */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6 rounded-xl border border-zinc-800/90 bg-[#111813] p-3 sm:p-4 shadow-xl">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6 rounded-xl ">
         {/* Left: OpenAI GPT-4o */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           <div className="relative flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full border border-teal-500/30 bg-[#0d1d18] text-teal-400 shadow-[0_0_14px_rgba(20,184,166,0.2)]">
             <OpenAIIcon className="h-4 w-4 sm:h-5 sm:w-5 text-teal-400" />
-            <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-brand-neon animate-ping" />
-            <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-brand-neon" />
+           
           </div>
           <div>
             <h4 className="font-mono text-xs sm:text-sm font-bold tracking-tight text-white">
@@ -80,7 +79,7 @@ export const Step4DeployStatus: React.FC = () => {
         <div className="flex items-center gap-3">
           <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-pink-500/30 bg-[#1e1319] shadow-[0_0_14px_rgba(236,72,153,0.2)]">
             <SlackIcon className="h-6 w-6" />
-            <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+           
           </div>
           <div>
             <h4 className="font-mono text-xs sm:text-sm font-bold tracking-tight text-white">

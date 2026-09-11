@@ -39,7 +39,7 @@ export const ProcessCard: React.FC<ProcessCardProps> = ({
 
   return (
     <div
-      className={`flex h-full w-full flex-col overflow-hidden rounded-2xl border border-zinc-800/80 bg-[#0d140e] shadow-2xl divide-y lg:divide-y-0 lg:divide-x divide-zinc-800/80 lg:flex-row ${
+      className={`flex h-full w-full flex-col overflow-hidden rounded-xl border border-zinc-800/80 bg-[#0d140e] shadow-2xl divide-y lg:divide-y-0 lg:divide-x divide-zinc-800/80 lg:flex-row ${
         isReversed ? 'lg:flex-row-reverse' : ''
       } ${className}`}
     >

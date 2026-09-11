@@ -1,6 +1,7 @@
 import { HeroSection } from './_components/hero';
 import { ProjectsSection } from './_components/projects';
 import { ProcessSection } from './_components/process';
+import { ArchitectureSection } from './_components/architecture';
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <HeroSection />
       <ProjectsSection />
       <ProcessSection />
+      <ArchitectureSection />
     </main>
   );
 }

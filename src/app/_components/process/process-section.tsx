@@ -157,7 +157,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
         {/* Stacking Cards Container */}
         <div
           ref={stackContainerRef}
-          className="cards-stack-container relative w-full h-[400px] sm:h-[420px] lg:h-[450px] max-w-6xl mx-auto"
+          className="cards-stack-container relative w-full h-[400px] sm:h-[420px] lg:h-[450px] max-w-7xl mx-auto"
         >
           {steps.map((step, index) => (
             <div
