@@ -3,6 +3,7 @@ import { HeroSection } from './_components/hero';
 import { ProjectsSection } from './_components/projects';
 import { ProcessSection } from './_components/process';
 import { ArchitectureSection } from './_components/architecture';
+import { ClientStoriesSection } from './_components/client-stories';
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <ProjectsSection />
       <ProcessSection />
       <ArchitectureSection />
+      <ClientStoriesSection />
     </main>
   );
 }

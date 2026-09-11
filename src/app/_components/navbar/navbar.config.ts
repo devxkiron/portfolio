@@ -24,6 +24,7 @@ export const navbarConfig: NavbarConfig = {
     { label: 'Projects', href: '#projects' },
     { label: 'Process', href: '#process' },
     { label: 'Architecture', href: '#architecture' },
+    { label: 'Stories', href: '#stories' },
   ],
   cta: {
     text: 'Get in Touch',
