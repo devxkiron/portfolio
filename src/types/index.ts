@@ -16,10 +16,6 @@ export interface ProcessStep {
   ctaText?: string;
   ctaHref?: string;
   graphicType: 'audit' | 'prototype' | 'code' | 'integration' | 'metrics';
-  metrics?: {
-    label: string;
-    value: string;
-  }[];
 }
 
 export interface WorkflowTab {
