@@ -45,7 +45,6 @@ export interface CapabilityCard {
 }
 
 export interface ArchitectureConfig {
-  badgeText: string;
   sectionTitle: string;
   subtitle: string;
   tabs: WorkflowTab[];

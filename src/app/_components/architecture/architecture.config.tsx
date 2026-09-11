@@ -760,7 +760,6 @@ const financeEdges: Edge[] = [
 // FULL ARCHITECTURE CONFIG
 // ==========================================
 export const architectureConfig: ArchitectureConfig = {
-  badgeText: 'Automation Architecture',
   sectionTitle: 'We Build Workflows That Multiply Your Revenue',
   subtitle:
     'Stop losing deals to slow response times and manual busywork. We design production-grade, self-healing automation pipelines that connect your tools and run your business 24/7.',

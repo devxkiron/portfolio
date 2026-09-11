@@ -65,10 +65,10 @@ const CanvasInner: React.FC<ArchitectureCanvasProps> = ({ activeTab }) => {
       `}</style>
 
       {/* Top Header Bar inside Canvas */}
-      <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 bg-[#0d140f]/95 px-4 py-3 backdrop-blur-sm sm:px-6">
+      <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 bg-[#0d140f]/15 px-4 py-3 backdrop-blur-sm sm:px-6">
         <div className="flex items-center gap-2 font-mono text-xs sm:text-sm">
           <span className="font-bold text-zinc-300">Live Architecture:</span>
-          <span className="font-bold text-[#aeff00]">{activeTab.headerTitle}</span>
+          <span className="font-bold text-[#aeff00]/40">{activeTab.headerTitle}</span>
         </div>
         <p className="font-mono text-[11px] text-zinc-400/80 hidden sm:block">
           Drag nodes or zoom canvas to inspect pipeline connections

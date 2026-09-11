@@ -1,13 +1,14 @@
 'use client';
 
 import React, { useState } from 'react';
+import { SectionHeader } from '@/components/ui/section-header';
+import { Button } from '@/components/ui/button';
 import { architectureConfig } from './architecture.config';
 import { ArchitectureCanvas } from './architecture-canvas';
 import { ArchitectureCapabilityCard } from './architecture-capability-card';
 
 export const ArchitectureSection: React.FC = () => {
   const {
-    badgeText,
     sectionTitle,
     subtitle,
     tabs,
@@ -24,24 +25,15 @@ export const ArchitectureSection: React.FC = () => {
   return (
     <section
       id="architecture"
-      className="relative w-full bg-black px-4 py-16 text-white sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+      className="relative w-full bg-black px-4 pt-4 pb-16 text-white sm:px-6 sm:pt-6 sm:pb-20 lg:px-8 lg:pt-8 lg:pb-24"
     >
       <div className="mx-auto max-w-7xl flex flex-col items-center">
-        {/* Top Pill Badge */}
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/90 px-3.5 py-1 text-xs font-medium text-zinc-300">
-          <span className="h-2 w-2 rounded-full bg-brand-neon shadow-[0_0_8px_#aeff00]" />
-          <span>{badgeText}</span>
-        </div>
-
-        {/* Section Heading */}
-        <h2 className="max-w-4xl text-center text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
-          {sectionTitle}
-        </h2>
-
-        {/* Subtitle */}
-        <p className="mt-3 max-w-2xl text-center text-xs sm:text-sm md:text-base leading-relaxed text-zinc-400">
-          {subtitle}
-        </p>
+        {/* Reusable Section Header */}
+        <SectionHeader
+          title={sectionTitle}
+          subtitle={subtitle}
+          className="!mb-6 sm:!mb-8"
+        />
 
         {/* Interactive Tab Selectors */}
         <div className="mt-6 mb-7 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
@@ -78,18 +70,12 @@ export const ArchitectureSection: React.FC = () => {
 
         {/* Bottom Call To Action Buttons */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
-          <a
-            href={primaryCtaHref}
-            className="rounded-lg bg-brand-neon px-6 py-2.5 text-xs sm:text-sm font-bold text-black transition-colors hover:bg-brand-neon/90"
-          >
+          <Button href={primaryCtaHref} variant="neon" size="md">
             {primaryCtaText}
-          </a>
-          <a
-            href={secondaryCtaHref}
-            className="rounded-lg border border-zinc-800 bg-zinc-900 px-6 py-2.5 text-xs sm:text-sm font-bold text-white transition-colors hover:border-zinc-700 hover:bg-zinc-800"
-          >
+          </Button>
+          <Button href={secondaryCtaHref} variant="secondary" size="md">
             {secondaryCtaText}
-          </a>
+          </Button>
         </div>
       </div>
     </section>

@@ -126,7 +126,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
     <section
       ref={sectionRef}
       id="process"
-      className={`relative w-full min-h-screen bg-black px-4 pt-2 pb-8 text-white sm:px-6 sm:pt-3 sm:pb-10 lg:px-8 lg:pt-5 flex flex-col justify-start items-center ${className}`}
+      className={`relative w-full bg-black px-4 pt-2 pb-6 text-white sm:px-6 sm:pt-4 sm:pb-8 lg:px-8 lg:pt-6 lg:pb-10 flex flex-col justify-start items-center ${className}`}
     >
       <div className="mx-auto max-w-7xl w-full flex flex-col items-center">
         {/* Reusable Section Header — compact, perfectly balanced on mobile & medium devices */}
