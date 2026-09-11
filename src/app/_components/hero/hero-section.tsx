@@ -9,7 +9,10 @@ export const HeroSection: React.FC = () => {
   const { shader } = heroConfig;
 
   return (
-    <section className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-black px-4 py-20 sm:px-6 lg:px-8">
+    <section
+      id="hero"
+      className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden bg-black px-4 py-20 sm:px-6 lg:px-8"
+    >
       {/* Interactive WebGL Three.js Background Canvas */}
       <div className="absolute inset-0 z-0">
         <ColorBends

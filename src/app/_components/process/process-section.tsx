@@ -38,9 +38,9 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
       const cardElements = stackContainerEl.querySelectorAll<HTMLElement>('.process-card-stacked');
       if (cardElements.length <= 1) return;
 
-      // Anchor scaling to top center
+      // Anchor scaling to center
       gsap.set(cardElements, {
-        transformOrigin: 'center top',
+        transformOrigin: 'center center',
       });
 
       // Initial positions: Card 0 visible; Cards 1..N start below viewport
@@ -78,12 +78,12 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
         const transitionDuration = 1.2;
         const holdDuration = 0.5;
 
-        // Animate all previous cards (0 .. i-1) to create a real 3D deck stacking effect
+        // Animate previous cards to smoothly recede in 3D depth WITHOUT shifting up into header text
         for (let j = 0; j < i; j++) {
           const depth = i - j;
-          const targetScale = Math.max(0.86, 1 - depth * 0.04);
-          const targetY = -depth * 14;
-          const targetOpacity = Math.max(0.4, 1 - depth * 0.2);
+          const targetScale = Math.max(0.88, 1 - depth * 0.03);
+          const targetY = 0; // Stay anchored in place — never collide with header text
+          const targetOpacity = Math.max(0.35, 1 - depth * 0.22);
 
           tl.to(
             cardElements[j],
@@ -126,7 +126,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
     <section
       ref={sectionRef}
       id="process"
-      className={`relative w-full bg-black px-4 pt-2 pb-6 text-white sm:px-6 sm:pt-4 sm:pb-8 lg:px-8 lg:pt-6 lg:pb-10 flex flex-col justify-start items-center ${className}`}
+      className={`relative w-full bg-black px-4 pt-16 pb-8 text-white sm:px-6 sm:pt-20 sm:pb-10 lg:px-8 lg:pt-20 lg:pb-12 flex flex-col justify-start items-center scroll-mt-20 ${className}`}
     >
       <div className="mx-auto max-w-7xl w-full flex flex-col items-center">
         {/* Reusable Section Header — compact, perfectly balanced on mobile & medium devices */}
@@ -145,19 +145,18 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({
             }
             subtitle="From initial diagnostic audit all the way to autonomous operation. Real production systems with zero overhead."
             align="center"
-            showDivider={true}
+            showDivider={false}
             animated={false}
-            className="!mb-2 sm:!mb-3 w-full max-w-4xl"
-            titleClassName="text-lg sm:text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight tracking-tight"
-            subtitleClassName="!mt-1 max-w-lg text-xs md:text-sm text-zinc-400 leading-snug"
-            dividerClassName="!mt-1.5 sm:!mt-2"
+            className="!mb-5 sm:!mb-7 w-full max-w-4xl"
+            titleClassName="text-base sm:text-xl md:text-2xl lg:text-3xl font-extrabold leading-tight tracking-tight"
+            subtitleClassName="!mt-1.5 max-w-lg text-xs md:text-sm text-zinc-400 leading-relaxed"
           />
         </div>
 
-        {/* Stacking Cards Container */}
+        {/* Stacking Cards Container — tall on mobile to fit vertical content and fill bottom void */}
         <div
           ref={stackContainerRef}
-          className="cards-stack-container relative w-full h-[400px] sm:h-[420px] lg:h-[450px] max-w-7xl mx-auto"
+          className="cards-stack-container relative w-full h-[510px] sm:h-[460px] lg:h-[440px] max-w-7xl mx-auto"
         >
           {steps.map((step, index) => (
             <div

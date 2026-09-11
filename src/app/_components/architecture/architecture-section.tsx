@@ -25,7 +25,7 @@ export const ArchitectureSection: React.FC = () => {
   return (
     <section
       id="architecture"
-      className="relative w-full bg-black px-4 pt-4 pb-16 text-white sm:px-6 sm:pt-6 sm:pb-20 lg:px-8 lg:pt-8 lg:pb-24"
+      className="relative w-full bg-black px-4 pt-16 pb-16 text-white sm:px-6 sm:pt-20 sm:pb-20 lg:px-8 lg:pt-20 lg:pb-24 scroll-mt-20"
     >
       <div className="mx-auto max-w-7xl flex flex-col items-center">
         {/* Reusable Section Header */}
