@@ -5,14 +5,14 @@ import { FileCode, Search, Settings } from 'lucide-react';
 
 interface CodeSnippet {
   fileName: string;
-  tag: string;
+  tag?: string;
   code: string;
 }
 
 const CODE_SNIPPETS: CodeSnippet[] = [
   {
     fileName: 'custom_ai_engine.py',
-    tag: 'Pipeline Live',
+    // tag: 'Pipeline Live',
     code: `@agent.route("/pipeline/execute", methods=["POST"])
 async def handle_lead_event(payload: WebhookPayload):
     # 1. Ingest & enrich incoming contact data
@@ -24,7 +24,7 @@ async def handle_lead_event(payload: WebhookPayload):
   },
   {
     fileName: 'vector_memory_sync.py',
-    tag: 'RAG Sync',
+    // tag: 'RAG Sync',
     code: `@sync.cron("*/5 * * * *")
 async def refresh_knowledge_base():
     # 1. Fetch updated enterprise tickets & docs
@@ -36,7 +36,7 @@ async def refresh_knowledge_base():
   },
   {
     fileName: 'autonomous_supervisor.py',
-    tag: 'Self-Healing',
+    // tag: 'Self-Healing',
     code: `@supervisor.monitor(target="ai_dispatch_worker")
 async def evaluate_agent_action(action: AgentAction):
     # 1. Real-time safety & hallucination audit
@@ -162,41 +162,41 @@ export const Step3CodeEditor: React.FC = () => {
   const lines = currentCode.split('\n');
 
   return (
-    <div className="relative flex h-full min-h-[420px] sm:min-h-[460px] lg:min-h-[480px] w-full flex-col justify-start overflow-hidden bg-[#0a0f0c] text-left">
+    <div className="relative flex h-full min-h-[220px] w-full flex-col justify-start overflow-hidden bg-[#0a0f0c] text-left">
       {/* macOS Window Top Bar */}
-      <div className="flex h-10 shrink-0 items-center justify-between border-b border-zinc-800/90 bg-[#0e1510] px-4">
+      <div className="flex h-8 sm:h-10 shrink-0 items-center justify-between border-b border-zinc-800/90 bg-[#0e1510] px-3 sm:px-4">
         {/* Window control dots */}
-        <div className="flex items-center gap-2">
-          <div className="h-2.5 w-2.5 rounded-full bg-[#ef4444]" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#f59e0b]" />
-          <div className="h-2.5 w-2.5 rounded-full bg-[#10b981]" />
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[#ef4444]" />
+          <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[#f59e0b]" />
+          <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[#10b981]" />
         </div>
 
         {/* Dynamic File name & Tag */}
         <div className="flex items-center gap-2">
-          <span className="font-mono text-xs tracking-wider text-zinc-300">
+          <span className="font-mono text-[10px] sm:text-xs tracking-wider text-zinc-300">
             {activeSnippet.fileName}
           </span>
-          <span className="rounded bg-brand-neon/10 px-1.5 py-0.2 font-mono text-[9px] text-brand-neon border border-brand-neon/20">
+          <span className="rounded bg-brand-neon/10 px-1.5 py-0.2 font-mono text-[9px] text-brand-neon border border-brand-neon/20 hidden sm:inline-block">
             {activeSnippet.tag}
           </span>
         </div>
 
         {/* Dummy spacer */}
-        <div className="w-10" />
+        <div className="w-8 sm:w-10" />
       </div>
 
       {/* Editor Body */}
       <div className="flex flex-1 items-start justify-start overflow-hidden">
         {/* Left Mini Sidebar */}
-        <div className="flex w-10 shrink-0 self-stretch flex-col items-center gap-5 border-r border-zinc-800/80 bg-[#0d130f] py-5">
-          <FileCode className="h-4 w-4 text-brand-neon" />
-          <Search className="h-4 w-4 text-zinc-600 hover:text-zinc-400 cursor-pointer" />
-          <Settings className="h-4 w-4 text-zinc-600 hover:text-zinc-400 cursor-pointer" />
+        <div className="flex w-8 sm:w-10 shrink-0 self-stretch flex-col items-center gap-3 sm:gap-5 border-r border-zinc-800/80 bg-[#0d130f] py-3 sm:py-5">
+          <FileCode className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-neon" />
+          <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-600 hover:text-zinc-400 cursor-pointer" />
+          <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-600 hover:text-zinc-400 cursor-pointer" />
         </div>
 
         {/* Code Content Area */}
-        <div className="flex-1 p-5 sm:p-7 font-mono text-xs sm:text-[13px] leading-loose text-left select-text overflow-hidden">
+        <div className="flex-1 p-3 sm:p-5 lg:p-6 font-mono text-[11px] sm:text-xs lg:text-[13px] leading-relaxed sm:leading-loose text-left select-text overflow-hidden">
           {lines.map((line, index) => {
             const isLastLine = index === lines.length - 1;
             return (

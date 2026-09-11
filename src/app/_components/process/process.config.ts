@@ -31,7 +31,7 @@ export const processConfig: ProcessConfig = {
       stepNumber: '03',
       title: 'Build Solution',
       description:
-        'Our engineers construct custom AI agents, n8n webhook pipelines, and robust Python microservices with automated testing, vector retrieval augmentation, and sub-10ms response latency to ensure enterprise-grade stability.Our engineers construct custom AI agents, n8n webhook pipelines, and robust Python microservices with automated testing, vector retrieval augmentation, and sub-10ms response latency to ensure enterprise-grade stability.',
+        'Our engineers construct custom AI agents, n8n webhook pipelines, and robust Python microservices with automated testing, vector retrieval augmentation, and sub-10ms response latency to ensure enterprise-grade stability.',
       linkText: 'See more ↓',
       linkHref: '#',
       graphicType: 'code',

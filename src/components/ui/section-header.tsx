@@ -92,28 +92,33 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     right: 'items-end text-right',
   }[align];
 
+  const hasCustomMargin = className.includes('mb-') || className.includes('!mb-');
+  const containerMargin = hasCustomMargin ? '' : 'mb-6 sm:mb-8 lg:mb-12';
+  const resolvedTitleClass = titleClassName || 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl';
+  const resolvedSubtitleClass = subtitleClassName || 'text-xs sm:text-sm md:text-base leading-relaxed text-zinc-400';
+
   return (
     <div
       ref={headerRef}
-      className={`mb-12 flex flex-col sm:mb-16 ${alignmentClasses} ${className}`}
+      className={`flex flex-col ${alignmentClasses} ${containerMargin} ${className}`}
     >
       {badge && (
         <div
-          className={`section-header-item mb-3 inline-flex items-center rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1 text-xs font-medium uppercase tracking-wider text-zinc-300 backdrop-blur-sm ${badgeClassName}`}
+          className={`section-header-item mb-2 sm:mb-3 inline-flex items-center rounded-full border border-zinc-800 bg-zinc-900/80 px-2.5 py-0.5 text-[10px] sm:px-3 sm:py-1 sm:text-xs font-medium uppercase tracking-wider text-zinc-300 backdrop-blur-sm ${badgeClassName}`}
         >
           {badge}
         </div>
       )}
 
       <HeadingTag
-        className={`section-header-item text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl ${titleClassName}`}
+        className={`section-header-item font-extrabold tracking-tight text-white leading-[1.15] ${resolvedTitleClass}`}
       >
         {title}
       </HeadingTag>
 
       {subtitle && (
         <p
-          className={`section-header-item mt-4 max-w-xl text-base text-zinc-400 sm:text-lg ${subtitleClassName}`}
+          className={`section-header-item mt-2 sm:mt-3 max-w-xl ${resolvedSubtitleClass}`}
         >
           {subtitle}
         </p>
@@ -121,7 +126,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 
       {showDivider && (
         <div
-          className={`section-header-item mt-8 h-px w-16 bg-zinc-800 ${dividerClassName}`}
+          className={`section-header-item mt-2.5 sm:mt-4 h-px w-10 sm:w-16 bg-zinc-800 ${dividerClassName}`}
         />
       )}
     </div>

@@ -346,13 +346,7 @@ export const Step2NodeWorkflow: React.FC = () => {
   const nodeTypes = useMemo(() => ({ workflowNode: CustomWorkflowNode }), []);
 
   return (
-    <div
-      className="relative h-[440px] w-full min-h-[420px] sm:h-[460px] lg:h-[480px] overflow-hidden bg-[#080d09]"
-      style={{
-        backgroundImage: 'radial-gradient(rgba(174, 255, 0, 0.2) 1.2px, transparent 1.2px)',
-        backgroundSize: '20px 20px',
-      }}
-    >
+    <div className="relative h-full min-h-[220px] w-full overflow-hidden bg-[#080d09] pointer-events-none select-none">
       <ReactFlow
         nodes={initialNodes}
         edges={initialEdges}
@@ -363,17 +357,21 @@ export const Step2NodeWorkflow: React.FC = () => {
         nodesConnectable={false}
         elementsSelectable={false}
         zoomOnScroll={false}
+        zoomOnPinch={false}
+        zoomOnDoubleClick={false}
         panOnScroll={false}
         panOnDrag={false}
-        preventScrolling={false}
+        preventScrolling={true}
+        autoPanOnConnect={false}
+        autoPanOnNodeDrag={false}
         attributionPosition="bottom-right"
         proOptions={{ hideAttribution: true }}
       >
         <Background
           variant={BackgroundVariant.Dots}
-          gap={20}
-          size={1.2}
-          color="rgba(174, 255, 0, 0.2)"
+          gap={22}
+          size={1}
+          color="rgba(174, 255, 0, 0.36)"
         />
       </ReactFlow>
     </div>

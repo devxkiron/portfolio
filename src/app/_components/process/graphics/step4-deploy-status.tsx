@@ -6,7 +6,7 @@ import { OpenAIIcon, SlackIcon } from '../icons/brand-icons';
 
 export const Step4DeployStatus: React.FC = () => {
   return (
-    <div className="relative flex h-full min-h-[420px] sm:min-h-[460px] lg:min-h-[480px] w-full flex-col justify-center gap-6 bg-[#090d0a] p-6 sm:p-8">
+    <div className="relative flex h-full min-h-[220px] w-full flex-col justify-center gap-3 sm:gap-5 bg-[#090d0a] p-4 sm:p-6 lg:p-8">
       {/* Dynamic Keyframes for Left-to-Right Stream Movement */}
       <style>{`
         @keyframes streamFlow {
@@ -37,19 +37,19 @@ export const Step4DeployStatus: React.FC = () => {
       `}</style>
 
       {/* Top Stream Panel */}
-      <div className="flex flex-col items-center justify-between gap-6 rounded-xl border border-zinc-800/90 bg-[#111813] p-5 sm:flex-row sm:gap-8 shadow-xl">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-6 rounded-xl border border-zinc-800/90 bg-[#111813] p-3 sm:p-4 shadow-xl">
         {/* Left: OpenAI GPT-4o */}
-        <div className="flex items-center gap-3">
-          <div className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-teal-500/30 bg-[#0d1d18] text-teal-400 shadow-[0_0_14px_rgba(20,184,166,0.2)]">
-            <OpenAIIcon className="h-6 w-6 text-teal-400" />
-            <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-brand-neon animate-ping" />
-            <span className="absolute -top-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-brand-neon" />
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <div className="relative flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-full border border-teal-500/30 bg-[#0d1d18] text-teal-400 shadow-[0_0_14px_rgba(20,184,166,0.2)]">
+            <OpenAIIcon className="h-4 w-4 sm:h-5 sm:w-5 text-teal-400" />
+            <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-brand-neon animate-ping" />
+            <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-brand-neon" />
           </div>
           <div>
             <h4 className="font-mono text-xs sm:text-sm font-bold tracking-tight text-white">
               OpenAI GPT-4o
             </h4>
-            <p className="font-mono text-[10px] sm:text-xs text-zinc-500">
+            <p className="font-mono text-[9px] sm:text-[11px] text-zinc-500">
               Neural Classifier
             </p>
           </div>
