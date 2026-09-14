@@ -5,6 +5,7 @@ import { SectionHeader } from '@/components/ui/section-header';
 import { techStackConfig } from './tech-stack.config';
 import { TechMarquee } from './tech-marquee';
 import { TechCategoryId } from './types';
+import { Button } from '@/components/ui/button';
 
 export const TechStackSection: React.FC = () => {
   const {
@@ -53,18 +54,15 @@ export const TechStackSection: React.FC = () => {
           {categories.map((cat) => {
             const isActive = selectedCategory === cat.id;
             return (
-              <button
+              <Button
                 key={cat.id}
-                type="button"
+                variant={isActive ? 'primary' : 'secondary'}
+                size="sm"
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer ${
-                  isActive
-                    ? 'border border-brand-neon bg-card text-brand-neon-text dark:text-brand-neon shadow-[0_0_15px_rgba(92,246,41,0.25)]'
-                    : 'border border-border bg-card/60 text-muted-foreground hover:border-border hover:text-foreground'
-                }`}
+                className="!rounded-full !px-4 !py-1.5 !text-xs font-semibold"
               >
                 {cat.label}
-              </button>
+              </Button>
             );
           })}
         </div>
