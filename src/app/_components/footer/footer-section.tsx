@@ -88,7 +88,7 @@ export const FooterSection: React.FC = () => {
               <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-neon text-black font-extrabold text-sm shadow-[0_0_12px_rgba(174,255,0,0.3)]">
                 G
               </div>
-              <span className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
+              <span className="text-lg sm:text-xl font-motech tracking-tight text-foreground">
                 {brandName}
               </span>
             </div>
