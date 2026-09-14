@@ -415,7 +415,7 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
 
               {/* Official Primary Button */}
               <Button
-                variant="neon"
+                variant="primary"
                 size="md"
                 type="submit"
                 disabled={!selectedSlot}

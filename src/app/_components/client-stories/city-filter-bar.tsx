@@ -2,6 +2,7 @@
 
 import React from 'react';
 import type { City } from './types';
+import { Button } from '@/components/ui/button';
 
 interface CityFilterBarProps {
   cities: City[];
@@ -21,19 +22,16 @@ export const CityFilterBar: React.FC<CityFilterBarProps> = ({
   const renderPill = (city: City) => {
     const isSelected = city.id === selectedCityId;
     return (
-      <button
+      <Button
         key={city.id}
-        type="button"
+        variant={isSelected ? 'primary' : 'secondary'}
+        size="sm"
         onClick={() => onSelectCity(city)}
-        className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold tracking-tight transition-all duration-200 cursor-pointer ${
-          isSelected
-            ? 'bg-brand-neon text-black shadow-[0_0_16px_rgba(174,255,0,0.35)] scale-105'
-            : 'border border-border bg-card/90 text-foreground/80 dark:text-muted-foreground backdrop-blur-md hover:border-border-subtle hover:text-foreground hover:bg-muted'
-        }`}
+        className="!rounded-full !px-3.5 !py-1.5 !text-xs font-semibold tracking-tight !gap-1.5"
       >
         <span className="text-xs">{city.flag}</span>
         <span>{city.name}</span>
-      </button>
+      </Button>
     );
   };
 

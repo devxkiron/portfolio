@@ -18,7 +18,7 @@ export const HeroActions: React.FC<HeroActionsProps> = ({
       {/* Primary CTA */}
       <Button
         href={primaryCta.href}
-        variant="white"
+        variant="primary"
         size="lg"
         icon={<ArrowUpRight size={16} />}
         iconPosition="right"

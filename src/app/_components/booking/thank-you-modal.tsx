@@ -124,7 +124,7 @@ export const ThankYouModal: React.FC<ThankYouModalProps> = ({
         {/* Action Button */}
         <div className="mt-6">
           <Button
-            variant="neon"
+            variant="primary"
             size="md"
             onClick={onClose}
             className="w-full py-3 text-xs font-bold text-black shadow-[0_0_20px_rgba(174,255,0,0.25)]"

@@ -40,18 +40,15 @@ export const ArchitectureSection: React.FC = () => {
           {tabs.map((tab) => {
             const isActive = tab.id === activeTab.id;
             return (
-              <button
+              <Button
                 key={tab.id}
-                type="button"
+                variant={isActive ? 'primary' : 'secondary'}
+                size="sm"
                 onClick={() => setActiveTabId(tab.id)}
-                className={`rounded-lg px-4 py-2 text-xs sm:text-sm font-semibold transition-colors cursor-pointer ${
-                  isActive
-                    ? 'border border-brand-neon bg-brand-neon text-black shadow-sm dark:bg-card dark:text-brand-neon'
-                    : 'border border-[#b8d4ab] dark:border-border bg-[#f2f7ec] dark:bg-card/60 text-zinc-900 dark:text-muted-foreground hover:border-[#8ec279] hover:bg-[#e9f2e1] dark:hover:bg-card/80 hover:text-foreground'
-                }`}
+                className="!rounded-lg !px-4 !py-2"
               >
                 {tab.label}
-              </button>
+              </Button>
             );
           })}
         </div>
@@ -70,7 +67,7 @@ export const ArchitectureSection: React.FC = () => {
 
         {/* Bottom Call To Action Buttons */}
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3.5">
-          <Button href={primaryCtaHref} variant="neon" size="md">
+          <Button href={primaryCtaHref} variant="primary" size="md">
             {primaryCtaText}
           </Button>
           <Button href={secondaryCtaHref} variant="secondary" size="md">

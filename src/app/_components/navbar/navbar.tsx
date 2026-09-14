@@ -72,7 +72,7 @@ export const Navbar: React.FC = () => {
         {/* Right Desktop CTA + Theme Toggle */}
         <div className="hidden md:flex items-center gap-3">
           <ThemeToggle />
-          <Button href={cta.href} variant="neon" size="sm" className="!rounded-md">
+          <Button href={cta.href} variant="primary" size="sm" className="!rounded-md">
             {cta.text}
           </Button>
         </div>
@@ -82,7 +82,7 @@ export const Navbar: React.FC = () => {
           <ThemeToggle />
           <Button
             href={cta.href}
-            variant="neon"
+            variant="primary"
             size="sm"
             className="!rounded-md !px-3 !py-1.5 !text-xs"
           >
