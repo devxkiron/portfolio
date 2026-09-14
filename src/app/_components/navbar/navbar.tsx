@@ -44,7 +44,7 @@ export const Navbar: React.FC = () => {
           href={brand.href}
           className="flex items-center gap-2 transition-colors hover:text-brand-neon"
         >
-          <span className="font-mono text-base font-bold tracking-wider uppercase text-foreground">
+          <span className="font-motech text-base font-bold tracking-wider uppercase text-foreground">
             {brand.name}
           </span>
         </a>

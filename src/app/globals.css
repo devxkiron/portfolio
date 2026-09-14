@@ -94,11 +94,76 @@
   --color-brand-dark: var(--brand-dark);
   --color-brand-muted: var(--brand-muted);
 
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Core Typography — Clash + Cabinet + JetBrains */
+  --font-sans: var(--font-cabinet), var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-jetbrains), var(--font-geist-mono), monospace;
+  --font-display: var(--font-clash), sans-serif;
+  --font-serif: var(--font-hatton), serif;
+
+  /* Individual font families (for targeted overrides) */
+  --font-hatton: var(--font-hatton), serif;
+  --font-clash: var(--font-clash), sans-serif;
+  --font-satoshi: var(--font-satoshi), sans-serif;
+  --font-cabinet: var(--font-cabinet), sans-serif;
+  --font-elegtro: var(--font-elegtro), cursive, sans-serif;
+  --font-syne: var(--font-syne), sans-serif;
+  --font-jakarta: var(--font-jakarta), sans-serif;
+  --font-jetbrains: var(--font-jetbrains), monospace;
+  --font-origin-tech: var(--font-origin-tech), sans-serif;
+  --font-avtech: var(--font-avtech), sans-serif;
+  --font-motech: var(--font-motech), sans-serif;
 
   --animate-marquee-left: marquee-left 35s linear infinite;
   --animate-marquee-right: marquee-right 35s linear infinite;
+}
+
+/* Typography Utility Classes */
+.font-hatton {
+  font-family: var(--font-hatton), serif;
+}
+
+.font-clash {
+  font-family: var(--font-clash), sans-serif;
+}
+
+.font-satoshi {
+  font-family: var(--font-satoshi), sans-serif;
+}
+
+.font-cabinet {
+  font-family: var(--font-cabinet), sans-serif;
+}
+
+.font-elegtro {
+  font-family: var(--font-elegtro), cursive, sans-serif;
+}
+
+.font-syne {
+  font-family: var(--font-syne), sans-serif;
+}
+
+.font-jakarta {
+  font-family: var(--font-jakarta), sans-serif;
+}
+
+.font-jetbrains {
+  font-family: var(--font-jetbrains), monospace;
+}
+
+.font-display {
+  font-family: var(--font-clash), var(--font-hatton), sans-serif;
+}
+
+.font-origin-tech {
+  font-family: var(--font-origin-tech), sans-serif;
+}
+
+.font-avtech {
+  font-family: var(--font-avtech), sans-serif;
+}
+
+.font-motech {
+  font-family: var(--font-motech), sans-serif;
 }
 
 /* Continuous smooth marquee animations */
@@ -136,7 +201,7 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-cabinet), var(--font-geist-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.25s ease, color 0.25s ease;

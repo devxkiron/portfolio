@@ -17,7 +17,7 @@ export interface NavbarConfig {
 
 export const navbarConfig: NavbarConfig = {
   brand: {
-    name: 'devxkiron',
+    name: 'helloworld',
     href: '#hero',
   },
   links: [

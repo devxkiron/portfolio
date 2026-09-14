@@ -19,7 +19,7 @@ export const HeroStats: React.FC<HeroStatsProps> = ({ stats = [], className = ''
     >
       {stats.map((stat, i) => (
         <div key={i} className="flex flex-col items-center text-center">
-          <span className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+          <span className="font-avtech text-3xl tracking-tight text-foreground sm:text-4xl">
             {stat.value}
           </span>
           <span className="mt-2 font-mono text-[11px] font-medium tracking-wider text-muted-foreground uppercase sm:text-xs">

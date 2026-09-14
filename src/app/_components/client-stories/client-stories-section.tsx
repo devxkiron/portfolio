@@ -168,7 +168,7 @@ export const ClientStoriesSection: React.FC = () => {
         {/* Top Bar */}
         <div className="flex flex-col md:flex-row items-start md:items-start justify-between gap-4 pointer-events-none">
           <div className="pointer-events-auto select-none pt-1">
-            <h2 className="font-black italic tracking-tighter text-3xl sm:text-4xl lg:text-5xl uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-lime-500 to-[#b8ff1a] drop-shadow-[0_0_24px_rgba(174,255,0,0.3)]">
+            <h2 className="font-origin-tech tracking-tighter text-3xl sm:text-4xl lg:text-5xl uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-lime-500 to-[#b8ff1a] drop-shadow-[0_0_24px_rgba(174,255,0,0.3)]">
               CLIENT STORIES
             </h2>
           </div>

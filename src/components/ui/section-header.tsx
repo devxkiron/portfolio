@@ -111,7 +111,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       )}
 
       <HeadingTag
-        className={`section-header-item font-extrabold tracking-tight text-foreground leading-[1.15] ${resolvedTitleClass}`}
+        className={`section-header-item font-clash font-bold tracking-tight text-foreground leading-[1.15] ${resolvedTitleClass}`}
       >
         {title}
       </HeadingTag>

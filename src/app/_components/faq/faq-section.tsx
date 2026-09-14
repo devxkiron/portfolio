@@ -154,7 +154,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             {title ? (
               typeof title === 'string' ? (
                 <h2
-                  className={`faq-left-anim text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.12] ${titleClassName}`.trim()}
+                  className={`faq-left-anim font-clash text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.12] ${titleClassName}`.trim()}
                 >
                   {title}
                 </h2>
@@ -163,7 +163,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               )
             ) : (
               <h2
-                className={`faq-left-anim text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.12] ${titleClassName}`.trim()}
+                className={`faq-left-anim font-clash text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.12] ${titleClassName}`.trim()}
               >
                 {activeTitleLines.map((line, idx) => (
                   <React.Fragment key={idx}>

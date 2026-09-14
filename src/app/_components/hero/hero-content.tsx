@@ -19,10 +19,10 @@ export const HeroContent: React.FC<HeroContentProps> = ({ className = '' }) => {
       <HeroBadge statusText={content.statusBadge} className="mb-8" />
 
       {/* Main Headline */}
-      <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
+      <h1 className="font-clash text-4xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
         <span className="block">{content.title.line1}</span>
         <span className="block">{content.title.line2}</span>
-        <span className="mt-2 block font-black italic tracking-wide text-brand-neon-text dark:text-[#b5f57c]">
+        <span className="mt-2 block font-origin-tech tracking-wide text-brand-neon-text dark:text-[#b5f57c]">
           {content.title.highlighted}
         </span>
       </h1>
