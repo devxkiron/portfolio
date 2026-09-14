@@ -14,28 +14,28 @@ import {
 
 // Geist Sans (Clean default sans)
 export const geistSans = Geist({
-  variable: '--font-geist-sans',
+  variable: '--font-face-geist-sans',
   subsets: ['latin'],
   display: 'swap',
 });
 
 // Geist Mono (Clean default mono)
 export const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+  variable: '--font-face-geist-mono',
   subsets: ['latin'],
   display: 'swap',
 });
 
 // Plus Jakarta Sans (Modern tech-SaaS geometric sans)
 export const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: '--font-jakarta',
+  variable: '--font-face-jakarta',
   subsets: ['latin'],
   display: 'swap',
 });
 
 // JetBrains Mono (Developer-focused technical monospace)
 export const jetbrainsMono = JetBrains_Mono({
-  variable: '--font-jetbrains',
+  variable: '--font-face-jetbrains',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -65,7 +65,7 @@ export const hatton = localFont({
       style: 'normal',
     },
   ],
-  variable: '--font-hatton',
+  variable: '--font-face-hatton',
   display: 'swap',
 });
 
@@ -103,7 +103,7 @@ export const clashDisplay = localFont({
       style: 'normal',
     },
   ],
-  variable: '--font-clash',
+  variable: '--font-face-clash',
   display: 'swap',
 });
 
@@ -136,7 +136,7 @@ export const satoshi = localFont({
       style: 'normal',
     },
   ],
-  variable: '--font-satoshi',
+  variable: '--font-face-satoshi',
   display: 'swap',
 });
 
@@ -174,7 +174,7 @@ export const cabinetGrotesk = localFont({
       style: 'normal',
     },
   ],
-  variable: '--font-cabinet',
+  variable: '--font-face-cabinet',
   display: 'swap',
 });
 
@@ -186,8 +186,13 @@ export const elegtroVolt = localFont({
       weight: '400',
       style: 'normal',
     },
+    {
+      path: '../../public/fonts/elegtro-volt/Elegtro-Volt-Trial-BF6aa74a9debc48.otf',
+      weight: '700',
+      style: 'normal',
+    },
   ],
-  variable: '--font-elegtro',
+  variable: '--font-face-elegtro',
   display: 'swap',
 });
 
@@ -210,7 +215,7 @@ export const syne = localFont({
       style: 'normal',
     },
   ],
-  variable: '--font-syne',
+  variable: '--font-face-syne',
   display: 'swap',
 });
 
@@ -222,8 +227,33 @@ export const originTech = localFont({
       weight: '400',
       style: 'normal',
     },
+    {
+      path: '../../public/fonts/Origin-tech/OriginTech-BF69955aa27ddcd.otf',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Origin-tech/OriginTech-BF69955aa27ddcd.otf',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Origin-tech/OriginTech-BF69955aa27ddcd.otf',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Origin-tech/OriginTech-BF69955aa27ddcd.otf',
+      weight: '800',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Origin-tech/OriginTech-BF69955aa27ddcd.otf',
+      weight: '900',
+      style: 'normal',
+    },
   ],
-  variable: '--font-origin-tech',
+  variable: '--font-face-origin-tech',
   display: 'swap',
 });
 
@@ -232,11 +262,26 @@ export const avtech = localFont({
   src: [
     {
       path: '../../public/fonts/Avtech/Avtech-BlackExpandedSlanted.otf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Avtech/Avtech-BlackExpandedSlanted.otf',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Avtech/Avtech-BlackExpandedSlanted.otf',
+      weight: '900',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Avtech/Avtech-BlackExpandedSlanted.otf',
       weight: '900',
       style: 'oblique',
     },
   ],
-  variable: '--font-avtech',
+  variable: '--font-face-avtech',
   display: 'swap',
 });
 
@@ -248,8 +293,23 @@ export const motech = localFont({
       weight: '400',
       style: 'normal',
     },
+    {
+      path: '../../public/fonts/Motech/Motech-BF69e704e1558e6.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Motech/Motech-BF69e704e1558e6.ttf',
+      weight: '800',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Motech/Motech-BF69e704e1558e6.ttf',
+      weight: '900',
+      style: 'normal',
+    },
   ],
-  variable: '--font-motech',
+  variable: '--font-face-motech',
   display: 'swap',
 });
 

@@ -8,12 +8,18 @@ import { ClientStoriesSection } from './_components/client-stories';
 import { BookingSection } from './_components/booking';
 import { FaqSection } from './_components/faq';
 import { FooterSection } from './_components/footer';
+import { getSiteConfig } from '@/lib/theme-config/service';
 
-export default function Home() {
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+export default async function Home() {
+  const siteConfig = await getSiteConfig();
+
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground transition-colors duration-200">
-      <Navbar />
-      <HeroSection />
+      <Navbar brandOverride={siteConfig.brand} />
+      <HeroSection brandOverride={siteConfig.brand} />
       <ProjectsSection />
       <ProcessSection />
       <ArchitectureSection />
@@ -21,7 +27,7 @@ export default function Home() {
       <TechStackSection />
       <BookingSection />
       <FaqSection />
-      <FooterSection />
+      <FooterSection brandOverride={siteConfig.brand} />
     </main>
   );
 }

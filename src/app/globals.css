@@ -101,17 +101,17 @@
   --font-serif: var(--font-hatton), serif;
 
   /* Individual font families (for targeted overrides) */
-  --font-hatton: var(--font-hatton), serif;
-  --font-clash: var(--font-clash), sans-serif;
-  --font-satoshi: var(--font-satoshi), sans-serif;
-  --font-cabinet: var(--font-cabinet), sans-serif;
-  --font-elegtro: var(--font-elegtro), cursive, sans-serif;
-  --font-syne: var(--font-syne), sans-serif;
-  --font-jakarta: var(--font-jakarta), sans-serif;
-  --font-jetbrains: var(--font-jetbrains), monospace;
-  --font-origin-tech: var(--font-origin-tech), sans-serif;
-  --font-avtech: var(--font-avtech), sans-serif;
-  --font-motech: var(--font-motech), sans-serif;
+  --font-hatton: var(--font-face-hatton), serif;
+  --font-clash: var(--font-face-clash), sans-serif;
+  --font-satoshi: var(--font-face-satoshi), sans-serif;
+  --font-cabinet: var(--font-face-cabinet), sans-serif;
+  --font-elegtro: var(--font-face-elegtro), cursive, sans-serif;
+  --font-syne: var(--font-face-syne), sans-serif;
+  --font-jakarta: var(--font-face-jakarta), sans-serif;
+  --font-jetbrains: var(--font-face-jetbrains), monospace;
+  --font-origin-tech: var(--font-face-origin-tech), sans-serif;
+  --font-avtech: var(--font-face-avtech), sans-serif;
+  --font-motech: var(--font-face-motech), sans-serif;
 
   --animate-marquee-left: marquee-left 35s linear infinite;
   --animate-marquee-right: marquee-right 35s linear infinite;
@@ -119,51 +119,54 @@
 
 /* Typography Utility Classes */
 .font-hatton {
-  font-family: var(--font-hatton), serif;
+  font-family: var(--font-face-hatton), serif;
 }
 
 .font-clash {
-  font-family: var(--font-clash), sans-serif;
+  font-family: var(--font-face-clash), sans-serif;
 }
 
 .font-satoshi {
-  font-family: var(--font-satoshi), sans-serif;
+  font-family: var(--font-face-satoshi), sans-serif;
 }
 
 .font-cabinet {
-  font-family: var(--font-cabinet), sans-serif;
+  font-family: var(--font-face-cabinet), sans-serif;
 }
 
 .font-elegtro {
-  font-family: var(--font-elegtro), cursive, sans-serif;
+  font-family: var(--font-face-elegtro), cursive, sans-serif;
 }
 
 .font-syne {
-  font-family: var(--font-syne), sans-serif;
+  font-family: var(--font-face-syne), sans-serif;
 }
 
 .font-jakarta {
-  font-family: var(--font-jakarta), sans-serif;
+  font-family: var(--font-face-jakarta), sans-serif;
 }
 
 .font-jetbrains {
-  font-family: var(--font-jetbrains), monospace;
+  font-family: var(--font-face-jetbrains), monospace;
 }
 
 .font-display {
-  font-family: var(--font-clash), var(--font-hatton), sans-serif;
+  font-family: var(--font-face-clash), var(--font-face-hatton), sans-serif;
 }
 
 .font-origin-tech {
-  font-family: var(--font-origin-tech), sans-serif;
+  font-family: var(--font-face-origin-tech), var(--font-origin-tech), sans-serif !important;
+  font-weight: 400 !important;
 }
 
 .font-avtech {
-  font-family: var(--font-avtech), sans-serif;
+  font-family: var(--font-face-avtech), var(--font-avtech), sans-serif !important;
+  font-weight: 400 !important;
 }
 
 .font-motech {
-  font-family: var(--font-motech), sans-serif;
+  font-family: var(--font-face-motech), var(--font-motech), sans-serif !important;
+  font-weight: 400 !important;
 }
 
 /* Continuous smooth marquee animations */

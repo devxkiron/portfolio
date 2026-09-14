@@ -3,11 +3,19 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { navbarConfig } from './navbar.config';
 
-export const Navbar: React.FC = () => {
+interface NavbarProps {
+  brandOverride?: {
+    name?: string;
+    logoType?: string;
+    logoUrl?: string;
+  };
+}
+
+export const Navbar: React.FC<NavbarProps> = ({ brandOverride }) => {
   const { brand, links, cta } = navbarConfig;
+  const activeBrandName = brandOverride?.name || brand.name;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
 
@@ -44,9 +52,17 @@ export const Navbar: React.FC = () => {
           href={brand.href}
           className="flex items-center gap-2 transition-colors hover:text-brand-neon"
         >
-          <span className="font-motech text-base font-bold tracking-wider uppercase text-foreground">
-            {brand.name}
-          </span>
+          {brandOverride?.logoType === 'image' && brandOverride.logoUrl ? (
+            <img
+              src={brandOverride.logoUrl}
+              alt={activeBrandName}
+              className="h-7 w-auto object-contain"
+            />
+          ) : (
+            <span className="font-motech text-base font-bold tracking-wider uppercase text-foreground">
+              {activeBrandName}
+            </span>
+          )}
         </a>
 
         {/* Center Desktop Navigation Links */}
@@ -69,17 +85,15 @@ export const Navbar: React.FC = () => {
           })}
         </nav>
 
-        {/* Right Desktop CTA + Theme Toggle */}
+        {/* Right Desktop CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <ThemeToggle />
           <Button href={cta.href} variant="primary" size="sm" className="!rounded-md">
             {cta.text}
           </Button>
         </div>
 
-        {/* Mobile Actions: Theme Toggle, CTA & Hamburger Button */}
+        {/* Mobile Actions: CTA & Hamburger Button */}
         <div className="flex md:hidden items-center gap-2">
-          <ThemeToggle />
           <Button
             href={cta.href}
             variant="primary"

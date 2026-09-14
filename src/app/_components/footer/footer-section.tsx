@@ -9,7 +9,14 @@ if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export const FooterSection: React.FC = () => {
+interface FooterSectionProps {
+  brandOverride?: {
+    name?: string;
+    tagline?: string;
+  };
+}
+
+export const FooterSection: React.FC<FooterSectionProps> = ({ brandOverride }) => {
   const {
     brandName,
     brandTagline,
@@ -20,6 +27,9 @@ export const FooterSection: React.FC = () => {
     copyrightText,
     legalLinks,
   } = footerConfig;
+
+  const activeBrandName = brandOverride?.name || brandName;
+  const activeBrandTagline = brandOverride?.tagline || brandTagline;
 
   const footerRef = useRef<HTMLElement | null>(null);
   const topBarRef = useRef<HTMLDivElement | null>(null);
@@ -89,12 +99,12 @@ export const FooterSection: React.FC = () => {
                 G
               </div>
               <span className="text-lg sm:text-xl font-motech tracking-tight text-foreground">
-                {brandName}
+                {activeBrandName}
               </span>
             </div>
             <span className="hidden sm:inline text-border">|</span>
             <p className="text-xs text-muted-foreground font-normal max-w-md">
-              {brandTagline}
+              {activeBrandTagline}
             </p>
           </div>
 

@@ -5,7 +5,14 @@ import { ColorBends } from '@/components/ui/color-bends';
 import { HeroContent } from './hero-content';
 import { heroConfig } from './hero.config';
 
-export const HeroSection: React.FC = () => {
+interface HeroSectionProps {
+  brandOverride?: {
+    tagline?: string;
+    badgeText?: string;
+  };
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ brandOverride }) => {
   const { shader } = heroConfig;
 
   return (
@@ -38,7 +45,7 @@ export const HeroSection: React.FC = () => {
       </div>
 
       {/* Hero Content */}
-      <HeroContent />
+      <HeroContent brandOverride={brandOverride} />
     </section>
   );
 };

@@ -1,0 +1,30 @@
+// Prisma schema for Portfolio Design System CMS
+// Works seamlessly with Neon Serverless Postgres
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SiteConfig {
+  id         String   @id @default("default")
+  
+  // Branding: { name: string, logoType: string, logoUrl?: string, tagline?: string }
+  brand      Json     @default("{}")
+  
+  // Colors: { light: Record<string, string>, dark: Record<string, string>, brand: Record<string, string> }
+  colors     Json     @default("{}")
+  
+  // Typography: { heading: string, body: string, mono: string, brand: string, accent: string, data: string }
+  typography Json     @default("{}")
+  
+  // Layout tokens: { borderRadius: Record<string, string>, shadows: Record<string, string>, spacingScale: number }
+  layout     Json     @default("{}")
+  
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
