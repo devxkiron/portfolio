@@ -45,3 +45,26 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Custom sleek dark scrollbar */
+.custom-dark-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #27272a transparent;
+}
+
+.custom-dark-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-dark-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-dark-scrollbar::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 9999px;
+}
+
+.custom-dark-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}

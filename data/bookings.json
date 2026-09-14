@@ -1,0 +1,14 @@
+[
+  {
+    "id": "booking-1789333861751-4rdxtk",
+    "name": "bala",
+    "email": "saitan@sala.com",
+    "date": "TUE, SEP 15",
+    "time": "01:00 PM",
+    "iso": "2026-09-15T07:00:00Z",
+    "schedulingUrl": "https://calendly.com/devxkiron/30min/2026-09-15T07:00:00Z",
+    "createdAt": "2026-09-13T21:11:01.751Z",
+    "status": "confirmed",
+    "emailSent": false
+  }
+]

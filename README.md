@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# DEVXKIRON Portfolio
 
-## Getting Started
+Modern, high-performance developer portfolio built with **Next.js 16 (Turbopack)**, **React 19**, **Tailwind CSS v4**, and **GSAP**.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Today's Implementations & Updates
+
+### 1. 📅 Booking & Strategy Call Section (`src/app/_components/booking`)
+- **Custom Dark-Themed Scheduler**:
+  - Developed a minimalist, high-contrast calendar UI matching the portfolio's neon green (`#aeff00`) and deep dark (`#0a0a0a`) theme.
+  - Restricted date selection to an active **7-day window** (past dates disabled).
+  - Implemented sleek **skeleton loaders** during availability fetch.
+  - Added a custom dark slim scrollbar (`.custom-dark-scrollbar`).
+- **Live Calendly API v2 Availability Integration**:
+  - Created `/api/calendly/availability` to query Calendly API v2 in real time.
+  - Filters out busy and conflicting slots based on live Google Calendar schedule.
+- **Direct In-Page Google Calendar & Meet Sync**:
+  - Built `CalendlyModal` with custom glassmorphic styling, top bar details, and iframe loader.
+  - Automatically pre-fills client's Name and Work Email.
+  - Directly creates the event in **Google Calendar** and sends automated **Google Meet** links to both host and invitee.
+  - Automatically captures `calendly.event_scheduled` events cross-browser.
+- **Animated Thank You Modal (`ThankYouModal`)**:
+  - Smooth GSAP pop entrance with spring checkmark animation.
+  - Displays meeting summary (Date, Time, Email, Google Meet confirmation).
+  - Eliminated manual "Add to Calendar" friction—confirmations are completely automatic.
+
+---
+
+### 2. ❓ Frequently Asked Questions (FAQ) Section (`src/app/_components/faq`)
+- **Interactive Accordion**:
+  - Built `FaqSection` and `FaqAccordionItem` featuring GSAP ScrollTrigger animations.
+  - Smooth height expansion and opacity transitions.
+  - Minimalist `+` / `−` indicators with neon green highlight.
+- **Config-Driven Architecture**:
+  - Centralized all 5 Q&A items in `faq.config.ts` for simple content updates without code refactoring.
+
+---
+
+### 3. 🦶 Footer Section (`src/app/_components/footer`)
+- **5-Column Navigation Grid**:
+  - Organized columns: `SERVICES`, `CASE STUDIES`, `COMPANY`, `RESOURCES`, `CONTACT`.
+  - Configurable links and metadata via `footer.config.ts`.
+- **Live Availability Indicator**:
+  - Added a pulsing neon status badge: `• Available for Q3 Projects`.
+- **Responsive Layout**:
+  - Full mobile-to-desktop grid with clean copyright and policy notices.
+
+---
+
+### 4. 🎨 Styling & Theme System (`src/app/globals.css`)
+- **Tailwind CSS v4 Token Preservation**:
+  - Fixed theme overrides by preserving `@theme inline` custom brand color definitions:
+    - `--brand-neon`: `#aeff00`
+    - `--brand-dark`: `#101612`
+    - `--brand-muted`: `#f0f0ea`
+- **Custom Dark Scrollbar**:
+  - Added `.custom-dark-scrollbar` utility with custom thumb colors and hover effects for slot pickers.
+
+---
+
+## 🛠️ Tech Stack
+- **Framework**: Next.js 16.3.4 (App Router, Turbopack)
+- **UI Library**: React 19.2.8
+- **Styling**: Tailwind CSS v4 (PostCSS)
+- **Animations**: GSAP 3.15 (ScrollTrigger)
+- **Icons**: Lucide React
+- **Integrations**: Calendly API v2 & Google Calendar
+
+---
+
+## ⚙️ Environment Configuration
+
+Add the following environment variables to `.env.local`:
+
+```env
+# Calendly Configuration
+NEXT_PUBLIC_CALENDLY_URL=https://calendly.com/devxkiron/30min
+CALENDLY_API_TOKEN=your_calendly_personal_access_token
+CALENDLY_EVENT_TYPE_URI=https://api.calendly.com/event_types/your_event_type_uuid
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 💻 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Install dependencies**:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+2. **Run local development server**:
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Build for production**:
+   ```bash
+   npm run build
+   ```
