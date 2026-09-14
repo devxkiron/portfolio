@@ -346,7 +346,7 @@ export const Step2NodeWorkflow: React.FC = () => {
   const nodeTypes = useMemo(() => ({ workflowNode: CustomWorkflowNode }), []);
 
   return (
-    <div className="relative h-full min-h-[220px] w-full overflow-hidden bg-[#080d09] pointer-events-none select-none">
+    <div className="relative h-full min-h-[220px] w-full overflow-hidden bg-[#1a2e21] dark:bg-[#080d09] pointer-events-none select-none transition-colors duration-200">
       <ReactFlow
         nodes={initialNodes}
         edges={initialEdges}

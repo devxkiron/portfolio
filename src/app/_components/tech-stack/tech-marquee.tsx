@@ -32,10 +32,10 @@ export const TechMarquee: React.FC<TechMarqueeProps> = ({
   return (
     <div className="relative w-full overflow-hidden py-4">
       {/* Left Edge Soft Fade Mask */}
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-20 w-16 sm:w-32 bg-gradient-to-r from-black via-black/80 to-transparent" />
+      <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-20 w-16 sm:w-32 bg-gradient-to-r from-background via-background/80 to-transparent" />
 
       {/* Right Edge Soft Fade Mask */}
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-20 w-16 sm:w-32 bg-gradient-to-l from-black via-black/80 to-transparent" />
+      <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-20 w-16 sm:w-32 bg-gradient-to-l from-background via-background/80 to-transparent" />
 
       {/* Row 1: Independent Hover Container (Leftward Infinite Continuous Drift) */}
       <div
@@ -124,38 +124,6 @@ export const TechMarquee: React.FC<TechMarqueeProps> = ({
           ))}
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes marquee-left {
-          0% {
-            transform: translateX(0%);
-          }
-          100% {
-            transform: translateX(-100%);
-          }
-        }
-
-        @keyframes marquee-right {
-          0% {
-            transform: translateX(-100%);
-          }
-          100% {
-            transform: translateX(0%);
-          }
-        }
-
-        .animate-marquee-left {
-          animation: marquee-left 55s linear infinite;
-        }
-
-        .animate-marquee-right {
-          animation: marquee-right 60s linear infinite;
-        }
-
-        .marquee-row:hover .marquee-track {
-          animation-play-state: paused !important;
-        }
-      `}</style>
     </div>
   );
 };

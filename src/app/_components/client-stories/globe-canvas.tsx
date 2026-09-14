@@ -17,6 +17,7 @@ interface GlobeCanvasProps {
   glowRadius?: number;
   glowColor?: string;
   globeBgColor?: string;
+  isLight?: boolean;
   arcColor?: string;
   arcWidth?: number;
   arcHeight?: number;
@@ -111,6 +112,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   glowRadius = 1.0,
   glowColor = '#5cf629',
   globeBgColor = '#040805',
+  isLight = false,
   arcColor = '#2f842b',
   arcWidth = 0.002,
   arcHeight = 0.45,
@@ -131,6 +133,10 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   const atmosphereMatRef = useRef<THREE.ShaderMaterial | null>(null);
   const atmosphereMeshRef = useRef<THREE.Mesh | null>(null);
   const circleTextureRef = useRef<THREE.Texture | null>(null);
+  const isLightRef = useRef(isLight);
+  useEffect(() => {
+    isLightRef.current = isLight;
+  }, [isLight]);
   const cachedImgDataRef = useRef<{
     data?: Uint8ClampedArray;
     width: number;
@@ -197,20 +203,24 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     autoRotateRef.current = autoRotate;
   }, [autoRotate]);
 
-  // Dynamically update dot color without re-rendering the whole scene
+  // Dynamically update dot color and blending without re-rendering the whole scene
   useEffect(() => {
     if (dotsMeshRef.current && dotsMeshRef.current.material) {
       const mat = dotsMeshRef.current.material as THREE.PointsMaterial;
       mat.color.copy(parseHexColor(dotsColor));
+      mat.blending = isLight ? THREE.NormalBlending : THREE.AdditiveBlending;
+      mat.opacity = isLight ? 0.95 : 0.88;
+      mat.needsUpdate = true;
     }
-  }, [dotsColor]);
+  }, [dotsColor, isLight]);
 
-  // Dynamically update atmosphere glow color
+  // Dynamically update atmosphere glow color and visibility
   useEffect(() => {
     if (atmosphereMatRef.current) {
       atmosphereMatRef.current.uniforms.uGlowColor.value.copy(parseHexColor(glowColor));
+      atmosphereMatRef.current.visible = !isLight;
     }
-  }, [glowColor]);
+  }, [glowColor, isLight]);
 
   // Dynamically update globe core background color
   useEffect(() => {
@@ -357,6 +367,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
       side: THREE.BackSide,
       transparent: true,
     });
+    atmosphereMat.visible = !isLightRef.current;
     atmosphereMatRef.current = atmosphereMat;
     const atmosphereMesh = new THREE.Mesh(atmosphereGeo, atmosphereMat);
     const initialGlowScale = (glowRadius || 1.0) / 1.0;
@@ -422,9 +433,9 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
         size: Math.max(0.012, 0.024 - (density - 140) * 0.000045),
         map: circleTexture,
         transparent: true,
-        opacity: 0.88,
+        opacity: isLightRef.current ? 0.95 : 0.88,
         alphaTest: 0.02,
-        blending: THREE.AdditiveBlending,
+        blending: isLightRef.current ? THREE.NormalBlending : THREE.AdditiveBlending,
         depthWrite: false,
       });
 
@@ -817,7 +828,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
             left: `${hoveredStory.x}px`,
             top: `${hoveredStory.y}px`,
           }}
-          className={`pointer-events-auto absolute z-50 -translate-x-1/2 rounded-xl border border-lime-500/40 bg-[#070b08]/95 px-3 py-2 text-zinc-100 shadow-[0_12px_32px_rgba(0,0,0,0.95),0_0_20px_rgba(92,246,41,0.2)] backdrop-blur-xl transition-all duration-75 cursor-pointer select-none ${
+          className={`pointer-events-auto absolute z-50 -translate-x-1/2 rounded-xl border border-border dark:border-lime-500/40 bg-card/95 dark:bg-[#070b08]/95 px-3 py-2 text-foreground dark:text-zinc-100 shadow-[0_12px_32px_var(--shadow-color),0_0_20px_var(--glow-color)] dark:shadow-[0_12px_32px_rgba(0,0,0,0.95),0_0_20px_rgba(92,246,41,0.2)] backdrop-blur-xl transition-all duration-75 cursor-pointer select-none ${
             hoveredStory.y < 160
               ? 'translate-y-[16px]'
               : '-translate-y-[calc(100%+14px)]'
@@ -830,7 +841,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
         >
           {/* ONLY Client Profile: Avatar, Name, Role */}
           <div className="flex items-center gap-2.5 whitespace-nowrap">
-            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-lime-400/60 shadow-[0_0_10px_rgba(92,246,41,0.25)]">
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full border border-brand-neon/60 dark:border-lime-400/60 shadow-[0_0_10px_var(--glow-color)] dark:shadow-[0_0_10px_rgba(92,246,41,0.25)]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={hoveredStory.story.authorAvatar}
@@ -839,10 +850,10 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
               />
             </div>
             <div className="flex flex-col pr-1">
-              <span className="text-sm font-bold text-white tracking-tight leading-snug">
+              <span className="text-sm font-bold text-foreground dark:text-white tracking-tight leading-snug">
                 {hoveredStory.story.authorName}
               </span>
-              <span className="text-xs text-zinc-400 font-medium leading-snug">
+              <span className="text-xs text-muted-foreground dark:text-zinc-400 font-medium leading-snug">
                 {hoveredStory.story.authorRole}
               </span>
             </div>
@@ -850,10 +861,10 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
 
           {/* Pointing Caret Arrow to the Beacon */}
           <div
-            className={`absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 bg-[#070b08] ${
+            className={`absolute left-1/2 -translate-x-1/2 w-2.5 h-2.5 rotate-45 bg-card dark:bg-[#070b08] ${
               hoveredStory.y < 160
-                ? '-top-1.5 border-l border-t border-lime-500/40'
-                : '-bottom-1.5 border-r border-b border-lime-500/40'
+                ? '-top-1.5 border-l border-t border-border dark:border-lime-500/40'
+                : '-bottom-1.5 border-r border-b border-border dark:border-lime-500/40'
             }`}
           />
         </div>

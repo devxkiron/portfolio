@@ -24,10 +24,10 @@ export const TechStackSection: React.FC = () => {
   return (
     <section
       id="tech-stack"
-      className="relative w-full bg-black py-20 sm:py-24 text-white overflow-hidden scroll-mt-20"
+      className="relative w-full bg-background py-20 sm:py-24 text-foreground overflow-hidden scroll-mt-20 transition-colors duration-200"
     >
       {/* Subtle Ambient Radial Glow */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(92,246,41,0.06),transparent_65%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,rgba(92,246,41,0.04),transparent_65%)]" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col items-center text-center">
         {/* Project Reusable SectionHeader Component */}
@@ -36,7 +36,7 @@ export const TechStackSection: React.FC = () => {
             <>
               <span>{titlePrefix}</span>
               <br className="hidden sm:inline" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-[#5cf629] to-lime-300 drop-shadow-[0_0_24px_rgba(92,246,41,0.5)]">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-[#5cf629] to-lime-400 drop-shadow-[0_0_24px_rgba(92,246,41,0.3)]">
                 {titleHighlight}
               </span>
               <span>{titleSuffix}</span>
@@ -59,8 +59,8 @@ export const TechStackSection: React.FC = () => {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer ${
                   isActive
-                    ? 'border border-lime-400/80 bg-lime-400/10 text-[#5cf629] shadow-[0_0_15px_rgba(92,246,41,0.25)]'
-                    : 'border border-zinc-800 bg-zinc-900/50 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                    ? 'border border-brand-neon bg-card text-brand-neon-text dark:text-brand-neon shadow-[0_0_15px_rgba(92,246,41,0.25)]'
+                    : 'border border-border bg-card/60 text-muted-foreground hover:border-border hover:text-foreground'
                 }`}
               >
                 {cat.label}

@@ -162,9 +162,9 @@ export const Step3CodeEditor: React.FC = () => {
   const lines = currentCode.split('\n');
 
   return (
-    <div className="relative flex h-full min-h-[220px] w-full flex-col justify-start overflow-hidden bg-[#0a0f0c] text-left">
+    <div className="relative flex h-full min-h-[220px] w-full flex-col justify-start overflow-hidden bg-[#1a2e21] dark:bg-[#0a0f0c] text-left transition-colors duration-200">
       {/* macOS Window Top Bar */}
-      <div className="flex h-8 sm:h-10 shrink-0 items-center justify-between border-b border-zinc-800/90 bg-[#0e1510] px-3 sm:px-4">
+      <div className="flex h-8 sm:h-10 shrink-0 items-center justify-between border-b border-white/10 dark:border-zinc-800/90 bg-[#14261a] dark:bg-[#0e1510] px-3 sm:px-4">
         {/* Window control dots */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           <div className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-[#ef4444]" />
@@ -174,7 +174,7 @@ export const Step3CodeEditor: React.FC = () => {
 
         {/* Dynamic File name & Tag */}
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[10px] sm:text-xs tracking-wider text-zinc-300">
+          <span className="font-mono text-[10px] sm:text-xs tracking-wider text-zinc-200 dark:text-zinc-300">
             {activeSnippet.fileName}
           </span>
           <span className="rounded bg-brand-neon/10 px-1.5 py-0.2 font-mono text-[9px] text-brand-neon border border-brand-neon/20 hidden sm:inline-block">
@@ -189,10 +189,10 @@ export const Step3CodeEditor: React.FC = () => {
       {/* Editor Body */}
       <div className="flex flex-1 items-start justify-start overflow-hidden">
         {/* Left Mini Sidebar */}
-        <div className="flex w-8 sm:w-10 shrink-0 self-stretch flex-col items-center gap-3 sm:gap-5 border-r border-zinc-800/80 bg-[#0d130f] py-3 sm:py-5">
+        <div className="flex w-8 sm:w-10 shrink-0 self-stretch flex-col items-center gap-3 sm:gap-5 border-r border-white/10 dark:border-zinc-800/80 bg-[#132419] dark:bg-[#0d130f] py-3 sm:py-5">
           <FileCode className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-brand-neon" />
-          <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-600 hover:text-zinc-400 cursor-pointer" />
-          <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-600 hover:text-zinc-400 cursor-pointer" />
+          <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-400 dark:text-zinc-600 hover:text-zinc-200 cursor-pointer" />
+          <Settings className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-zinc-400 dark:text-zinc-600 hover:text-zinc-200 cursor-pointer" />
         </div>
 
         {/* Code Content Area */}

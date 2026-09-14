@@ -6,7 +6,7 @@ import { OpenAIIcon, SlackIcon } from '../icons/brand-icons';
 
 export const Step4DeployStatus: React.FC = () => {
   return (
-    <div className="relative flex h-full min-h-[220px] w-full flex-col justify-center gap-3 sm:gap-5 bg-[#090d0a] p-4 sm:p-6 lg:p-8">
+    <div className="relative flex h-full min-h-[220px] w-full flex-col justify-center gap-3 sm:gap-5 bg-[#1a2e21] dark:bg-[#090d0a] p-4 sm:p-6 lg:p-8 transition-colors duration-200">
       {/* Dynamic Keyframes for Left-to-Right Stream Movement */}
       <style>{`
         @keyframes streamFlow {

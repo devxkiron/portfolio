@@ -49,8 +49,8 @@ export const FaqAccordionItem: React.FC<FaqAccordionItemProps> = ({
     <div
       className={`faq-accordion-card rounded-xl transition-colors duration-200 border overflow-hidden ${
         isOpen
-          ? 'bg-zinc-900/70 border-zinc-700/80 shadow-[0_0_20px_rgba(174,255,0,0.04)]'
-          : 'bg-zinc-900/30 border-zinc-800/80 hover:border-zinc-700/60'
+          ? 'bg-card border-border shadow-md'
+          : 'bg-card/50 border-border/70 hover:border-border hover:bg-card'
       } ${className}`.trim()}
     >
       <button
@@ -61,7 +61,7 @@ export const FaqAccordionItem: React.FC<FaqAccordionItemProps> = ({
       >
         <span
           className={`text-sm sm:text-base font-semibold tracking-tight leading-snug transition-colors ${
-            isOpen ? 'text-white' : 'text-zinc-200'
+            isOpen ? 'text-foreground' : 'text-foreground/80'
           }`}
         >
           {item.question}
@@ -71,8 +71,8 @@ export const FaqAccordionItem: React.FC<FaqAccordionItemProps> = ({
           ref={iconRef}
           className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md transition-colors duration-150 ${
             isOpen
-              ? 'bg-[#aeff00] text-black shadow-[0_0_10px_rgba(174,255,0,0.3)]'
-              : 'bg-zinc-800 text-zinc-400 hover:text-white'
+              ? 'bg-brand-neon text-black shadow-[0_0_10px_rgba(174,255,0,0.3)]'
+              : 'bg-muted text-muted-foreground hover:text-foreground'
           }`}
         >
           {isOpen ? (
@@ -88,7 +88,7 @@ export const FaqAccordionItem: React.FC<FaqAccordionItemProps> = ({
         style={{ height: isOpen ? 'auto' : 0, opacity: isOpen ? 1 : 0 }}
         className="overflow-hidden"
       >
-        <div className="px-5 pb-5 sm:px-5.5 sm:pb-5.5 text-xs sm:text-sm text-zinc-400 font-normal leading-relaxed border-t border-zinc-800/50 mt-1 pt-3">
+        <div className="px-5 pb-5 sm:px-5.5 sm:pb-5.5 text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed border-t border-border/50 mt-1 pt-3">
           {typeof item.answer === 'string' ? <p>{item.answer}</p> : item.answer}
         </div>
       </div>

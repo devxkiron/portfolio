@@ -77,7 +77,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           scrollTrigger: {
             trigger: headerEl,
             start: 'top 85%',
-            toggleActions: 'play reverse play reverse',
+            toggleActions: 'play none none none',
           },
         }
       );
@@ -95,7 +95,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   const hasCustomMargin = className.includes('mb-') || className.includes('!mb-');
   const containerMargin = hasCustomMargin ? '' : 'mb-6 sm:mb-8 lg:mb-12';
   const resolvedTitleClass = titleClassName || 'text-2xl sm:text-3xl md:text-4xl lg:text-5xl';
-  const resolvedSubtitleClass = subtitleClassName || 'text-xs sm:text-sm md:text-base leading-relaxed text-zinc-400';
+  const resolvedSubtitleClass = subtitleClassName || 'text-xs sm:text-sm md:text-base leading-relaxed text-muted-foreground';
 
   return (
     <div
@@ -104,14 +104,14 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     >
       {badge && (
         <div
-          className={`section-header-item mb-2 sm:mb-3 inline-flex items-center rounded-full border border-zinc-800 bg-zinc-900/80 px-2.5 py-0.5 text-[10px] sm:px-3 sm:py-1 sm:text-xs font-medium uppercase tracking-wider text-zinc-300 backdrop-blur-sm ${badgeClassName}`}
+          className={`section-header-item mb-2 sm:mb-3 inline-flex items-center rounded-full border border-border bg-card/90 px-2.5 py-0.5 text-[10px] sm:px-3 sm:py-1 sm:text-xs font-medium uppercase tracking-wider text-muted-foreground backdrop-blur-sm ${badgeClassName}`}
         >
           {badge}
         </div>
       )}
 
       <HeadingTag
-        className={`section-header-item font-extrabold tracking-tight text-white leading-[1.15] ${resolvedTitleClass}`}
+        className={`section-header-item font-extrabold tracking-tight text-foreground leading-[1.15] ${resolvedTitleClass}`}
       >
         {title}
       </HeadingTag>
@@ -126,7 +126,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 
       {showDivider && (
         <div
-          className={`section-header-item mt-2.5 sm:mt-4 h-px w-10 sm:w-16 bg-zinc-800 ${dividerClassName}`}
+          className={`section-header-item mt-2.5 sm:mt-4 h-px w-10 sm:w-16 bg-border ${dividerClassName}`}
         />
       )}
     </div>

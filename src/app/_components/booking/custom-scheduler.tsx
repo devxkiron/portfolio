@@ -207,7 +207,7 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
   };
 
   return (
-    <div className="w-full max-w-5xl lg:max-w-6xl min-h-[580px] sm:min-h-[620px] rounded-2xl border border-zinc-800/90 bg-[#0a0a0a] overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.85)] transition-all duration-300">
+    <div className="w-full max-w-5xl lg:max-w-6xl min-h-[580px] sm:min-h-[620px] rounded-2xl border border-border bg-card overflow-hidden shadow-xl transition-all duration-300">
       {/* Sleek Dark Calendly In-Page Modal */}
       <CalendlyModal
         isOpen={isModalOpen}
@@ -229,19 +229,19 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
 
       <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[580px]">
         {/* Left Column: Calendar Grid */}
-        <div className="lg:col-span-7 p-6 sm:p-10 border-b lg:border-b-0 lg:border-r border-zinc-800/80 flex flex-col justify-between">
+        <div className="lg:col-span-7 p-6 sm:p-10 border-b lg:border-b-0 lg:border-r border-border flex flex-col justify-between">
           <div>
             {/* Top Bar: Month Title & Duration */}
-            <div className="pb-5 flex items-center justify-between border-b border-zinc-800/80">
+            <div className="pb-5 flex items-center justify-between border-b border-border">
               {loading ? (
-                <div className="h-6 w-36 bg-zinc-800/60 rounded-md animate-pulse" />
+                <div className="h-6 w-36 bg-muted rounded-md animate-pulse" />
               ) : (
-                <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tight">
                   {displayMonthName} {displayYear}
                 </h3>
               )}
 
-              <span className="inline-flex items-center gap-2 text-xs font-bold text-[#aeff00]/80 px-3 py-1 rounded-full bg-[#162118]/40 border border-[#27382b]/50">
+              <span className="inline-flex items-center gap-2 text-xs font-bold text-brand-neon-text dark:text-brand-neon px-3 py-1 rounded-full bg-brand-neon/10 border border-brand-neon/20">
                 30 min
               </span>
             </div>
@@ -251,7 +251,7 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
               {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((dayName) => (
                 <span
                   key={dayName}
-                  className="text-xs sm:text-sm font-bold text-zinc-400 uppercase tracking-wider"
+                  className="text-xs sm:text-sm font-bold text-muted-foreground uppercase tracking-wider"
                 >
                   {dayName}
                 </span>
@@ -264,7 +264,7 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
                 {Array.from({ length: 28 }).map((_, i) => (
                   <div
                     key={`skel-day-${i}`}
-                    className="h-11 sm:h-12 rounded-xl bg-zinc-900/80 border border-zinc-800/60 animate-pulse"
+                    className="h-11 sm:h-12 rounded-xl bg-muted border border-border animate-pulse"
                   />
                 ))}
               </div>
@@ -286,15 +286,15 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
                       onClick={() => item.dateStr && handleSelectDate(item.dateStr)}
                       className={`relative h-11 sm:h-12 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center transition-all duration-200 ${
                         isSelected
-                          ? 'bg-[#aeff00] text-black font-extrabold shadow-[0_0_20px_rgba(174,255,0,0.45)] scale-[1.04] z-10 cursor-pointer'
+                          ? 'bg-brand-neon text-black font-extrabold shadow-[0_0_20px_rgba(174,255,0,0.45)] scale-[1.04] z-10 cursor-pointer'
                           : isSelectable
-                          ? 'bg-zinc-900/70 hover:bg-zinc-800 text-zinc-100 border border-zinc-800/80 hover:border-zinc-600 cursor-pointer'
-                          : 'text-zinc-700 cursor-not-allowed opacity-25 select-none'
+                          ? 'bg-card hover:bg-muted text-foreground border border-border hover:border-border-subtle cursor-pointer'
+                          : 'text-muted-foreground/30 cursor-not-allowed opacity-25 select-none'
                       }`}
                     >
                       <span>{item.dayNumber}</span>
                       {isSelectable && !isSelected && (
-                        <span className="absolute bottom-1.5 h-1.5 w-1.5 rounded-full bg-[#aeff00]" />
+                        <span className="absolute bottom-1.5 h-1.5 w-1.5 rounded-full bg-brand-neon" />
                       )}
                     </button>
                   );
@@ -304,48 +304,48 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
           </div>
 
           {/* Timezone Footer */}
-          <div className="mt-8 pt-5 border-t border-zinc-800/80 flex items-center gap-2 text-xs text-zinc-400">
-            <Globe className="h-4 w-4 text-[#aeff00]" />
+          <div className="mt-8 pt-5 border-t border-border flex items-center gap-2 text-xs text-muted-foreground">
+            <Globe className="h-4 w-4 text-brand-neon-text dark:text-brand-neon" />
             <span className="font-medium">Timezone:</span>
-            <span className="text-zinc-200 font-semibold">{defaultTimezone}</span>
+            <span className="text-foreground font-semibold">{defaultTimezone}</span>
           </div>
         </div>
 
         {/* Right Column: Time Slots & Confirmation */}
-        <div className="lg:col-span-5 p-6 sm:p-10 bg-zinc-950 flex flex-col justify-between">
+        <div className="lg:col-span-5 p-6 sm:p-10 bg-card-muted/30 flex flex-col justify-between">
           <form onSubmit={handleConfirm} className="flex flex-col h-full justify-between">
             <div>
               {/* Active Date Header */}
-              <div className="flex items-center justify-between pb-4 border-b border-zinc-800/80">
+              <div className="flex items-center justify-between pb-4 border-b border-border">
                 {loading ? (
-                  <div className="h-5 w-32 bg-zinc-800/60 rounded-md animate-pulse" />
+                  <div className="h-5 w-32 bg-muted rounded-md animate-pulse" />
                 ) : (
-                  <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-zinc-200">
+                  <span className="text-xs sm:text-sm font-extrabold uppercase tracking-wider text-foreground">
                     {formattedSelectedDate || 'SELECT A DATE'}
                   </span>
                 )}
 
                 {loading ? (
-                  <div className="h-4 w-20 bg-zinc-800/60 rounded-md animate-pulse" />
+                  <div className="h-4 w-20 bg-muted rounded-md animate-pulse" />
                 ) : (
-                  <span className="text-xs font-semibold text-zinc-400">
+                  <span className="text-xs font-semibold text-muted-foreground">
                     {currentDaySlots.length} open slots
                   </span>
                 )}
               </div>
 
-              {/* Slots Grid with Custom Dark Scrollbar */}
+              {/* Slots Grid */}
               {loading ? (
                 <div className="grid grid-cols-2 gap-2.5 mt-4">
                   {Array.from({ length: 6 }).map((_, i) => (
                     <div
                       key={`skel-slot-${i}`}
-                      className="h-10 rounded-xl bg-zinc-900 border border-zinc-800/60 animate-pulse"
+                      className="h-10 rounded-xl bg-muted border border-border animate-pulse"
                     />
                   ))}
                 </div>
               ) : currentDaySlots.length === 0 ? (
-                <div className="py-14 text-center text-xs text-zinc-500">
+                <div className="py-14 text-center text-xs text-muted-foreground">
                   No open slots for this date. Please select another highlighted day.
                 </div>
               ) : (
@@ -360,8 +360,8 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
                         onClick={() => setSelectedSlot(slot)}
                         className={`py-2.5 px-3 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 cursor-pointer text-center ${
                           isSelected
-                            ? 'bg-[#aeff00] text-black font-extrabold shadow-[0_0_15px_rgba(174,255,0,0.35)]'
-                            : 'bg-zinc-900/70 border border-zinc-800 text-zinc-200 hover:bg-zinc-800 hover:text-white'
+                            ? 'bg-brand-neon text-black font-extrabold shadow-[0_0_15px_rgba(174,255,0,0.35)]'
+                            : 'bg-card border border-border text-foreground hover:bg-muted'
                         }`}
                       >
                         {slot.time}
@@ -373,11 +373,11 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
             </div>
 
             {/* Direct Inputs & Primary Button */}
-            <div className="mt-6 pt-5 border-t border-zinc-800/80 space-y-3">
+            <div className="mt-6 pt-5 border-t border-border space-y-3">
               <div>
                 <label
                   htmlFor="client-name"
-                  className="block text-xs font-semibold text-zinc-300 mb-1.5"
+                  className="block text-xs font-semibold text-foreground mb-1.5"
                 >
                   Your Name
                 </label>
@@ -387,16 +387,16 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Alex Rivers"
-                  className="w-full rounded-xl bg-zinc-900/90 border border-zinc-800 px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#aeff00] transition-colors"
+                  className="w-full rounded-xl bg-card border border-border px-3.5 py-2.5 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-brand-neon transition-colors"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="client-email"
-                  className="block text-xs font-semibold text-zinc-300 mb-1.5"
+                  className="block text-xs font-semibold text-foreground mb-1.5"
                 >
-                  Work Email <span className="text-[#aeff00]">*</span>
+                  Work Email <span className="text-brand-neon-text dark:text-brand-neon">*</span>
                 </label>
                 <input
                   id="client-email"
@@ -405,12 +405,12 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="founder@company.com"
-                  className="w-full rounded-xl bg-zinc-900/90 border border-zinc-800 px-3.5 py-2.5 text-xs sm:text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#aeff00] transition-colors"
+                  className="w-full rounded-xl bg-card border border-border px-3.5 py-2.5 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:border-brand-neon transition-colors"
                 />
               </div>
 
               {errorMsg && (
-                <p className="text-xs text-red-400 font-semibold">{errorMsg}</p>
+                <p className="text-xs text-red-500 font-semibold">{errorMsg}</p>
               )}
 
               {/* Official Primary Button */}

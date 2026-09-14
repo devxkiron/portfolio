@@ -75,25 +75,25 @@ export const FooterSection: React.FC = () => {
   return (
     <footer
       ref={footerRef}
-      className="w-full bg-black text-white border-t border-zinc-800/80 pt-14 pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="w-full bg-card-muted/60 text-foreground border-t border-border pt-14 pb-10 px-4 sm:px-6 lg:px-8 overflow-hidden transition-colors duration-200"
     >
       <div className="mx-auto max-w-7xl">
         {/* Top Branding & Call to Action Bar */}
         <div
           ref={topBarRef}
-          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 pb-10 border-b border-zinc-800/80"
+          className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 pb-10 border-b border-border"
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#aeff00] text-black font-extrabold text-sm shadow-[0_0_12px_rgba(174,255,0,0.3)]">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-neon text-black font-extrabold text-sm shadow-[0_0_12px_rgba(174,255,0,0.3)]">
                 G
               </div>
-              <span className="text-lg sm:text-xl font-bold tracking-tight text-white">
+              <span className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
                 {brandName}
               </span>
             </div>
-            <span className="hidden sm:inline text-zinc-700">|</span>
-            <p className="text-xs text-zinc-400 font-normal max-w-md">
+            <span className="hidden sm:inline text-border">|</span>
+            <p className="text-xs text-muted-foreground font-normal max-w-md">
               {brandTagline}
             </p>
           </div>
@@ -101,7 +101,7 @@ export const FooterSection: React.FC = () => {
           <div>
             <a
               href={ctaHref}
-              className="inline-flex items-center justify-center rounded-lg border border-[#aeff00] bg-transparent px-4 py-2 text-xs font-semibold text-[#aeff00] hover:bg-[#aeff00] hover:text-black transition-colors duration-150"
+              className="inline-flex items-center justify-center rounded-lg border border-brand-neon bg-transparent px-4 py-2 text-xs font-semibold text-brand-neon-text dark:text-brand-neon hover:bg-brand-neon hover:text-black transition-colors duration-150"
             >
               {ctaText}
             </a>
@@ -116,7 +116,7 @@ export const FooterSection: React.FC = () => {
           {/* Columns 1-4 */}
           {columns.map((col) => (
             <div key={col.title} className="flex flex-col">
-              <h3 className="text-[11px] font-bold tracking-wider text-[#aeff00] uppercase mb-3.5">
+              <h3 className="text-[11px] font-bold tracking-wider text-brand-neon-text dark:text-brand-neon uppercase mb-3.5">
                 {col.title}
               </h3>
               <ul className="space-y-2">
@@ -124,7 +124,7 @@ export const FooterSection: React.FC = () => {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-xs text-zinc-400 hover:text-white transition-colors duration-150"
+                      className="text-xs text-muted-foreground hover:text-foreground transition-colors duration-150"
                     >
                       {link.label}
                     </a>
@@ -136,23 +136,23 @@ export const FooterSection: React.FC = () => {
 
           {/* Column 5: Contact */}
           <div className="flex flex-col col-span-2 sm:col-span-1">
-            <h3 className="text-[11px] font-bold tracking-wider text-[#aeff00] uppercase mb-3.5">
+            <h3 className="text-[11px] font-bold tracking-wider text-brand-neon-text dark:text-brand-neon uppercase mb-3.5">
               CONTACT
             </h3>
             <div className="space-y-2.5 text-xs">
               <a
                 href={`mailto:${contact.email}`}
-                className="font-semibold text-white hover:text-[#aeff00] transition-colors block font-mono"
+                className="font-semibold text-foreground hover:text-brand-neon-text dark:hover:text-brand-neon transition-colors block font-mono"
               >
                 {contact.email}
               </a>
-              <p className="text-zinc-400 font-normal">{contact.location}</p>
+              <p className="text-muted-foreground font-normal">{contact.location}</p>
               <div className="pt-1 flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#aeff00] opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#aeff00]" />
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-neon opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-neon" />
                 </span>
-                <span className="text-xs font-medium text-[#aeff00]">
+                <span className="text-xs font-medium text-brand-neon-text dark:text-brand-neon">
                   {contact.availabilityStatus}
                 </span>
               </div>
@@ -161,14 +161,14 @@ export const FooterSection: React.FC = () => {
         </div>
 
         {/* Bottom Bar: Copyright & Legal */}
-        <div className="pt-6 border-t border-zinc-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
+        <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-subtle-foreground">
           <p>{copyrightText}</p>
           <div className="flex items-center gap-5">
             {legalLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
-                className="hover:text-zinc-300 transition-colors"
+                className="hover:text-foreground transition-colors"
               >
                 {link.label}
               </a>

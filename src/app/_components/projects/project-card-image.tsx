@@ -21,7 +21,7 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`group relative aspect-[16/10] w-full overflow-hidden rounded-sm border border-zinc-800 bg-zinc-950 will-change-transform sm:aspect-[16/10] ${className}`}
+      className={`group relative aspect-[16/10] w-full overflow-hidden rounded-md border border-border bg-card shadow-sm will-change-transform sm:aspect-[16/10] ${className}`}
     >
       {/* Parallax & Scaling Image Container */}
       <div
@@ -38,8 +38,8 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({
         />
       </div>
 
-      {/* Subtle border highlight on hover without heavy shadow */}
-      <div className="pointer-events-none absolute inset-0 rounded-sm border border-white/5 transition-colors duration-300 group-hover:border-white/15" />
+      {/* Subtle border highlight on hover */}
+      <div className="pointer-events-none absolute inset-0 rounded-md border border-border/40 transition-colors duration-300 group-hover:border-border" />
     </div>
   );
 };

@@ -52,7 +52,7 @@ export const PineconeIcon: React.FC<{ size?: number; className?: string; color?:
     xmlns="http://www.w3.org/2000/svg"
     className={className}
   >
-    <rect width="24" height="24" rx="5" fill="#0c100d" />
+    <rect width="24" height="24" rx="5" className="fill-muted dark:fill-[#0c100d] stroke-border" />
     <circle cx="12" cy="6" r="2.2" fill={color} />
     <circle cx="7.5" cy="11.5" r="2.2" fill={color} />
     <circle cx="16.5" cy="11.5" r="2.2" fill={color} />

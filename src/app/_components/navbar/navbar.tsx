@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { navbarConfig } from './navbar.config';
 
 export const Navbar: React.FC = () => {
@@ -36,14 +37,14 @@ export const Navbar: React.FC = () => {
   }, [links]);
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 w-full border-b border-zinc-800/80 bg-black/90 backdrop-blur-md">
+    <header className="fixed top-0 inset-x-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur-md transition-colors duration-200">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo */}
         <a
           href={brand.href}
           className="flex items-center gap-2 transition-colors hover:text-brand-neon"
         >
-          <span className="font-mono text-base font-bold tracking-wider uppercase text-white">
+          <span className="font-mono text-base font-bold tracking-wider uppercase text-foreground">
             {brand.name}
           </span>
         </a>
@@ -59,7 +60,7 @@ export const Navbar: React.FC = () => {
                 className={`text-sm font-medium transition-colors ${
                   isActive
                     ? 'text-brand-neon font-semibold'
-                    : 'text-zinc-400 hover:text-white'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {link.label}
@@ -68,15 +69,17 @@ export const Navbar: React.FC = () => {
           })}
         </nav>
 
-        {/* Right Desktop CTA */}
-        <div className="hidden md:flex items-center">
+        {/* Right Desktop CTA + Theme Toggle */}
+        <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
           <Button href={cta.href} variant="neon" size="sm" className="!rounded-md">
             {cta.text}
           </Button>
         </div>
 
-        {/* Mobile Hamburger Button */}
+        {/* Mobile Actions: Theme Toggle, CTA & Hamburger Button */}
         <div className="flex md:hidden items-center gap-2">
+          <ThemeToggle />
           <Button
             href={cta.href}
             variant="neon"
@@ -90,7 +93,7 @@ export const Navbar: React.FC = () => {
             type="button"
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label="Toggle navigation menu"
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-zinc-800 bg-zinc-900 text-zinc-300 transition-colors hover:border-zinc-700 hover:text-white"
+            className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-foreground transition-colors hover:border-border-subtle hover:bg-muted"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -99,7 +102,7 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Dropdown Drawer */}
       {mobileMenuOpen && (
-        <div className="border-t border-zinc-800 bg-black/95 px-4 py-4 backdrop-blur-xl md:hidden">
+        <div className="border-t border-border bg-background/95 px-4 py-4 backdrop-blur-xl md:hidden">
           <div className="flex flex-col space-y-2">
             {links.map((link) => {
               const isActive = activeSection === link.href.replace('#', '');
@@ -110,8 +113,8 @@ export const Navbar: React.FC = () => {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
                     isActive
-                      ? 'bg-zinc-900 text-brand-neon font-semibold'
-                      : 'text-zinc-300 hover:bg-zinc-900 hover:text-white'
+                      ? 'bg-muted text-brand-neon font-semibold'
+                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   }`}
                 >
                   {link.label}

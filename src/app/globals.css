@@ -1,35 +1,131 @@
 @import "tailwindcss";
 
-:root {
-  /* Light Theme - Based on the off-white/cream UI */
-  --background: #fdfcf8; 
-  --foreground: #0d120f; 
+@variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
 
-  /* Brand Colors from the image */
-  --brand-neon: #aeff00; /* Bright neon green used in highlights */
-  --brand-dark: #101612; /* Deep dark green/black used in cards and footer */
-  --brand-muted: #f0f0ea; /* Slightly darker cream for secondary areas/borders */
+:root {
+  /* Light Theme (Default) - Refined editorial off-white/cream */
+  --background: #fdfcf8;
+  --foreground: #0d1310;
+
+  --card: #ffffff;
+  --card-foreground: #0d1310;
+  --card-muted: #f5f4ed;
+
+  --popover: #ffffff;
+  --popover-foreground: #0d1310;
+
+  --muted: #f0efe8;
+  --muted-foreground: #5a645d;
+  --subtle-foreground: #848f87;
+
+  --border: #e3e2d8;
+  --border-subtle: #eeede4;
+
+  /* Brand Accents */
+  --brand-neon: #aeff00;
+  --brand-neon-text: #244900;
+  --brand-dark: #101612;
+  --brand-muted: #f0f0ea;
+
+  /* Effects */
+  --glow-color: rgba(92, 246, 41, 0.12);
+  --shadow-color: rgba(0, 0, 0, 0.06);
+
+  /* Scrollbar */
+  --scrollbar-thumb: #d4d3c9;
+  --scrollbar-thumb-hover: #b8b7ab;
+}
+
+[data-theme="dark"],
+.dark {
+  /* Dark Theme - Sleek carbon & obsidian with neon accents */
+  --background: #090d0b;
+  --foreground: #fdfcf8;
+
+  --card: #121815;
+  --card-foreground: #fdfcf8;
+  --card-muted: #17201b;
+
+  --popover: #121815;
+  --popover-foreground: #fdfcf8;
+
+  --muted: #1a231e;
+  --muted-foreground: #9ca79f;
+  --subtle-foreground: #6c776f;
+
+  --border: #232f27;
+  --border-subtle: #19221c;
+
+  /* Brand Accents */
+  --brand-neon: #aeff00;
+  --brand-neon-text: #aeff00;
+  --brand-dark: #101612;
+  --brand-muted: #1a231e;
+
+  /* Effects */
+  --glow-color: rgba(92, 246, 41, 0.05);
+  --shadow-color: rgba(0, 0, 0, 0.4);
+
+  /* Scrollbar */
+  --scrollbar-thumb: #232f27;
+  --scrollbar-thumb-hover: #334438;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
-  /* Custom Tailwind Color Classes (e.g., bg-brand-neon, text-brand-dark) */
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-card-muted: var(--card-muted);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+
   --color-brand-neon: var(--brand-neon);
+  --color-brand-neon-text: var(--brand-neon-text);
   --color-brand-dark: var(--brand-dark);
   --color-brand-muted: var(--brand-muted);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --animate-marquee-left: marquee-left 35s linear infinite;
+  --animate-marquee-right: marquee-right 35s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark Theme - Reverses the colors, using the deep dark footer color as background */
-    --background: #101612;
-    --foreground: #fdfcf8;
+/* Continuous smooth marquee animations */
+@keyframes marquee-left {
+  from {
+    transform: translateX(0%);
   }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+.animate-marquee-left {
+  animation: marquee-left 35s linear infinite;
+}
+
+.animate-marquee-right {
+  animation: marquee-right 35s linear infinite;
 }
 
 html {
@@ -38,33 +134,35 @@ html {
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-  /* Optional: image e text gulo ektu smooth and crisp lagche */
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Custom sleek dark scrollbar */
-.custom-dark-scrollbar {
+/* Custom sleek adaptive scrollbar */
+.custom-dark-scrollbar,
+body::-webkit-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #27272a transparent;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
 }
 
-.custom-dark-scrollbar::-webkit-scrollbar {
-  width: 5px;
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
 
-.custom-dark-scrollbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.custom-dark-scrollbar::-webkit-scrollbar-thumb {
-  background: #27272a;
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
   border-radius: 9999px;
 }
 
-.custom-dark-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
 }

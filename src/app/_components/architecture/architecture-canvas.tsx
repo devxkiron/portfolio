@@ -42,8 +42,8 @@ const CanvasInner: React.FC<ArchitectureCanvasProps> = ({ activeTab }) => {
   }, [activeTab, setNodes, setEdges, fitView]);
 
   return (
-    <div className="relative flex h-[380px] sm:h-[430px] lg:h-[470px] w-full flex-col overflow-hidden rounded-xl border border-zinc-800 bg-[#090d0a]">
-      {/* Dynamic Keyframes for silky smooth edge flow with comfortable, low-opacity strokes */}
+    <div className="relative flex h-[380px] sm:h-[430px] lg:h-[470px] w-full flex-col overflow-hidden rounded-2xl border border-[#b8d4ab] dark:border-border bg-[#f2f7ec] dark:bg-[#0c130e] shadow-[0_16px_36px_-10px_rgba(36,73,0,0.08),0_2px_6px_rgba(0,0,0,0.03)] dark:shadow-none transition-colors duration-200">
+      {/* Dynamic Keyframes for silky smooth edge flow with subtle, low-opacity strokes */}
       <style>{`
         @keyframes smoothFlow {
           from {
@@ -56,21 +56,37 @@ const CanvasInner: React.FC<ArchitectureCanvasProps> = ({ activeTab }) => {
         .smooth-flow-edge path,
         .react-flow__edge.smooth-flow-edge path,
         .smooth-flow-edge path.react-flow__edge-path {
-          stroke: rgba(174, 255, 0, 0.40) !important;
-          stroke-width: 1.5px !important;
-          stroke-dasharray: 6 6 !important;
+          stroke: rgba(30, 70, 24, 0.35) !important;
+          stroke-width: 1.2px !important;
+          stroke-dasharray: 4 4 !important;
           animation: smoothFlow 1.2s linear infinite !important;
           will-change: stroke-dashoffset;
+        }
+        .dark .smooth-flow-edge path,
+        .dark .react-flow__edge.smooth-flow-edge path,
+        .dark .smooth-flow-edge path.react-flow__edge-path {
+          stroke: rgba(174, 255, 0, 0.35) !important;
+          stroke-width: 1.2px !important;
+        }
+        .react-flow__background-pattern.dots,
+        .react-flow__background circle,
+        .react-flow__background pattern circle {
+          fill: rgba(28, 64, 22, 0.65) !important;
+        }
+        .dark .react-flow__background-pattern.dots,
+        .dark .react-flow__background circle,
+        .dark .react-flow__background pattern circle {
+          fill: rgba(174, 255, 0, 0.45) !important;
         }
       `}</style>
 
       {/* Top Header Bar inside Canvas */}
-      <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 border-b border-zinc-800 bg-[#0d140f]/15 px-4 py-3 backdrop-blur-sm sm:px-6">
+      <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 border-b border-[#b8d4ab] dark:border-border bg-[#e2edd7] dark:bg-card/70 px-4 py-3 backdrop-blur-sm sm:px-6">
         <div className="flex items-center gap-2 font-mono text-xs sm:text-sm">
-          <span className="font-bold text-zinc-300">Live Architecture:</span>
-          <span className="font-bold text-[#aeff00]/40">{activeTab.headerTitle}</span>
+          <span className="font-bold text-zinc-950 dark:text-foreground">Live Architecture:</span>
+          <span className="font-bold text-emerald-900 dark:text-brand-neon">{activeTab.headerTitle}</span>
         </div>
-        <p className="font-mono text-[11px] text-zinc-400/80 hidden sm:block">
+        <p className="font-mono text-[11px] text-zinc-700 dark:text-muted-foreground hidden sm:block">
           Drag nodes or zoom canvas to inspect pipeline connections
         </p>
       </div>
@@ -97,15 +113,16 @@ const CanvasInner: React.FC<ArchitectureCanvasProps> = ({ activeTab }) => {
         >
           <Background
             variant={BackgroundVariant.Dots}
-            gap={22}
-            size={1}
-            color="rgba(174, 255, 0, 0.14)"
+            gap={24}
+            size={3.5}
+            color="rgba(28, 64, 22, 0.65)"
+            className="text-[#1c4016] dark:text-brand-neon"
           />
 
           {/* Styled Controls in bottom-left */}
           <Controls
             showInteractive={false}
-            className="!left-4 !bottom-4 !border !border-zinc-800 !bg-[#101912] !rounded-lg !overflow-hidden [&>button]:!bg-[#101912] [&>button]:!border-zinc-800 [&>button]:!fill-zinc-300 [&>button:hover]:!fill-[#aeff00]"
+            className="!left-4 !bottom-4 !border !border-[#b8d4ab] dark:!border-border !bg-white dark:!bg-card !rounded-lg !overflow-hidden shadow-xs [&>button]:!bg-white dark:[&>button]:!bg-card [&>button]:!border-[#b8d4ab] dark:[&>button]:!border-border [&>button]:!fill-zinc-800 dark:[&>button]:!fill-foreground [&>button:hover]:!fill-emerald-800 dark:[&>button:hover]:!fill-brand-neon"
           />
         </ReactFlow>
       </div>

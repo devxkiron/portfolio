@@ -128,7 +128,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
     <section
       ref={sectionRef}
       id={mergedSectionId}
-      className={`relative w-full bg-black text-white py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-zinc-800/80 scroll-mt-20 overflow-hidden ${className}`.trim()}
+      className={`relative w-full bg-background text-foreground py-20 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-border scroll-mt-20 overflow-hidden transition-colors duration-200 ${className}`.trim()}
     >
       {/* Subtle ambient glow */}
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(92,246,41,0.03),transparent_70%)]" />
@@ -141,7 +141,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             {badge && (
               <div className="faq-left-anim mb-4">
                 {typeof badge === 'string' ? (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-zinc-800/80 text-zinc-300 border border-zinc-700/60">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-card text-muted-foreground border border-border">
                     {badge}
                   </span>
                 ) : (
@@ -154,7 +154,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
             {title ? (
               typeof title === 'string' ? (
                 <h2
-                  className={`faq-left-anim text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.12] ${titleClassName}`.trim()}
+                  className={`faq-left-anim text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.12] ${titleClassName}`.trim()}
                 >
                   {title}
                 </h2>
@@ -163,7 +163,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               )
             ) : (
               <h2
-                className={`faq-left-anim text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-[1.12] ${titleClassName}`.trim()}
+                className={`faq-left-anim text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-[1.12] ${titleClassName}`.trim()}
               >
                 {activeTitleLines.map((line, idx) => (
                   <React.Fragment key={idx}>
@@ -176,7 +176,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
 
             {/* Optional Subtitle */}
             {subtitle && (
-              <div className="faq-left-anim mt-4 text-sm sm:text-base text-zinc-400 leading-relaxed max-w-sm">
+              <div className="faq-left-anim mt-4 text-sm sm:text-base text-muted-foreground leading-relaxed max-w-sm">
                 {typeof subtitle === 'string' ? <p>{subtitle}</p> : subtitle}
               </div>
             )}
@@ -186,11 +186,11 @@ export const FaqSection: React.FC<FaqSectionProps> = ({
               contactNode ? (
                 <div className="faq-left-anim mt-6">{contactNode}</div>
               ) : activeContactEmail ? (
-                <p className="faq-left-anim mt-6 text-xs sm:text-sm text-zinc-400 font-normal leading-relaxed max-w-sm">
+                <p className="faq-left-anim mt-6 text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed max-w-sm">
                   {activeContactPrompt}{' '}
                   <a
                     href={`mailto:${activeContactEmail}`}
-                    className="font-semibold text-white underline decoration-zinc-600 underline-offset-4 hover:text-[#aeff00] transition-colors"
+                    className="font-semibold text-foreground underline decoration-border underline-offset-4 hover:text-brand-neon-text dark:hover:text-brand-neon transition-colors"
                   >
                     {activeContactEmail}
                   </a>

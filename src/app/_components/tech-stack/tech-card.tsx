@@ -11,12 +11,27 @@ interface TechCardProps {
   isHighlighted?: boolean;
 }
 
+// Determines if a hex color is white, near-white, or pale cream
+const isLightColor = (hex: string): boolean => {
+  if (!hex || !hex.startsWith('#')) return false;
+  const cleanHex = hex.replace('#', '');
+  if (cleanHex.length === 6) {
+    const r = parseInt(cleanHex.substring(0, 2), 16);
+    const g = parseInt(cleanHex.substring(2, 4), 16);
+    const b = parseInt(cleanHex.substring(4, 6), 16);
+    const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+    return brightness > 215;
+  }
+  return false;
+};
+
 export const TechCard: React.FC<TechCardProps> = ({
   item,
   isDimmed = false,
   isHighlighted = false,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const isLight = isLightColor(item.brandColor);
 
   return (
     <HoverCard openDelay={80} closeDelay={120}>
@@ -33,18 +48,24 @@ export const TechCard: React.FC<TechCardProps> = ({
           style={{
             transform: isHovered ? 'scale(1.22) translateY(-2px)' : 'scale(1)',
             filter: isHovered
-              ? `drop-shadow(0 0 12px ${item.brandColor}bb)`
+              ? isLight
+                ? 'drop-shadow(0 0 10px rgba(0,0,0,0.22))'
+                : `drop-shadow(0 0 12px ${item.brandColor}bb)`
               : isHighlighted
-              ? `drop-shadow(0 0 8px #5cf629bb)`
+              ? 'drop-shadow(0 0 8px #5cf629bb)'
               : 'none',
           }}
         >
-          {/* Bare Icon with authentic brand color */}
-          <div className="flex items-center justify-center transition-transform duration-300">
+          {/* Bare Icon with theme-adaptive contrast for light/white icons */}
+          <div
+            className={`flex items-center justify-center transition-transform duration-300 ${
+              isLight ? 'text-foreground dark:text-white' : ''
+            }`}
+          >
             <TechIconRenderer
               iconName={item.iconName}
               size={36}
-              color={item.brandColor}
+              color={isLight ? 'currentColor' : item.brandColor}
             />
           </div>
         </button>
@@ -54,41 +75,58 @@ export const TechCard: React.FC<TechCardProps> = ({
       <HoverCardContent
         side="top"
         sideOffset={14}
-        className="w-64 border border-zinc-700/60 bg-[#0c100d]/95 p-3.5 backdrop-blur-xl shadow-2xl ring-1 ring-white/10"
+        className="w-64 border border-border bg-card p-3.5 backdrop-blur-xl shadow-xl ring-1 ring-border"
       >
         <div className="flex items-start gap-3">
           <div
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10"
-            style={{
-              backgroundColor: `${item.brandColor}18`,
-              borderColor: `${item.brandColor}40`,
-            }}
+            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${
+              isLight
+                ? 'border-border bg-muted text-foreground'
+                : ''
+            }`}
+            style={
+              !isLight
+                ? {
+                    backgroundColor: `${item.brandColor}18`,
+                    borderColor: `${item.brandColor}40`,
+                  }
+                : undefined
+            }
           >
             <TechIconRenderer
               iconName={item.iconName}
               size={22}
-              color={item.brandColor}
+              color={isLight ? 'currentColor' : item.brandColor}
+              className={isLight ? 'text-foreground' : ''}
             />
           </div>
 
           <div className="flex flex-col flex-1 min-w-0">
             <div className="flex items-center justify-between gap-1">
-              <span className="font-bold text-white text-sm tracking-tight truncate">
+              <span className="font-bold text-foreground text-sm tracking-tight truncate">
                 {item.name}
               </span>
               <span
                 className="shrink-0 text-[10px] uppercase font-semibold tracking-wider px-1.5 py-0.5 rounded"
-                style={{
-                  color: item.brandColor === '#FFFFFF' ? '#A1A1AA' : item.brandColor,
-                  backgroundColor: `${item.brandColor}15`,
-                  border: `1px solid ${item.brandColor}30`,
-                }}
+                style={
+                  isLight
+                    ? {
+                        color: 'var(--foreground)',
+                        backgroundColor: 'var(--muted)',
+                        border: '1px solid var(--border)',
+                      }
+                    : {
+                        color: item.brandColor,
+                        backgroundColor: `${item.brandColor}15`,
+                        border: `1px solid ${item.brandColor}30`,
+                      }
+                }
               >
                 {item.categoryLabel}
               </span>
             </div>
 
-            <p className="mt-1 text-[11px] leading-relaxed text-zinc-400 font-normal">
+            <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground font-normal">
               {item.description}
             </p>
           </div>

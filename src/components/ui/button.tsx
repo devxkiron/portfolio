@@ -21,13 +21,13 @@ export type ButtonProps = ButtonBaseProps &
 const variantStyles: Record<ButtonVariant, string> = {
   neon: 'bg-brand-neon text-black font-bold shadow-[0_0_15px_rgba(174,255,0,0.15)] hover:bg-[#b8ff1a] hover:shadow-[0_0_24px_rgba(174,255,0,0.3)] border border-transparent',
   secondary:
-    'border border-zinc-800 bg-zinc-900/80 text-white font-semibold backdrop-blur-sm hover:border-zinc-700 hover:bg-zinc-800 hover:text-white',
+    'border border-border bg-card/90 text-foreground font-semibold backdrop-blur-sm hover:border-border hover:bg-muted hover:text-foreground',
   white:
-    'bg-white text-zinc-950 font-semibold shadow-lg shadow-white/10 hover:bg-zinc-200 hover:shadow-white/20 border border-transparent',
+    'bg-foreground text-background font-semibold shadow-md hover:opacity-90 border border-transparent',
   outline:
-    'border border-zinc-700/80 bg-transparent text-zinc-200 font-semibold hover:border-zinc-500 hover:bg-zinc-900 hover:text-white',
+    'border border-border bg-transparent text-foreground font-semibold hover:border-foreground/40 hover:bg-muted hover:text-foreground',
   ghost:
-    'bg-transparent text-zinc-400 font-medium hover:text-white hover:bg-zinc-900/60 border border-transparent',
+    'bg-transparent text-muted-foreground font-medium hover:text-foreground hover:bg-muted/80 border border-transparent',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {

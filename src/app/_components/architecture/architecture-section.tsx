@@ -25,7 +25,7 @@ export const ArchitectureSection: React.FC = () => {
   return (
     <section
       id="architecture"
-      className="relative w-full bg-black px-4 pt-16 pb-16 text-white sm:px-6 sm:pt-20 sm:pb-20 lg:px-8 lg:pt-20 lg:pb-24 scroll-mt-20"
+      className="relative w-full bg-background px-4 pt-16 pb-16 text-foreground sm:px-6 sm:pt-20 sm:pb-20 lg:px-8 lg:pt-20 lg:pb-24 scroll-mt-20 transition-colors duration-200"
     >
       <div className="mx-auto max-w-7xl flex flex-col items-center">
         {/* Reusable Section Header */}
@@ -46,8 +46,8 @@ export const ArchitectureSection: React.FC = () => {
                 onClick={() => setActiveTabId(tab.id)}
                 className={`rounded-lg px-4 py-2 text-xs sm:text-sm font-semibold transition-colors cursor-pointer ${
                   isActive
-                    ? 'border border-brand-neon/60 bg-zinc-900 text-brand-neon'
-                    : 'border border-zinc-800 bg-zinc-950 text-zinc-400 hover:border-zinc-700 hover:text-white'
+                    ? 'border border-brand-neon bg-brand-neon text-black shadow-sm dark:bg-card dark:text-brand-neon'
+                    : 'border border-[#b8d4ab] dark:border-border bg-[#f2f7ec] dark:bg-card/60 text-zinc-900 dark:text-muted-foreground hover:border-[#8ec279] hover:bg-[#e9f2e1] dark:hover:bg-card/80 hover:text-foreground'
                 }`}
               >
                 {tab.label}

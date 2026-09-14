@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import { clientStoriesConfig } from './client-stories.config';
 import { CityFilterBar } from './city-filter-bar';
 import { GlobeCanvas } from './globe-canvas';
@@ -28,7 +28,38 @@ export const ClientStoriesSection: React.FC = () => {
     beaconActiveColor,
   } = clientStoriesConfig;
 
-  // Derive unique cities list directly from client reviews/stories
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    const checkTheme = () => {
+      const isDark =
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.documentElement.classList.contains('dark');
+      setTheme(isDark ? 'dark' : 'light');
+    };
+
+    checkTheme();
+
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme', 'class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const isLight = theme === 'light';
+
+  // In dark mode: keep the exact original configuration (zero changes to dark mode)
+  // In light mode: use colors consistent with the light theme palette
+  const activeGlobeBgColor = isLight ? '#eae8df' : globeBgColor;
+  const activeDotsColor = isLight ? '#168028' : dotsColor;
+  const activeArcColor = isLight ? '#168028' : arcColor;
+  const activeArcOpacity = isLight ? 0.55 : arcOpacity;
+  const activeBeaconColor = isLight ? '#168028' : beaconColor;
+  const activeBeaconActiveColor = isLight ? '#0d1310' : beaconActiveColor;
+
   const cities: City[] = useMemo(() => {
     const map = new Map<string, City>();
     stories.forEach((s) => {
@@ -46,10 +77,9 @@ export const ClientStoriesSection: React.FC = () => {
     return Array.from(map.values());
   }, [stories]);
 
-  // Selected city & active story state (defaulting to San Francisco)
   const [selectedCityId, setSelectedCityId] = useState<string>('sf');
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
-  const [zoomLevel, setZoomLevel] = useState<number>(3); // 1 to 5
+  const [zoomLevel, setZoomLevel] = useState<number>(3);
 
   const selectedCity = useMemo(
     () => cities.find((c) => c.id === selectedCityId) || cities[0],
@@ -63,12 +93,10 @@ export const ClientStoriesSection: React.FC = () => {
 
   const activeStory = stories[activeStoryIndex] || stories[0];
 
-  // City selection handler
   const handleSelectCity = useCallback((city: City) => {
     setSelectedCityId(city.id);
   }, []);
 
-  // Previous / Next testimonial navigation
   const handlePrevStory = useCallback(() => {
     const nextIdx = (activeStoryIndex - 1 + stories.length) % stories.length;
     const nextStory = stories[nextIdx];
@@ -81,7 +109,6 @@ export const ClientStoriesSection: React.FC = () => {
     setSelectedCityId(nextStory.cityId);
   }, [activeStoryIndex, stories]);
 
-  // Camera toolbar handlers
   const handleToggleAutoRotate = useCallback(() => {
     setAutoRotate((prev) => !prev);
   }, []);
@@ -103,9 +130,9 @@ export const ClientStoriesSection: React.FC = () => {
   return (
     <section
       id="stories"
-      className="relative w-full h-[700px] sm:h-[760px] lg:h-[840px] bg-black text-white scroll-mt-20 overflow-hidden"
+      className="relative w-full h-[700px] sm:h-[760px] lg:h-[840px] bg-background text-foreground scroll-mt-20 overflow-hidden transition-colors duration-200"
     >
-      {/* Full-Width 3D Interactive Dotted Globe (Shifted 22px lower) */}
+      {/* Full-Width 3D Interactive Dotted Globe */}
       <div className="absolute inset-0 top-[22px] h-full w-full">
         <GlobeCanvas
           cities={cities}
@@ -114,39 +141,38 @@ export const ClientStoriesSection: React.FC = () => {
           selectedCity={selectedCity}
           autoRotate={autoRotate}
           zoomLevel={zoomLevel}
-          dotsColor={dotsColor}
+          dotsColor={activeDotsColor}
           dotDensity={dotDensity}
           globeRadius={globeRadius}
           glowRadius={glowRadius}
           glowColor={glowColor}
-          globeBgColor={globeBgColor}
-          arcColor={arcColor}
+          globeBgColor={activeGlobeBgColor}
+          isLight={isLight}
+          arcColor={activeArcColor}
           arcWidth={arcWidth}
           arcHeight={arcHeight}
-          arcOpacity={arcOpacity}
+          arcOpacity={activeArcOpacity}
           beaconRadius={beaconRadius}
           beaconGlowRadius={beaconGlowRadius}
-          beaconColor={beaconColor}
-          beaconActiveColor={beaconActiveColor}
+          beaconColor={activeBeaconColor}
+          beaconActiveColor={activeBeaconActiveColor}
           onSelectCity={handleSelectCity}
         />
       </div>
 
-      {/* Subtle Ambient Radial Glow (Soft & reduced) */}
-      <div className="pointer-events-none absolute inset-0 top-[22px] bg-[radial-gradient(circle_at_50%_48%,rgba(174,255,0,0.02),transparent_65%)]" />
+      {/* Subtle Ambient Radial Glow */}
+      <div className="pointer-events-none absolute inset-0 top-[22px] bg-[radial-gradient(circle_at_50%_48%,rgba(174,255,0,0.03),transparent_65%)]" />
 
-      {/* Content Layer (Constrained to max-w-7xl, No Border) */}
+      {/* Content Layer */}
       <div className="relative mx-auto flex h-full max-w-7xl flex-col justify-between px-4 py-6 sm:px-6 sm:py-8 lg:px-8 pointer-events-none">
-        {/* Top Bar: Stylized Brand Header & City Selector Rows */}
+        {/* Top Bar */}
         <div className="flex flex-col md:flex-row items-start md:items-start justify-between gap-4 pointer-events-none">
-          {/* Stylized CLIENT STORIES Brand Title */}
           <div className="pointer-events-auto select-none pt-1">
-            <h2 className="font-black italic tracking-tighter text-3xl sm:text-4xl lg:text-5xl uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-lime-400 to-[#e2f952] drop-shadow-[0_0_24px_rgba(174,255,0,0.6)]">
+            <h2 className="font-black italic tracking-tighter text-3xl sm:text-4xl lg:text-5xl uppercase text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 via-lime-500 to-[#b8ff1a] drop-shadow-[0_0_24px_rgba(174,255,0,0.3)]">
               CLIENT STORIES
             </h2>
           </div>
 
-          {/* City Selection Pills (Two Rows Aligned to Right) */}
           <div className="pointer-events-auto max-w-full overflow-x-auto pb-1 md:pb-0 scrollbar-none self-end md:self-auto">
             <CityFilterBar
               cities={cities}

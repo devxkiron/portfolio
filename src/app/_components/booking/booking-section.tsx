@@ -80,7 +80,7 @@ export const BookingSection: React.FC = () => {
     <section
       ref={sectionRef}
       id={sectionId}
-      className="relative w-full bg-black py-24 sm:py-32 text-white overflow-hidden scroll-mt-20 border-t border-zinc-800/80"
+      className="relative w-full bg-background py-24 sm:py-32 text-foreground overflow-hidden scroll-mt-20 border-t border-border transition-colors duration-200"
     >
       {/* Anchor alias for #contact */}
       <span id="contact" className="absolute -top-20 pointer-events-none" />

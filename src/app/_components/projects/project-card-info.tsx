@@ -23,23 +23,22 @@ export const ProjectCardInfo: React.FC<ProjectCardInfoProps> = ({
       {/* Background Watermark / Shade Index */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -top-8 -left-2 z-0 select-none font-mono text-7xl font-black tracking-tighter text-brand-neon/15 lg:text-brand-neon/5 sm:-top-10 sm:-left-3 sm:text-8xl lg:-top-12 lg:text-9xl leading-none"
+        className="pointer-events-none absolute -top-8 -left-2 z-0 select-none font-mono text-7xl font-black tracking-tighter text-foreground/10 dark:text-brand-neon/5 sm:-top-10 sm:-left-3 sm:text-8xl lg:-top-12 lg:text-9xl leading-none"
       >
         {project.index}
       </span>
 
       {/* Category */}
       {project.category && (
-        <div className="project-info-item bg-black/30 backdrop-blur-sm relative z-10 flex items-center gap-2">
-
-          <span className="font-mono text-xs font-medium tracking-widest uppercase text-zinc-400">
+        <div className="project-info-item relative z-10 flex items-center gap-2">
+          <span className="font-mono text-xs font-medium tracking-widest uppercase text-muted-foreground">
             {project.category}
           </span>
         </div>
       )}
 
       {/* Project Title */}
-      <h3 className="project-info-item relative z-10 text-2xl font-bold tracking-tight text-white sm:text-3xl lg:text-4xl">
+      <h3 className="project-info-item relative z-10 text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
         <a
           href={project.href || '#'}
           className="group inline-flex items-center gap-2 transition-colors hover:text-brand-neon"
@@ -53,7 +52,7 @@ export const ProjectCardInfo: React.FC<ProjectCardInfoProps> = ({
       </h3>
 
       {/* Project Description */}
-      <p className="project-info-item relative z-10 text-sm leading-relaxed text-zinc-400 sm:text-base">
+      <p className="project-info-item relative z-10 text-sm leading-relaxed text-muted-foreground sm:text-base">
         {project.description}
       </p>
 
@@ -62,7 +61,7 @@ export const ProjectCardInfo: React.FC<ProjectCardInfoProps> = ({
         {project.tags.map((tag) => (
           <span
             key={tag}
-            className="rounded-sm border border-zinc-800 bg-zinc-900/80 px-3 py-1 font-mono text-xs text-zinc-300 transition-colors hover:border-zinc-700"
+            className="rounded-md border border-border bg-card/90 px-3 py-1 font-mono text-xs text-muted-foreground transition-colors hover:border-border-subtle hover:text-foreground"
           >
             {tag}
           </span>

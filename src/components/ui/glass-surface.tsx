@@ -50,12 +50,28 @@ const useDarkMode = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setIsDark(mediaQuery.matches || document.documentElement.classList.contains('dark') || true);
+    const check = () => {
+      const isDarkMode =
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.documentElement.classList.contains('dark');
+      setIsDark(isDarkMode);
+    };
 
-    const handler = (e: MediaQueryListEvent) => setIsDark(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
+    check();
+
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme', 'class'],
+    });
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', check);
+
+    return () => {
+      observer.disconnect();
+      mediaQuery.removeEventListener('change', check);
+    };
   }, []);
 
   return isDark;

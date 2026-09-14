@@ -15,7 +15,7 @@ const HoverCardContent = React.forwardRef<
       ref={ref}
       align={align}
       sideOffset={sideOffset}
-      className={`z-50 w-72 rounded-lg border border-zinc-800 bg-[#121813]/95 p-3.5 text-zinc-100 shadow-2xl backdrop-blur-md outline-none animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 ${className}`}
+      className={`z-50 w-72 rounded-lg border border-border bg-card p-3.5 text-foreground shadow-2xl backdrop-blur-md outline-none animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 ${className}`}
       {...props}
     />
   </HoverCardPrimitive.Portal>

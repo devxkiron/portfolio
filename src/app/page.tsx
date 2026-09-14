@@ -11,7 +11,7 @@ import { FooterSection } from './_components/footer';
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-x-hidden bg-black">
+    <main className="min-h-screen overflow-x-hidden bg-background text-foreground transition-colors duration-200">
       <Navbar />
       <HeroSection />
       <ProjectsSection />
