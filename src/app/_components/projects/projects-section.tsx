@@ -4,9 +4,16 @@ import React from 'react';
 import { SectionHeader } from '@/components/ui/section-header';
 import { ProjectCard } from './project-card';
 import { projectsConfig } from './projects.config';
+import { ProjectItem } from './types';
 
-export const ProjectsSection: React.FC = () => {
+interface ProjectsSectionProps {
+  projectsOverride?: ProjectItem[];
+}
+
+export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projectsOverride }) => {
   const { sectionTitle, subtitle, projects } = projectsConfig;
+  const activeProjects =
+    projectsOverride && projectsOverride.length > 0 ? projectsOverride : projects;
 
   return (
     <section
@@ -19,10 +26,13 @@ export const ProjectsSection: React.FC = () => {
 
         {/* Alternating Project Cards List */}
         <div className="space-y-12 sm:space-y-20">
-          {projects.map((project, index) => (
+          {activeProjects.map((project, index) => (
             <ProjectCard
-              key={project.id}
-              project={project}
+              key={project.id || `project-${index}`}
+              project={{
+                ...project,
+                index: project.index || String(index + 1).padStart(2, '0'),
+              }}
               isReversed={index % 2 === 1}
             />
           ))}

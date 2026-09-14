@@ -73,11 +73,32 @@ export interface ShadowTokens {
   glow: string;
 }
 
+export type HeroBackgroundVariant =
+  | 'color-bends'
+  | 'acid-squares'
+  | 'prism'
+  | 'side-rays'
+  | 'light-rays'
+  | 'pixel-blast'
+  | 'dither';
+
+export type NavbarStyleVariant =
+  | 'floating-pill'
+  | 'minimal-dock'
+  | 'cyber-hud'
+  | 'glass-morphism'
+  | 'compact-island';
+
 export interface LayoutConfig {
   borderRadius: BorderRadiusTokens;
   shadows: ShadowTokens;
   spacingScale: number;
+  heroBackground: HeroBackgroundVariant;
+  navbarStyle: NavbarStyleVariant;
 }
+
+import { ProjectItem } from '@/app/_components/projects/types';
+import { ClientStory } from '@/app/_components/client-stories/types';
 
 export interface SiteConfigData {
   themeMode: 'dark' | 'light';
@@ -85,6 +106,11 @@ export interface SiteConfigData {
   colors: ColorsConfig;
   typography: TypographyConfig;
   layout: LayoutConfig;
+  heroBackground?: HeroBackgroundVariant;
+  navbarStyle?: NavbarStyleVariant;
+  projects?: ProjectItem[];
+  clientStories?: ClientStory[];
   updatedAt?: string;
 }
+
 

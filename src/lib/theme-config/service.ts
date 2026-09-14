@@ -42,7 +42,17 @@ function mergeConfigs(saved: Partial<SiteConfigData> | null | undefined): SiteCo
         ...(saved.layout?.shadows || {}),
       },
       spacingScale: saved.layout?.spacingScale ?? DEFAULT_SITE_CONFIG.layout.spacingScale,
+      heroBackground: saved.heroBackground || saved.layout?.heroBackground || DEFAULT_SITE_CONFIG.layout.heroBackground,
+      navbarStyle: saved.navbarStyle || saved.layout?.navbarStyle || DEFAULT_SITE_CONFIG.layout.navbarStyle,
     },
+    heroBackground: saved.heroBackground || saved.layout?.heroBackground || DEFAULT_SITE_CONFIG.layout.heroBackground,
+    navbarStyle: saved.navbarStyle || saved.layout?.navbarStyle || DEFAULT_SITE_CONFIG.layout.navbarStyle,
+    projects: (saved as any)?.projects && Array.isArray((saved as any).projects) && (saved as any).projects.length > 0
+      ? (saved as any).projects
+      : DEFAULT_SITE_CONFIG.projects,
+    clientStories: (saved as any)?.clientStories && Array.isArray((saved as any).clientStories) && (saved as any).clientStories.length > 0
+      ? (saved as any).clientStories
+      : DEFAULT_SITE_CONFIG.clientStories,
     updatedAt: saved.updatedAt || new Date().toISOString(),
   };
 }
@@ -82,6 +92,8 @@ export async function getSiteConfig(): Promise<SiteConfigData> {
       colors: record.colors as any,
       typography: record.typography as any,
       layout: record.layout as any,
+      projects: (record as any).projects as any,
+      clientStories: (record as any).clientStories as any,
       updatedAt: record.updatedAt.toISOString(),
     });
 
@@ -125,7 +137,13 @@ export async function updateSiteConfig(partial: Partial<SiteConfigData>): Promis
         ...(partial.layout?.shadows || {}),
       },
       spacingScale: partial.layout?.spacingScale ?? current.layout.spacingScale,
+      heroBackground: partial.heroBackground || partial.layout?.heroBackground || current.layout.heroBackground,
+      navbarStyle: partial.navbarStyle || partial.layout?.navbarStyle || current.layout.navbarStyle,
     },
+    heroBackground: partial.heroBackground || partial.layout?.heroBackground || current.layout.heroBackground,
+    navbarStyle: partial.navbarStyle || partial.layout?.navbarStyle || current.layout.navbarStyle,
+    projects: partial.projects !== undefined ? partial.projects : current.projects || DEFAULT_SITE_CONFIG.projects,
+    clientStories: partial.clientStories !== undefined ? partial.clientStories : current.clientStories || DEFAULT_SITE_CONFIG.clientStories,
     updatedAt: new Date().toISOString(),
   };
 
@@ -148,12 +166,16 @@ export async function updateSiteConfig(partial: Partial<SiteConfigData>): Promis
           colors: colorsPayload as any,
           typography: updated.typography as any,
           layout: updated.layout as any,
+          projects: updated.projects as any,
+          clientStories: updated.clientStories as any,
         },
         update: {
           brand: updated.brand as any,
           colors: colorsPayload as any,
           typography: updated.typography as any,
           layout: updated.layout as any,
+          projects: updated.projects as any,
+          clientStories: updated.clientStories as any,
         },
       });
     } catch (error) {
@@ -185,12 +207,16 @@ export async function resetSiteConfig(): Promise<SiteConfigData> {
           colors: colorsPayload as any,
           typography: DEFAULT_SITE_CONFIG.typography as any,
           layout: DEFAULT_SITE_CONFIG.layout as any,
+          projects: DEFAULT_SITE_CONFIG.projects as any,
+          clientStories: DEFAULT_SITE_CONFIG.clientStories as any,
         },
         update: {
           brand: DEFAULT_SITE_CONFIG.brand as any,
           colors: colorsPayload as any,
           typography: DEFAULT_SITE_CONFIG.typography as any,
           layout: DEFAULT_SITE_CONFIG.layout as any,
+          projects: DEFAULT_SITE_CONFIG.projects as any,
+          clientStories: DEFAULT_SITE_CONFIG.clientStories as any,
         },
       });
     } catch (error) {

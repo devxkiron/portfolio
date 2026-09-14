@@ -6,11 +6,16 @@ import { CityFilterBar } from './city-filter-bar';
 import { GlobeCanvas } from './globe-canvas';
 import { GlobeControls } from './globe-controls';
 import { TestimonialCard } from './testimonial-card';
-import type { City } from './types';
+import type { City, ClientStory } from './types';
 
-export const ClientStoriesSection: React.FC = () => {
+interface ClientStoriesSectionProps {
+  storiesOverride?: ClientStory[];
+}
+
+export const ClientStoriesSection: React.FC<ClientStoriesSectionProps> = ({
+  storiesOverride,
+}) => {
   const {
-    stories,
     arcs,
     dotsColor,
     dotDensity,
@@ -27,6 +32,11 @@ export const ClientStoriesSection: React.FC = () => {
     beaconColor,
     beaconActiveColor,
   } = clientStoriesConfig;
+
+  const stories =
+    storiesOverride && storiesOverride.length > 0
+      ? storiesOverride
+      : clientStoriesConfig.stories;
 
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 

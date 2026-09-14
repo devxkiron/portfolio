@@ -3,6 +3,9 @@ import { HeroBadge } from './hero-badge';
 import { HeroActions } from './hero-actions';
 import { HeroStats } from './hero-stats';
 import { heroConfig } from './hero.config';
+import BlurText from '@/components/BlurText';
+
+import StrokeText from '@/components/StrokeText';
 
 interface HeroContentProps {
   className?: string;
@@ -25,11 +28,38 @@ export const HeroContent: React.FC<HeroContentProps> = ({ className = '', brandO
       <HeroBadge statusText={statusBadgeText} className="mb-8" />
 
       {/* Main Headline */}
-      <h1 className="font-clash text-4xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl">
-        <span className="block">{content.title.line1}</span>
-        <span className="block">{content.title.line2}</span>
-        <span className="mt-2 block font-origin-tech font-normal tracking-wide text-brand-neon-text dark:text-[#b5f57c]">
-          {content.title.highlighted}
+      <h1 className="font-clash text-4xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl lg:text-8xl flex flex-col items-center">
+        <BlurText
+          text={content.title.line1}
+          as="span"
+          delay={100}
+          animateBy="words"
+          direction="top"
+          className="justify-center"
+        />
+        <BlurText
+          text={content.title.line2}
+          as="span"
+          delay={120}
+          animateBy="words"
+          direction="top"
+          className="justify-center"
+        />
+        <span className="mt-3 block font-origin-tech font-normal tracking-wider text-brand-neon-text dark:text-[#b5f57c] w-full max-w-xs sm:max-w-md md:max-w-xl lg:max-w-2xl mx-auto">
+          <StrokeText
+            text={content.title.highlighted}
+            strokeColor="var(--brand-neon, #aeff00)"
+            fillColor="currentColor"
+            strokeWidth={1.8}
+            drawDuration={1.6}
+            fillDelay={0.3}
+            fontSize={72}
+            letterSpacing={4}
+            fontFamily="var(--font-face-origin-tech), var(--font-origin-tech), sans-serif"
+            trigger="mount"
+            fillMode="wipe"
+            className="w-full flex justify-center"
+          />
         </span>
       </h1>
 

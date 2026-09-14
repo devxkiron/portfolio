@@ -1,11 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { NavbarStyleVariant } from '@/lib/theme-config/types';
 import { navbarConfig } from './navbar.config';
+import { NavbarFloatingPill } from './variants/navbar-floating-pill';
+import { NavbarMinimalDock } from './variants/navbar-minimal-dock';
+import { NavbarCyberHud } from './variants/navbar-cyber-hud';
+import { NavbarGlassmorphism } from './variants/navbar-glass-morphism';
+import { NavbarCompactIsland } from './variants/navbar-compact-island';
 
-interface NavbarProps {
+export interface NavbarProps {
+  navbarStyle?: NavbarStyleVariant;
   brandOverride?: {
     name?: string;
     logoType?: string;
@@ -13,9 +18,11 @@ interface NavbarProps {
   };
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ brandOverride }) => {
-  const { brand, links, cta } = navbarConfig;
-  const activeBrandName = brandOverride?.name || brand.name;
+export const Navbar: React.FC<NavbarProps> = ({
+  navbarStyle = 'floating-pill',
+  brandOverride,
+}) => {
+  const { links } = navbarConfig;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
 
@@ -44,100 +51,24 @@ export const Navbar: React.FC<NavbarProps> = ({ brandOverride }) => {
     return () => observer.disconnect();
   }, [links]);
 
-  return (
-    <header className="fixed top-0 inset-x-0 z-50 w-full border-b border-border bg-background/85 backdrop-blur-md transition-colors duration-200">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Brand Logo */}
-        <a
-          href={brand.href}
-          className="flex items-center gap-2 transition-colors hover:text-brand-neon"
-        >
-          {brandOverride?.logoType === 'image' && brandOverride.logoUrl ? (
-            <img
-              src={brandOverride.logoUrl}
-              alt={activeBrandName}
-              className="h-7 w-auto object-contain"
-            />
-          ) : (
-            <span className="font-motech text-base font-bold tracking-wider uppercase text-foreground">
-              {activeBrandName}
-            </span>
-          )}
-        </a>
+  const variantProps = {
+    brandOverride,
+    activeSection,
+    mobileMenuOpen,
+    setMobileMenuOpen,
+  };
 
-        {/* Center Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-8">
-          {links.map((link) => {
-            const isActive = activeSection === link.href.replace('#', '');
-            return (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium transition-colors ${
-                  isActive
-                    ? 'text-brand-neon font-semibold'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {link.label}
-              </a>
-            );
-          })}
-        </nav>
-
-        {/* Right Desktop CTA */}
-        <div className="hidden md:flex items-center gap-3">
-          <Button href={cta.href} variant="primary" size="sm" className="!rounded-md">
-            {cta.text}
-          </Button>
-        </div>
-
-        {/* Mobile Actions: CTA & Hamburger Button */}
-        <div className="flex md:hidden items-center gap-2">
-          <Button
-            href={cta.href}
-            variant="primary"
-            size="sm"
-            className="!rounded-md !px-3 !py-1.5 !text-xs"
-          >
-            {cta.text}
-          </Button>
-
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            aria-label="Toggle navigation menu"
-            className="flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-foreground transition-colors hover:border-border-subtle hover:bg-muted"
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile Dropdown Drawer */}
-      {mobileMenuOpen && (
-        <div className="border-t border-border bg-background/95 px-4 py-4 backdrop-blur-xl md:hidden">
-          <div className="flex flex-col space-y-2">
-            {links.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
-              return (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                    isActive
-                      ? 'bg-muted text-brand-neon font-semibold'
-                      : 'text-muted-foreground hover:bg-muted hover:text-foreground'
-                  }`}
-                >
-                  {link.label}
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      )}
-    </header>
-  );
+  switch (navbarStyle) {
+    case 'minimal-dock':
+      return <NavbarMinimalDock {...variantProps} />;
+    case 'cyber-hud':
+      return <NavbarCyberHud {...variantProps} />;
+    case 'glass-morphism':
+      return <NavbarGlassmorphism {...variantProps} />;
+    case 'compact-island':
+      return <NavbarCompactIsland {...variantProps} />;
+    case 'floating-pill':
+    default:
+      return <NavbarFloatingPill {...variantProps} />;
+  }
 };

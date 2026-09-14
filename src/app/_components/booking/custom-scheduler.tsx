@@ -251,7 +251,7 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
               {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((dayName) => (
                 <span
                   key={dayName}
-                  className="text-xs sm:text-sm font-bold text-muted-foreground uppercase tracking-wider"
+                  className="text-xs sm:text-sm font-bold text-foreground/75 uppercase tracking-wider"
                 >
                   {dayName}
                 </span>
@@ -284,17 +284,17 @@ export const CustomScheduler: React.FC<CustomSchedulerProps> = ({
                       type="button"
                       disabled={!isSelectable}
                       onClick={() => item.dateStr && handleSelectDate(item.dateStr)}
-                      className={`relative h-11 sm:h-12 rounded-xl text-xs sm:text-sm font-bold flex items-center justify-center transition-all duration-200 ${
+                      className={`relative h-11 sm:h-12 rounded-xl text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ${
                         isSelected
                           ? 'bg-brand-neon text-black font-extrabold shadow-[0_0_20px_rgba(174,255,0,0.45)] scale-[1.04] z-10 cursor-pointer'
                           : isSelectable
-                          ? 'bg-card hover:bg-muted text-foreground border border-border hover:border-border-subtle cursor-pointer'
-                          : 'text-muted-foreground/30 cursor-not-allowed opacity-25 select-none'
+                          ? 'bg-card hover:bg-muted text-foreground font-bold border border-border hover:border-brand-neon shadow-sm cursor-pointer'
+                          : 'bg-muted/20 border border-border/30 text-foreground/50 dark:text-foreground/45 font-medium cursor-not-allowed select-none'
                       }`}
                     >
                       <span>{item.dayNumber}</span>
                       {isSelectable && !isSelected && (
-                        <span className="absolute bottom-1.5 h-1.5 w-1.5 rounded-full bg-brand-neon" />
+                        <span className="absolute bottom-1.5 h-1.5 w-1.5 rounded-full bg-brand-neon shadow-[0_0_6px_var(--brand-neon)]" />
                       )}
                     </button>
                   );

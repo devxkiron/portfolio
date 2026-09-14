@@ -1,4 +1,6 @@
 import { SiteConfigData, AvailableFontKey } from './types';
+import { projectsConfig } from '@/app/_components/projects/projects.config';
+import { clientStoriesConfig } from '@/app/_components/client-stories/client-stories.config';
 
 export const FONT_OPTIONS: Array<{
   id: AvailableFontKey;
@@ -95,5 +97,11 @@ export const DEFAULT_SITE_CONFIG: SiteConfigData = {
       glow: '0 0 25px rgba(174, 255, 0, 0.25)',
     },
     spacingScale: 1,
+    heroBackground: 'color-bends',
+    navbarStyle: 'floating-pill',
   },
+  heroBackground: 'color-bends',
+  navbarStyle: 'floating-pill',
+  projects: projectsConfig.projects,
+  clientStories: clientStoriesConfig.stories,
 };

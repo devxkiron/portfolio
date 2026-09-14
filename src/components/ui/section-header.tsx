@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import ScrollReveal from '@/components/ScrollReveal';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -21,6 +22,8 @@ export interface SectionHeaderProps {
   showDivider?: boolean;
   /** Enable or disable GSAP scroll entrance animation (default: true) */
   animated?: boolean;
+  /** Enable or disable ScrollReveal scrubbed reveal on title (default: true) */
+  scrollReveal?: boolean;
   /** Heading semantic HTML tag (default: 'h2') */
   as?: 'h1' | 'h2' | 'h3' | 'h4';
   /** Extra container className */
@@ -42,6 +45,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   align = 'center',
   showDivider = true,
   animated = true,
+  scrollReveal = true,
   as: HeadingTag = 'h2',
   className = '',
   titleClassName = '',
@@ -57,15 +61,19 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     if (!headerEl) return;
 
     const ctx = gsap.context(() => {
-      const headerItems = headerEl.querySelectorAll('.section-header-item');
+      // If scrollReveal is enabled for title, animate only non-title items with standard stagger
+      const selector = scrollReveal && typeof title === 'string'
+        ? '.section-header-meta'
+        : '.section-header-item';
+      const headerItems = headerEl.querySelectorAll(selector);
       if (headerItems.length === 0) return;
 
       gsap.fromTo(
         headerItems,
         {
           opacity: 0,
-          y: 40,
-          scale: 0.9,
+          y: 30,
+          scale: 0.95,
         },
         {
           opacity: 1,
@@ -84,7 +92,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     }, headerRef);
 
     return () => ctx.revert();
-  }, [animated]);
+  }, [animated, scrollReveal, title]);
 
   const alignmentClasses = {
     left: 'items-start text-left',
@@ -104,21 +112,36 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     >
       {badge && (
         <div
-          className={`section-header-item mb-2 sm:mb-3 inline-flex items-center rounded-full border border-border bg-card/90 px-2.5 py-0.5 text-[10px] sm:px-3 sm:py-1 sm:text-xs font-medium uppercase tracking-wider text-muted-foreground backdrop-blur-sm ${badgeClassName}`}
+          className={`section-header-meta mb-2 sm:mb-3 inline-flex items-center rounded-full border border-border bg-card/90 px-2.5 py-0.5 text-[10px] sm:px-3 sm:py-1 sm:text-xs font-medium uppercase tracking-wider text-muted-foreground backdrop-blur-sm ${badgeClassName}`}
         >
           {badge}
         </div>
       )}
 
-      <HeadingTag
-        className={`section-header-item font-clash font-bold tracking-tight text-foreground leading-[1.15] ${resolvedTitleClass}`}
-      >
-        {title}
-      </HeadingTag>
+      {scrollReveal && typeof title === 'string' ? (
+        <div className="w-full">
+          <ScrollReveal
+            containerClassName="w-full"
+            textClassName={`font-clash font-bold tracking-tight text-foreground leading-[1.15] ${resolvedTitleClass}`}
+            enableBlur={true}
+            blurStrength={4}
+            baseOpacity={0.2}
+            baseRotation={2}
+          >
+            {title}
+          </ScrollReveal>
+        </div>
+      ) : (
+        <HeadingTag
+          className={`section-header-item font-clash font-bold tracking-tight text-foreground leading-[1.15] ${resolvedTitleClass}`}
+        >
+          {title}
+        </HeadingTag>
+      )}
 
       {subtitle && (
         <p
-          className={`section-header-item mt-2 sm:mt-3 max-w-xl ${resolvedSubtitleClass}`}
+          className={`section-header-meta mt-2 sm:mt-3 max-w-xl ${resolvedSubtitleClass}`}
         >
           {subtitle}
         </p>
@@ -126,7 +149,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 
       {showDivider && (
         <div
-          className={`section-header-item mt-2.5 sm:mt-4 h-px w-10 sm:w-16 bg-border ${dividerClassName}`}
+          className={`section-header-meta mt-2.5 sm:mt-4 h-px w-10 sm:w-16 bg-border ${dividerClassName}`}
         />
       )}
     </div>

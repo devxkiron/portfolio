@@ -18,12 +18,18 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen overflow-x-hidden bg-background text-foreground transition-colors duration-200">
-      <Navbar brandOverride={siteConfig.brand} />
-      <HeroSection brandOverride={siteConfig.brand} />
-      <ProjectsSection />
+      <Navbar
+        brandOverride={siteConfig.brand}
+        navbarStyle={siteConfig.navbarStyle || siteConfig.layout?.navbarStyle}
+      />
+      <HeroSection
+        brandOverride={siteConfig.brand}
+        heroBackground={siteConfig.heroBackground || siteConfig.layout?.heroBackground}
+      />
+      <ProjectsSection projectsOverride={siteConfig.projects} />
       <ProcessSection />
       <ArchitectureSection />
-      <ClientStoriesSection />
+      <ClientStoriesSection storiesOverride={siteConfig.clientStories} />
       <TechStackSection />
       <BookingSection />
       <FaqSection />

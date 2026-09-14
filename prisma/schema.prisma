@@ -23,8 +23,12 @@ model SiteConfig {
   typography Json     @default("{}")
   
   // Layout tokens: { borderRadius: Record<string, string>, shadows: Record<string, string>, spacingScale: number }
-  layout     Json     @default("{}")
+  layout        Json     @default("{}")
+
+  // Dynamic Content Collections
+  projects      Json     @default("[]")
+  clientStories Json     @default("[]")
   
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
