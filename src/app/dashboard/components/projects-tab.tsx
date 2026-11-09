@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ProjectItem } from '@/app/_components/projects/types';
+import { ProjectItem, ProjectDetailDesign, ProjectDetails } from '@/app/_components/projects/types';
 import {
   Plus,
   Trash2,
@@ -13,16 +13,103 @@ import {
   FolderGit2,
   Image as ImageIcon,
   Tag,
+  Palette,
+  FileText,
+  Sparkles,
+  Layers,
+  Globe,
+  Eye,
 } from 'lucide-react';
 import { toast } from '@/components/ui/sonner';
+import { ImageUpload } from './image-upload';
+import { TiptapEditor } from './tiptap-editor';
+import {
+  ALL_PATTERN_KEYS,
+  getPatternLabel,
+} from '@/app/project/[id]/background-patterns';
 
 interface ProjectsTabProps {
   projects?: ProjectItem[];
   onChange: (projects: ProjectItem[]) => void;
+  onSave?: (updatedProjects: ProjectItem[]) => Promise<void>;
+  isSaving?: boolean;
 }
 
-export function ProjectsTab({ projects = [], onChange }: ProjectsTabProps) {
+const ANIMATION_OPTIONS: { value: ProjectDetailDesign['animation']; label: string }[] = [
+  { value: 'fade-up', label: 'Fade Up' },
+  { value: 'slide-in', label: 'Slide In' },
+  { value: 'scale-up', label: 'Scale Up' },
+  { value: 'stagger', label: 'Stagger Reveal' },
+  { value: 'none', label: 'No Animation' },
+];
+
+const FONT_OPTIONS = [
+  { value: '', label: 'Default (Inherit Theme)' },
+  { value: 'clash', label: 'Clash Display' },
+  { value: 'cabinet', label: 'Cabinet Grotesk' },
+  { value: 'satoshi', label: 'Satoshi' },
+  { value: 'syne', label: 'Syne' },
+  { value: 'hatton', label: 'Hatton' },
+  { value: 'elegtro', label: 'Elegtro' },
+  { value: 'origin-tech', label: 'Origin Tech' },
+  { value: 'avtech', label: 'Avtech' },
+  { value: 'motech', label: 'Motech' },
+  { value: 'jetbrains', label: 'JetBrains Mono' },
+  { value: 'jakarta', label: 'Plus Jakarta Sans' },
+  { value: 'geist-sans', label: 'Geist Sans' },
+  { value: 'geist-mono', label: 'Geist Mono' },
+];
+
+const BG_COLOR_PRESETS = [
+  '#09090b',
+  '#000000',
+  '#ffffff',
+  '#fdfcf8',
+  '#f8f9fa',
+  '#0f172a',
+  '#022c22',
+  '#18181b',
+];
+
+const HEADING_COLOR_PRESETS = [
+  '#ffffff',
+  '#0d1310',
+  '#111827',
+  '#fdfcf8',
+  '#aeff00',
+  '#10b981',
+  '#38bdf8',
+  '#f59e0b',
+];
+
+const TEXT_COLOR_PRESETS = [
+  '#d4d4d8',
+  '#374151',
+  '#111827',
+  '#4b5563',
+  '#f4f4f5',
+  '#9ca3af',
+  '#6b7280',
+  '#e4e4e7',
+];
+
+const ACCENT_COLOR_PRESETS = [
+  '#aeff00',
+  '#10b981',
+  '#168028',
+  '#06b6d4',
+  '#6366f1',
+  '#ec4899',
+  '#f59e0b',
+  '#ef4444',
+];
+
+export function ProjectsTab({
+  projects = [],
+  onChange,
+}: ProjectsTabProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [expandedDesignId, setExpandedDesignId] = useState<string | null>(null);
 
   const handleUpdateField = (id: string, field: keyof ProjectItem, value: any) => {
     const updated = projects.map((p) => {
@@ -32,6 +119,23 @@ export function ProjectsTab({ projects = [], onChange }: ProjectsTabProps) {
       return p;
     });
     onChange(updated);
+  };
+
+  const handleUpdateDetails = (id: string, partialDetails: Partial<ProjectDetails>) => {
+    const project = projects.find((p) => p.id === id);
+    if (!project) return;
+
+    const existingDetails: ProjectDetails = project.details || { content: '', design: {} };
+    const updatedDetails: ProjectDetails = {
+      ...existingDetails,
+      ...partialDetails,
+      design: {
+        ...(existingDetails.design || {}),
+        ...(partialDetails.design || {}),
+      },
+    };
+
+    handleUpdateField(id, 'details', updatedDetails);
   };
 
   const handleUpdateTags = (id: string, tagsString: string) => {
@@ -47,26 +151,42 @@ export function ProjectsTab({ projects = [], onChange }: ProjectsTabProps) {
     const newProject: ProjectItem = {
       id: `project-${Date.now()}`,
       index: newIndex,
-      title: 'New AI Automation System',
+      title: 'New Showcase Project',
       category: 'ENTERPRISE AI',
       description:
-        'High-impact automated digital infrastructure engineering resilient workflows and multi-system synchronization.',
-      tags: ['Next.js 16', 'TypeScript', 'FastAPI'],
+        'High-impact modern digital product engineered with cutting-edge architecture and responsive design.',
+      tags: ['Next.js 16', 'TypeScript', 'TailwindCSS'],
       imageUrl:
         'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop',
       imageAlt: 'Project preview visual',
       href: '#',
+      details: {
+        content: `<h2>Project Overview</h2><p>Describe your project motivation, goals, and technical architectural highlights here.</p>`,
+        design: {
+          backgroundColor: '#09090b',
+          backgroundPattern: 'grid',
+          primaryColor: '',
+          textColor: '',
+          accentColor: '#aeff00',
+          animation: 'fade-up',
+        },
+      },
     };
 
-    const updated = [...projects, newProject];
+    const updated = [newProject, ...projects].map((p, idx) => ({
+      ...p,
+      index: String(idx + 1).padStart(2, '0'),
+    }));
+
     onChange(updated);
     setEditingId(newProject.id);
     toast.success('New Project Added', {
-      description: 'Fill in details and click Save Changes (⌘S) to persist.',
+      description: 'Fill in details and click Save Changes (⌘S) to persist to DB.',
     });
   };
 
-  const handleDeleteProject = (id: string) => {
+  const handleDeleteProject = (id: string, e?: React.MouseEvent) => {
+    e?.stopPropagation();
     if (!window.confirm('Are you sure you want to delete this project?')) return;
     const filtered = projects.filter((p) => p.id !== id);
     const reIndexed = filtered.map((p, idx) => ({
@@ -80,7 +200,8 @@ export function ProjectsTab({ projects = [], onChange }: ProjectsTabProps) {
     });
   };
 
-  const handleMove = (index: number, direction: 'up' | 'down') => {
+  const handleMove = (index: number, direction: 'up' | 'down', e: React.MouseEvent) => {
+    e.stopPropagation();
     const targetIdx = direction === 'up' ? index - 1 : index + 1;
     if (targetIdx < 0 || targetIdx >= projects.length) return;
 
@@ -97,15 +218,15 @@ export function ProjectsTab({ projects = [], onChange }: ProjectsTabProps) {
 
   return (
     <div className="space-y-6">
-      {/* Tab Header */}
+      {/* Header */}
       <div className="border-b border-zinc-800 pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-base font-semibold text-zinc-100 flex items-center gap-2">
             <FolderGit2 className="w-4 h-4 text-[#aeff00]" />
-            Projects CMS
+            Projects Showcase ({projects.length})
           </h2>
           <p className="text-xs text-zinc-400 mt-1">
-            Manage portfolio case studies, tech stacks, live links, and showcase imagery.
+            Configure featured projects, Cloudinary media, TipTap case studies, and custom page themes.
           </p>
         </div>
 
@@ -135,6 +256,8 @@ export function ProjectsTab({ projects = [], onChange }: ProjectsTabProps) {
         <div className="space-y-4">
           {projects.map((project, index) => {
             const isEditing = editingId === project.id;
+            const hasCaseStudy = !!project.details?.content;
+            const isDesignExpanded = expandedDesignId === project.id;
 
             return (
               <div
@@ -145,90 +268,100 @@ export function ProjectsTab({ projects = [], onChange }: ProjectsTabProps) {
                     : 'border-zinc-800 bg-zinc-950/70 hover:border-zinc-700'
                 }`}
               >
-                {/* Project Header Bar */}
-                <div className="p-4 flex items-center justify-between gap-3">
+                {/* Project Header Row */}
+                <div className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <div className="flex items-center gap-3 min-w-0">
-                    {/* Index Pill */}
-                    <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-[#aeff00] font-bold border border-zinc-700 shrink-0">
-                      {project.index || String(index + 1).padStart(2, '0')}
-                    </span>
-
-                    {/* Mini Thumbnail */}
+                    {/* Image Thumbnail */}
                     {project.imageUrl ? (
                       <img
                         src={project.imageUrl}
                         alt={project.title}
-                        className="w-10 h-10 rounded-lg object-cover border border-zinc-800 shrink-0 bg-zinc-900"
-                        onError={(e) => {
-                          (e.target as HTMLElement).style.display = 'none';
-                        }}
+                        className="w-16 h-10 rounded-lg object-cover border border-zinc-800 shrink-0 bg-zinc-900"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 shrink-0">
-                        <ImageIcon className="w-4 h-4" />
+                      <div className="w-16 h-10 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-600 text-[10px] font-mono shrink-0">
+                        No IMG
                       </div>
                     )}
 
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-[#aeff00]">
+                          #{project.index}
+                        </span>
                         <h4 className="text-xs sm:text-sm font-semibold text-zinc-100 truncate">
                           {project.title || 'Untitled Project'}
                         </h4>
                         {project.category && (
-                          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400 uppercase tracking-wider shrink-0 hidden sm:inline-block">
+                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700">
                             {project.category}
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-1.5 mt-1 overflow-hidden">
-                        {(project.tags || []).slice(0, 3).map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="text-[10px] text-zinc-400 font-mono bg-zinc-900/90 px-1.5 py-0.2 rounded border border-zinc-800 shrink-0"
-                          >
-                            {tag}
+
+                      <div className="flex items-center gap-2 mt-1">
+                        <p className="text-[11px] text-zinc-400 truncate max-w-sm sm:max-w-md">
+                          {project.description}
+                        </p>
+                        {hasCaseStudy && (
+                          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono text-[#aeff00] px-1.5 py-0.2 rounded bg-[#aeff00]/10 border border-[#aeff00]/20">
+                            <Sparkles className="w-2.5 h-2.5" />
+                            Case Study
                           </span>
-                        ))}
+                        )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Actions Bar */}
-                  <div className="flex items-center gap-1 shrink-0">
+                  {/* Actions */}
+                  <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-center">
+                    {/* Reorder Up/Down */}
                     <button
                       type="button"
-                      onClick={() => handleMove(index, 'up')}
                       disabled={index === 0}
-                      className="p-1.5 rounded-md text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                      onClick={(e) => handleMove(index, 'up', e)}
                       title="Move Up"
+                      className="p-1 rounded hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 disabled:opacity-20 cursor-pointer"
                     >
                       <ChevronUp className="w-3.5 h-3.5" />
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleMove(index, 'down')}
                       disabled={index === projects.length - 1}
-                      className="p-1.5 rounded-md text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                      onClick={(e) => handleMove(index, 'down', e)}
                       title="Move Down"
+                      className="p-1 rounded hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 disabled:opacity-20 cursor-pointer"
                     >
                       <ChevronDown className="w-3.5 h-3.5" />
                     </button>
+
+                    <a
+                      href={`/project/${project.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+                      title="Preview Page"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                    </a>
+
                     <button
                       type="button"
                       onClick={() => setEditingId(isEditing ? null : project.id)}
-                      className={`flex items-center gap-1 px-2.5 py-1 text-xs rounded-md transition-colors ${
+                      className={`flex items-center gap-1 px-2.5 py-1 text-xs rounded-md transition-colors cursor-pointer ${
                         isEditing
                           ? 'bg-[#aeff00] text-black font-semibold'
                           : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
                       }`}
                     >
                       {isEditing ? <Check className="w-3.5 h-3.5" /> : <Edit3 className="w-3.5 h-3.5" />}
-                      <span>{isEditing ? 'Done' : 'Edit'}</span>
+                      <span>{isEditing ? 'Close' : 'Edit'}</span>
                     </button>
+
                     <button
                       type="button"
-                      onClick={() => handleDeleteProject(project.id)}
-                      className="p-1.5 rounded-md text-red-400 hover:text-red-300 hover:bg-red-950/20 transition-colors"
+                      onClick={(e) => handleDeleteProject(project.id, e)}
+                      className="p-1.5 rounded-md text-red-400 hover:text-red-300 hover:bg-red-950/20 transition-colors cursor-pointer"
                       title="Delete project"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -238,94 +371,453 @@ export function ProjectsTab({ projects = [], onChange }: ProjectsTabProps) {
 
                 {/* Inline Edit Form */}
                 {isEditing && (
-                  <div className="p-4 sm:p-5 border-t border-zinc-800/80 bg-zinc-950/80 space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Project Title */}
-                      <div className="space-y-1.5">
+                  <div className="p-4 sm:p-6 border-t border-zinc-800/80 bg-zinc-950/90 space-y-6">
+                    {/* Row 1: Title, Category, Link */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                      <div className="space-y-1">
                         <label className="text-[11px] font-medium text-zinc-300 block">
-                          Project Title
+                          Project Title <span className="text-[#aeff00]">*</span>
                         </label>
                         <input
                           type="text"
                           value={project.title}
                           onChange={(e) => handleUpdateField(project.id, 'title', e.target.value)}
-                          placeholder="e.g. Autopilot Pipeline Engine"
-                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#aeff00]"
+                          placeholder="e.g. AI Autonomous Architecture"
+                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-[#aeff00]"
                         />
                       </div>
 
-                      {/* Category */}
-                      <div className="space-y-1.5">
+                      <div className="space-y-1">
                         <label className="text-[11px] font-medium text-zinc-300 block">
-                          Category Badge
+                          Category
                         </label>
                         <input
                           type="text"
                           value={project.category || ''}
                           onChange={(e) => handleUpdateField(project.id, 'category', e.target.value)}
-                          placeholder="e.g. AI AUTOMATION / FINTECH SAAS"
-                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#aeff00]"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Description */}
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-medium text-zinc-300 block">
-                        Description
-                      </label>
-                      <textarea
-                        rows={3}
-                        value={project.description}
-                        onChange={(e) => handleUpdateField(project.id, 'description', e.target.value)}
-                        placeholder="Detailed overview of what was engineered, automated, and delivered..."
-                        className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#aeff00] leading-relaxed"
-                      />
-                    </div>
-
-                    {/* Tech Stack Tags */}
-                    <div className="space-y-1.5">
-                      <label className="text-[11px] font-medium text-zinc-300 flex items-center justify-between">
-                        <span>Tech Stack Tags (Comma separated)</span>
-                        <span className="text-[10px] text-zinc-500 font-mono">e.g. Next.js 16, FastAPI, PyTorch</span>
-                      </label>
-                      <input
-                        type="text"
-                        value={(project.tags || []).join(', ')}
-                        onChange={(e) => handleUpdateTags(project.id, e.target.value)}
-                        placeholder="Next.js, Python, OpenAI, Vector DB"
-                        className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#aeff00]"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {/* Image URL */}
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-medium text-zinc-300 block">
-                          Preview Image URL
-                        </label>
-                        <input
-                          type="text"
-                          value={project.imageUrl}
-                          onChange={(e) => handleUpdateField(project.id, 'imageUrl', e.target.value)}
-                          placeholder="https://images.unsplash.com/..."
-                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#aeff00]"
+                          placeholder="e.g. ENTERPRISE AI"
+                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-[#aeff00]"
                         />
                       </div>
 
-                      {/* Project Link */}
-                      <div className="space-y-1.5">
-                        <label className="text-[11px] font-medium text-zinc-300 block">
-                          Demo / Case Study Link
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-medium text-zinc-300 block flex items-center gap-1">
+                          <Globe className="w-3 h-3 text-[#aeff00]" />
+                          Live Demo URL
                         </label>
                         <input
                           type="text"
                           value={project.href || ''}
                           onChange={(e) => handleUpdateField(project.id, 'href', e.target.value)}
                           placeholder="https://... or #"
-                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-[#aeff00]"
+                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 font-mono text-[11px] focus:outline-none focus:border-[#aeff00]"
                         />
                       </div>
+                    </div>
+
+                    {/* Row 2: Description & Tags */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-medium text-zinc-300 block">
+                          Short Description (for cards)
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={project.description}
+                          onChange={(e) =>
+                            handleUpdateField(project.id, 'description', e.target.value)
+                          }
+                          placeholder="1-2 sentences summarizing the project..."
+                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-[#aeff00] resize-none"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[11px] font-medium text-zinc-300 block flex items-center gap-1">
+                          <Tag className="w-3 h-3 text-[#aeff00]" />
+                          Technology Tags (comma-separated)
+                        </label>
+                        <input
+                          type="text"
+                          value={project.tags.join(', ')}
+                          onChange={(e) => handleUpdateTags(project.id, e.target.value)}
+                          placeholder="Next.js 16, TypeScript, TailwindCSS"
+                          className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 font-mono text-[11px] focus:outline-none focus:border-[#aeff00]"
+                        />
+                        <div className="flex flex-wrap gap-1 mt-1.5">
+                          {project.tags.map((t) => (
+                            <span
+                              key={t}
+                              className="px-2 py-0.5 rounded bg-zinc-800 text-[10px] font-mono text-zinc-300 border border-zinc-700"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Row 3: Primary Showcase Image Upload (Cloudinary) */}
+                    <div className="pt-2 border-t border-zinc-800/60">
+                      <ImageUpload
+                        value={project.imageUrl}
+                        onChange={(url) => handleUpdateField(project.id, 'imageUrl', url)}
+                        folder="portfolio/projects"
+                        label="Primary Project Image"
+                        placeholder="https://res.cloudinary.com/..."
+                        aspectRatio="video"
+                      />
+                    </div>
+
+                    {/* Row 4: Notion-style TipTap Rich Case Study Editor */}
+                    <div className="space-y-2 pt-2 border-t border-zinc-800/60">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-semibold text-zinc-200 flex items-center gap-1.5">
+                          <FileText className="w-3.5 h-3.5 text-[#aeff00]" />
+                          Full Case Study (TipTap Notion-Style)
+                        </label>
+                        <span className="text-[10px] text-zinc-400 font-mono">
+                          Drag & drop or Paste Ctrl+V images anywhere
+                        </span>
+                      </div>
+
+                      <TiptapEditor
+                        content={project.details?.content || ''}
+                        onChange={(html) => handleUpdateDetails(project.id, { content: html })}
+                        design={project.details?.design}
+                        minHeight="min-h-[320px]"
+                      />
+                    </div>
+
+                    {/* Row 5: Page Design & Visuals (Collapsible Section) */}
+                    <div className="pt-2 border-t border-zinc-800/60 space-y-3">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setExpandedDesignId(isDesignExpanded ? null : project.id)
+                        }
+                        className="w-full flex items-center justify-between p-3 rounded-xl bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer text-left"
+                      >
+                        <span className="flex items-center gap-2 text-xs font-semibold text-zinc-200">
+                          <Palette className="w-4 h-4 text-[#aeff00]" />
+                          Page Visuals, Background Pattern & Typography
+                        </span>
+                        {isDesignExpanded ? (
+                          <ChevronUp className="w-4 h-4 text-zinc-400" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-zinc-400" />
+                        )}
+                      </button>
+
+                      {isDesignExpanded && (
+                        <div className="p-4 rounded-xl bg-zinc-900/40 border border-zinc-800 space-y-4">
+                          {/* Color Palette Grid */}
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {/* 1. Background Color */}
+                            <div className="space-y-1.5 p-3 rounded-lg bg-zinc-900/60 border border-zinc-800">
+                              <label className="text-[11px] font-medium text-zinc-300 flex items-center justify-between">
+                                <span>Page Background Color</span>
+                                <span className="text-[10px] text-zinc-500 font-mono">
+                                  {project.details?.design?.backgroundColor || '#09090b'}
+                                </span>
+                              </label>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="color"
+                                  value={project.details?.design?.backgroundColor || '#09090b'}
+                                  onChange={(e) =>
+                                    handleUpdateDetails(project.id, {
+                                      design: { backgroundColor: e.target.value },
+                                    })
+                                  }
+                                  className="w-8 h-8 rounded-lg border border-zinc-700 cursor-pointer bg-transparent p-0 shrink-0"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="#09090b"
+                                  value={project.details?.design?.backgroundColor || ''}
+                                  onChange={(e) =>
+                                    handleUpdateDetails(project.id, {
+                                      design: { backgroundColor: e.target.value },
+                                    })
+                                  }
+                                  className="w-24 px-2 py-1 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-mono text-zinc-100"
+                                />
+                                <div className="flex items-center gap-1 overflow-x-auto pb-0.5">
+                                  {BG_COLOR_PRESETS.map((c) => (
+                                    <button
+                                      key={c}
+                                      type="button"
+                                      title={c}
+                                      onClick={() =>
+                                        handleUpdateDetails(project.id, {
+                                          design: { backgroundColor: c },
+                                        })
+                                      }
+                                      style={{ backgroundColor: c }}
+                                      className="w-4 h-4 rounded border border-zinc-700 hover:scale-125 transition-transform cursor-pointer shrink-0"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* 2. Title & Heading Color */}
+                            <div className="space-y-1.5 p-3 rounded-lg bg-zinc-900/60 border border-zinc-800">
+                              <label className="text-[11px] font-medium text-zinc-300 flex items-center justify-between">
+                                <span>Title & Heading Color</span>
+                                <span className="text-[10px] text-zinc-500 font-mono">
+                                  {project.details?.design?.primaryColor || 'Auto contrast'}
+                                </span>
+                              </label>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="color"
+                                  value={project.details?.design?.primaryColor || '#ffffff'}
+                                  onChange={(e) =>
+                                    handleUpdateDetails(project.id, {
+                                      design: { primaryColor: e.target.value },
+                                    })
+                                  }
+                                  className="w-8 h-8 rounded-lg border border-zinc-700 cursor-pointer bg-transparent p-0 shrink-0"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="Default"
+                                  value={project.details?.design?.primaryColor || ''}
+                                  onChange={(e) =>
+                                    handleUpdateDetails(project.id, {
+                                      design: { primaryColor: e.target.value },
+                                    })
+                                  }
+                                  className="w-24 px-2 py-1 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-mono text-zinc-100"
+                                />
+                                <div className="flex items-center gap-1 overflow-x-auto pb-0.5">
+                                  {HEADING_COLOR_PRESETS.map((c) => (
+                                    <button
+                                      key={c}
+                                      type="button"
+                                      title={c}
+                                      onClick={() =>
+                                        handleUpdateDetails(project.id, {
+                                          design: { primaryColor: c },
+                                        })
+                                      }
+                                      style={{ backgroundColor: c }}
+                                      className="w-4 h-4 rounded border border-zinc-700 hover:scale-125 transition-transform cursor-pointer shrink-0"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* 3. Description & Body Text Color */}
+                            <div className="space-y-1.5 p-3 rounded-lg bg-zinc-900/60 border border-zinc-800">
+                              <label className="text-[11px] font-medium text-zinc-300 flex items-center justify-between">
+                                <span>Description & Body Text Color</span>
+                                <span className="text-[10px] text-zinc-500 font-mono">
+                                  {project.details?.design?.textColor || 'Auto contrast'}
+                                </span>
+                              </label>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="color"
+                                  value={project.details?.design?.textColor || '#d4d4d8'}
+                                  onChange={(e) =>
+                                    handleUpdateDetails(project.id, {
+                                      design: { textColor: e.target.value },
+                                    })
+                                  }
+                                  className="w-8 h-8 rounded-lg border border-zinc-700 cursor-pointer bg-transparent p-0 shrink-0"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="Default"
+                                  value={project.details?.design?.textColor || ''}
+                                  onChange={(e) =>
+                                    handleUpdateDetails(project.id, {
+                                      design: { textColor: e.target.value },
+                                    })
+                                  }
+                                  className="w-24 px-2 py-1 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-mono text-zinc-100"
+                                />
+                                <div className="flex items-center gap-1 overflow-x-auto pb-0.5">
+                                  {TEXT_COLOR_PRESETS.map((c) => (
+                                    <button
+                                      key={c}
+                                      type="button"
+                                      title={c}
+                                      onClick={() =>
+                                        handleUpdateDetails(project.id, {
+                                          design: { textColor: c },
+                                        })
+                                      }
+                                      style={{ backgroundColor: c }}
+                                      className="w-4 h-4 rounded border border-zinc-700 hover:scale-125 transition-transform cursor-pointer shrink-0"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+
+                            {/* 4. Category & Accent Color */}
+                            <div className="space-y-1.5 p-3 rounded-lg bg-zinc-900/60 border border-zinc-800">
+                              <label className="text-[11px] font-medium text-zinc-300 flex items-center justify-between">
+                                <span>Category & Accent Highlights Color</span>
+                                <span className="text-[10px] text-zinc-500 font-mono">
+                                  {project.details?.design?.accentColor || '#aeff00'}
+                                </span>
+                              </label>
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="color"
+                                  value={project.details?.design?.accentColor || '#aeff00'}
+                                  onChange={(e) =>
+                                    handleUpdateDetails(project.id, {
+                                      design: { accentColor: e.target.value },
+                                    })
+                                  }
+                                  className="w-8 h-8 rounded-lg border border-zinc-700 cursor-pointer bg-transparent p-0 shrink-0"
+                                />
+                                <input
+                                  type="text"
+                                  placeholder="#aeff00"
+                                  value={project.details?.design?.accentColor || ''}
+                                  onChange={(e) =>
+                                    handleUpdateDetails(project.id, {
+                                      design: { accentColor: e.target.value },
+                                    })
+                                  }
+                                  className="w-24 px-2 py-1 bg-zinc-900 border border-zinc-800 rounded-lg text-xs font-mono text-zinc-100"
+                                />
+                                <div className="flex items-center gap-1 overflow-x-auto pb-0.5">
+                                  {ACCENT_COLOR_PRESETS.map((c) => (
+                                    <button
+                                      key={c}
+                                      type="button"
+                                      title={c}
+                                      onClick={() =>
+                                        handleUpdateDetails(project.id, {
+                                          design: { accentColor: c },
+                                        })
+                                      }
+                                      style={{ backgroundColor: c }}
+                                      className="w-4 h-4 rounded border border-zinc-700 hover:scale-125 transition-transform cursor-pointer shrink-0"
+                                    />
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* SVG Pattern */}
+                          <div className="space-y-1.5">
+                            <label className="text-[11px] font-medium text-zinc-300 block">
+                              Background SVG Pattern
+                            </label>
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                              {ALL_PATTERN_KEYS.map((key) => {
+                                const isSelected =
+                                  (project.details?.design?.backgroundPattern || 'none') === key;
+                                return (
+                                  <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() =>
+                                      handleUpdateDetails(project.id, {
+                                        design: { backgroundPattern: key },
+                                      })
+                                    }
+                                    className={`px-3 py-1.5 rounded-lg border text-xs text-left transition-colors cursor-pointer ${
+                                      isSelected
+                                        ? 'border-[#aeff00] bg-[#aeff00]/10 text-zinc-100 font-medium'
+                                        : 'border-zinc-800 bg-zinc-900 text-zinc-400 hover:text-zinc-200'
+                                    }`}
+                                  >
+                                    {getPatternLabel(key)}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* Typography */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-zinc-800/60">
+                            <div className="space-y-1">
+                              <label className="text-[11px] font-medium text-zinc-300 block">
+                                Heading Typography
+                              </label>
+                              <select
+                                value={project.details?.design?.headingFont || ''}
+                                onChange={(e) =>
+                                  handleUpdateDetails(project.id, {
+                                    design: { headingFont: e.target.value },
+                                  })
+                                }
+                                className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-200 focus:outline-none focus:border-[#aeff00]"
+                              >
+                                {FONT_OPTIONS.map((f) => (
+                                  <option key={f.value} value={f.value}>
+                                    {f.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div className="space-y-1">
+                              <label className="text-[11px] font-medium text-zinc-300 block">
+                                Body Typography
+                              </label>
+                              <select
+                                value={project.details?.design?.bodyFont || ''}
+                                onChange={(e) =>
+                                  handleUpdateDetails(project.id, {
+                                    design: { bodyFont: e.target.value },
+                                  })
+                                }
+                                className="w-full px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-200 focus:outline-none focus:border-[#aeff00]"
+                              >
+                                {FONT_OPTIONS.map((f) => (
+                                  <option key={f.value} value={f.value}>
+                                    {f.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+
+                          {/* Animation */}
+                          <div className="space-y-1.5 pt-2 border-t border-zinc-800/60">
+                            <label className="text-[11px] font-medium text-zinc-300 block">
+                              Entrance Animation
+                            </label>
+                            <div className="flex flex-wrap gap-1.5">
+                              {ANIMATION_OPTIONS.map((anim) => {
+                                const isSelected =
+                                  (project.details?.design?.animation || 'fade-up') === anim.value;
+                                return (
+                                  <button
+                                    key={anim.value}
+                                    type="button"
+                                    onClick={() =>
+                                      handleUpdateDetails(project.id, {
+                                        design: { animation: anim.value },
+                                      })
+                                    }
+                                    className={`px-2.5 py-1 rounded-md text-xs transition-colors cursor-pointer ${
+                                      isSelected
+                                        ? 'bg-[#aeff00] text-black font-semibold'
+                                        : 'bg-zinc-800 text-zinc-400 hover:text-zinc-200'
+                                    }`}
+                                  >
+                                    {anim.label}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

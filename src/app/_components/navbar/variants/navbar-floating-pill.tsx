@@ -28,7 +28,7 @@ export const NavbarFloatingPill: React.FC<NavbarVariantProps> = ({
               <img
                 src={brandOverride.logoUrl}
                 alt={activeBrandName}
-                className="h-6 w-auto object-contain"
+                className="h-9 w-auto object-contain"
               />
             ) : (
               <span className="font-motech text-sm sm:text-base font-bold tracking-wider uppercase text-foreground group-hover:text-brand-neon transition-colors">

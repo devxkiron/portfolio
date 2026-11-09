@@ -35,12 +35,22 @@ export const NavbarCyberHud: React.FC<NavbarVariantProps> = ({
       <div className="mx-auto flex h-14 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Left Brand with Cyber Brackets */}
         <a href={brand.href} className="flex items-center gap-2 group font-mono">
-          <span className="text-brand-neon font-bold text-xs">[</span>
-          <Cpu className="w-4 h-4 text-brand-neon group-hover:rotate-90 transition-transform" />
-          <span className="font-origin-tech text-sm sm:text-base font-normal tracking-widest uppercase text-foreground group-hover:text-brand-neon transition-colors">
-            {activeBrandName}
-          </span>
-          <span className="text-brand-neon font-bold text-xs">]</span>
+          {brandOverride?.logoType === 'image' && brandOverride.logoUrl ? (
+            <img
+              src={brandOverride.logoUrl}
+              alt={activeBrandName}
+              className="h-9 w-auto object-contain"
+            />
+          ) : (
+            <>
+              <span className="text-brand-neon font-bold text-xs">[</span>
+              <Cpu className="w-4 h-4 text-brand-neon group-hover:rotate-90 transition-transform" />
+              <span className="font-origin-tech text-sm sm:text-base font-normal tracking-widest uppercase text-foreground group-hover:text-brand-neon transition-colors">
+                {activeBrandName}
+              </span>
+              <span className="text-brand-neon font-bold text-xs">]</span>
+            </>
+          )}
         </a>
 
         {/* Center Monospace Numbered Links */}

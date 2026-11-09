@@ -108,17 +108,17 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   zoomLevel,
   dotsColor = '#5cf629',
   dotDensity = 350,
-  globeRadius = 1.1,
-  glowRadius = 1.0,
+  globeRadius = 0.9,
+  glowRadius = 0.85,
   glowColor = '#5cf629',
   globeBgColor = '#040805',
   isLight = false,
-  arcColor = '#2f842b',
-  arcWidth = 0.002,
+  arcColor = '#5cf629',
+  arcWidth = 0.0015,
   arcHeight = 0.45,
-  arcOpacity = 0.4,
-  beaconRadius = 0.018,
-  beaconGlowRadius = 0.038,
+  arcOpacity = 0.75,
+  beaconRadius = 0.012,
+  beaconGlowRadius = 0.028,
   beaconColor = '#5cf629',
   beaconActiveColor = '#e2f952',
   onSelectCity,
@@ -240,7 +240,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   // Dynamically update overall globe size/scale
   useEffect(() => {
     if (globeGroupRef.current) {
-      const scale = (globeRadius || 1.1) / 1.1;
+      const scale = (globeRadius || 0.9) / 0.9;
       globeGroupRef.current.scale.set(scale, scale, scale);
     }
   }, [globeRadius]);
@@ -256,10 +256,10 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   useEffect(() => {
     if (buildArcsFnRef.current) {
       buildArcsFnRef.current(
-        arcColor || '#2f842b',
-        arcWidth || 0.002,
+        arcColor || '#5cf629',
+        arcWidth || 0.0015,
         arcHeight || 0.45,
-        arcOpacity || 0.4
+        arcOpacity || 0.75
       );
     }
   }, [arcColor, arcWidth, arcHeight, arcOpacity]);
@@ -329,7 +329,7 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
     globeGroupRef.current = globeGroup;
     globeGroup.rotation.x = targetRotationRef.current.x;
     globeGroup.rotation.y = targetRotationRef.current.y;
-    const initialGlobeScale = (globeRadius || 1.1) / 1.1;
+    const initialGlobeScale = (globeRadius || 0.9) / 0.9;
     globeGroup.scale.set(initialGlobeScale, initialGlobeScale, initialGlobeScale);
     scene.add(globeGroup);
 
@@ -582,10 +582,10 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
 
     buildArcsFnRef.current = buildArcs;
     buildArcs(
-      arcColor || '#2f842b',
-      arcWidth || 0.002,
+      arcColor || '#5cf629',
+      arcWidth || 0.0035,
       arcHeight || 0.45,
-      arcOpacity || 0.4
+      arcOpacity || 0.75
     );
 
     // 9. Mouse Orbit, Bulletproof 2D Hover Detection & Wheel Controls

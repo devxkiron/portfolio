@@ -18,13 +18,17 @@ export const NavbarCompactIsland: React.FC<NavbarVariantProps> = ({
     <header className="fixed top-4 inset-x-0 z-50 px-4 sm:px-6 pointer-events-none transition-all duration-300">
       <div className="mx-auto flex max-w-7xl items-center justify-between pointer-events-auto">
         {/* Island 1: Brand Chip */}
-        <div className="flex items-center rounded-2xl border border-border/80 bg-card/85 px-4 py-2 shadow-lg backdrop-blur-xl transition-transform hover:scale-[1.02]">
+        <div className={`flex items-center rounded-2xl ${
+          brandOverride?.logoType === 'image' && brandOverride.logoUrl
+            ? 'p-1'
+            : 'border border-border/80 bg-card/85 px-4 py-2 shadow-lg backdrop-blur-xl'
+        } transition-transform hover:scale-[1.02]`}>
           <a href={brand.href} className="flex items-center">
             {brandOverride?.logoType === 'image' && brandOverride.logoUrl ? (
               <img
                 src={brandOverride.logoUrl}
                 alt={activeBrandName}
-                className="h-6 w-auto object-contain"
+                className="h-9 w-auto object-contain"
               />
             ) : (
               <span className="font-motech text-sm font-bold tracking-wider uppercase text-foreground">

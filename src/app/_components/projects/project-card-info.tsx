@@ -40,7 +40,7 @@ export const ProjectCardInfo: React.FC<ProjectCardInfoProps> = ({
       {/* Project Title */}
       <h3 className="project-info-item relative z-10 text-2xl font-bold tracking-tight text-foreground sm:text-3xl lg:text-4xl">
         <a
-          href={project.href || '#'}
+          href={project.details ? `/project/${project.id}` : (project.href || '#')}
           className="group inline-flex items-center gap-2 transition-colors hover:text-brand-neon"
         >
           <span>{project.title}</span>

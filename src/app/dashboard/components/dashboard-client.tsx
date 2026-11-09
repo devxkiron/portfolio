@@ -41,19 +41,113 @@ import {
 interface DashboardClientProps {
   initialConfig: SiteConfigData;
   adminEmail: string;
+  isCloudinaryReady?: boolean;
 }
 
-export function DashboardClient({ initialConfig, adminEmail }: DashboardClientProps) {
+const VALID_TABS: DashboardTabId[] = [
+  'brand',
+  'colors',
+  'typography',
+  'hero',
+  'navbar',
+  'projects',
+  'clientStories',
+  'layout',
+  'database',
+];
+
+export function DashboardClient({
+  initialConfig,
+  adminEmail,
+  isCloudinaryReady = false,
+}: DashboardClientProps) {
   const router = useRouter();
   const [config, setConfig] = useState<SiteConfigData>(initialConfig);
   const [savedConfig, setSavedConfig] = useState<SiteConfigData>(initialConfig);
-  const [activeTab, setActiveTab] = useState<DashboardTabId>('brand');
-  const [previewTheme, setPreviewTheme] = useState<'dark' | 'light'>('dark');
+
+  // Tab routing synced with URL search params and localStorage
+  const [activeTab, setActiveTabState] = useState<DashboardTabId>(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab') as DashboardTabId;
+      if (tabParam && VALID_TABS.includes(tabParam)) return tabParam;
+      const hash = window.location.hash.replace('#', '') as DashboardTabId;
+      if (hash && VALID_TABS.includes(hash)) return hash;
+      const saved = localStorage.getItem('portfolio_admin_active_tab') as DashboardTabId;
+      if (saved && VALID_TABS.includes(saved)) return saved;
+    }
+    return 'brand';
+  });
+
+  // Unified Theme state (Dark / Light)
+  const [dashboardTheme, setDashboardTheme] = useState<'dark' | 'light'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('portfolio_dashboard_theme') || localStorage.getItem('portfolio_theme_mode');
+      if (saved === 'light' || saved === 'dark') return saved;
+    }
+    return initialConfig.themeMode || 'dark';
+  });
+
+  const [previewTheme, setPreviewTheme] = useState<'dark' | 'light'>(
+    initialConfig.themeMode || 'dark'
+  );
   const [isSaving, setIsSaving] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const isDirty = JSON.stringify(config) !== JSON.stringify(savedConfig);
+
+  // Handle tab change with URL synchronization
+  const handleTabChange = (newTab: DashboardTabId) => {
+    setActiveTabState(newTab);
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', newTab);
+      window.history.replaceState({}, '', url.toString());
+      try {
+        localStorage.setItem('portfolio_admin_active_tab', newTab);
+      } catch {
+        // ignore
+      }
+    }
+  };
+
+  // Unified Theme Toggle (Controls both Dashboard Console & Website Theme)
+  const handleUnifiedThemeChange = (mode: 'dark' | 'light') => {
+    setDashboardTheme(mode);
+    setPreviewTheme(mode);
+    setConfig((prev) => ({ ...prev, themeMode: mode }));
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('portfolio_dashboard_theme', mode);
+        localStorage.setItem('portfolio_theme_mode', mode);
+        document.documentElement.setAttribute('data-theme', mode);
+        if (mode === 'dark') {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch {
+        // ignore
+      }
+    }
+    toast.info(`Theme set to ${mode === 'dark' ? 'Dark' : 'Light'} Mode`, {
+      description: 'Applied across both Dashboard and Website.',
+    });
+  };
+
+  // Listen to browser Back/Forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab') as DashboardTabId;
+      if (tabParam && VALID_TABS.includes(tabParam)) {
+        setActiveTabState(tabParam);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Restore sidebar preference from localStorage
   useEffect(() => {
@@ -181,7 +275,14 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex font-sans antialiased">
+    <div
+      data-dashboard-theme={dashboardTheme}
+      className={`min-h-screen flex font-sans antialiased transition-colors duration-200 ${
+        dashboardTheme === 'light'
+          ? 'dashboard-light bg-[#f8f9fa] text-zinc-900'
+          : 'dashboard-dark dark bg-zinc-950 text-zinc-100'
+      }`}
+    >
       {/* Sonner Floating Toast Notifications */}
       <Toaster position="bottom-right" />
 
@@ -189,7 +290,7 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
       <CommandPalette
         isOpen={isSearchOpen}
         onClose={() => setIsSearchOpen(false)}
-        onSelectTab={(tabId) => setActiveTab(tabId)}
+        onSelectTab={(tabId) => handleTabChange(tabId)}
         onUpdateConfig={(updater) => setConfig((prev) => updater(prev))}
         onSave={() => handleSave()}
         onReset={handleReset}
@@ -197,16 +298,17 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
         config={config}
       />
 
-      {/* Desktop Collapsible Sidebar */}
+      {/* Desktop Collapsible Sidebar (Sticky Viewport Height) */}
       <aside
-        className={`border-r border-zinc-800/80 bg-zinc-900/60 flex flex-col justify-between shrink-0 hidden md:flex transition-all duration-200 z-30 ${
+        className={`sticky top-0 h-screen border-r border-zinc-800/80 bg-zinc-900/60 flex flex-col justify-between shrink-0 hidden md:flex transition-all duration-200 z-30 overflow-hidden ${
           isSidebarCollapsed ? 'w-16' : 'w-64'
         }`}
       >
-        <div>
+        {/* Top Header & Search Area (Pinned) */}
+        <div className="flex flex-col shrink-0">
           {/* Admin Header & Collapse Toggle */}
           <div
-            className={`h-16 border-b border-zinc-800/80 flex items-center ${
+            className={`h-16 border-b border-zinc-800/80 flex items-center shrink-0 ${
               isSidebarCollapsed ? 'justify-center px-0' : 'justify-between px-4'
             }`}
           >
@@ -247,7 +349,7 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
           </div>
 
           {/* Sidebar Quick Search Trigger */}
-          <div className="p-2.5">
+          <div className="p-2.5 shrink-0">
             {!isSidebarCollapsed ? (
               <button
                 type="button"
@@ -273,8 +375,10 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
               </button>
             )}
           </div>
+        </div>
 
-          {/* Navigation Items */}
+        {/* Scrollable Navigation Items (Independent Scroll) */}
+        <div className="flex-1 overflow-y-auto min-h-0 py-1">
           <nav className={`space-y-1 ${isSidebarCollapsed ? 'p-2' : 'px-3 py-1'}`}>
             {navItems.map((item) => {
               const isActive = activeTab === item.id;
@@ -282,7 +386,7 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setActiveTab(item.id)}
+                  onClick={() => handleTabChange(item.id)}
                   title={isSidebarCollapsed ? item.label : undefined}
                   className={`w-full flex items-center rounded-lg text-xs font-medium transition-colors cursor-pointer ${
                     isSidebarCollapsed
@@ -304,9 +408,9 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
           </nav>
         </div>
 
-        {/* Sidebar Footer */}
+        {/* Sidebar Footer (Pinned at Bottom) */}
         <div
-          className={`border-t border-zinc-800/80 space-y-1 pb-16 ${
+          className={`border-t border-zinc-800/80 space-y-1 shrink-0 ${
             isSidebarCollapsed ? 'p-2' : 'p-3'
           }`}
         >
@@ -363,7 +467,7 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
           <div className="flex items-center gap-2 md:hidden">
             <select
               value={activeTab}
-              onChange={(e) => setActiveTab(e.target.value as DashboardTabId)}
+              onChange={(e) => handleTabChange(e.target.value as DashboardTabId)}
               className="px-2.5 py-1.5 bg-zinc-900 border border-zinc-800 rounded text-xs text-zinc-200 focus:outline-none"
             >
               <option value="brand">Brand</option>
@@ -377,36 +481,25 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
               <option value="database">Database</option>
             </select>
 
+            {/* Unified Theme Toggle on Mobile */}
             <div className="flex items-center p-0.5 bg-zinc-900 border border-zinc-800 rounded-lg">
               <button
                 type="button"
-                onClick={() => {
-                  setConfig({ ...config, themeMode: 'dark' });
-                  setPreviewTheme('dark');
-                  toast.info('Theme set to Dark Mode', {
-                    description: 'Remember to save changes to persist.',
-                  });
-                }}
+                onClick={() => handleUnifiedThemeChange('dark')}
                 className={`p-1 rounded text-xs transition-colors cursor-pointer ${
-                  config.themeMode === 'dark' ? 'bg-zinc-800 text-white' : 'text-zinc-400'
+                  dashboardTheme === 'dark' ? 'bg-zinc-800 text-[#aeff00]' : 'text-zinc-400'
                 }`}
-                title="Dark Theme"
+                title="Theme: Dark Mode"
               >
                 <Moon className="w-3.5 h-3.5" />
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setConfig({ ...config, themeMode: 'light' });
-                  setPreviewTheme('light');
-                  toast.info('Theme set to Light Mode', {
-                    description: 'Remember to save changes to persist.',
-                  });
-                }}
+                onClick={() => handleUnifiedThemeChange('light')}
                 className={`p-1 rounded text-xs transition-colors cursor-pointer ${
-                  config.themeMode === 'light' ? 'bg-zinc-800 text-white' : 'text-zinc-400'
+                  dashboardTheme === 'light' ? 'bg-zinc-800 text-[#aeff00]' : 'text-zinc-400'
                 }`}
-                title="Light Theme"
+                title="Theme: Light Mode"
               >
                 <Sun className="w-3.5 h-3.5" />
               </button>
@@ -435,44 +528,33 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
               </span>
             </div>
 
-            {/* Direct Global Site Theme Switcher */}
-            <div className="flex items-center p-0.5 bg-zinc-900 border border-zinc-800 rounded-lg">
+            {/* Unified Global Theme Toggle (Controls both Dashboard & Public Website) */}
+            <div className="flex items-center gap-1.5 bg-zinc-900/80 border border-zinc-800 rounded-lg p-0.5">
+              <span className="text-[10px] font-mono text-zinc-500 px-1.5">Theme:</span>
               <button
                 type="button"
-                onClick={() => {
-                  setConfig({ ...config, themeMode: 'dark' });
-                  setPreviewTheme('dark');
-                  toast.info('Theme set to Dark Mode', {
-                    description: 'Remember to save changes to persist.',
-                  });
-                }}
-                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded transition-colors cursor-pointer ${
-                  config.themeMode === 'dark'
-                    ? 'bg-zinc-800 text-white font-semibold shadow-sm'
+                onClick={() => handleUnifiedThemeChange('dark')}
+                className={`flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded transition-colors cursor-pointer ${
+                  dashboardTheme === 'dark'
+                    ? 'bg-zinc-800 text-[#aeff00] font-semibold shadow-sm'
                     : 'text-zinc-400 hover:text-zinc-200'
                 }`}
-                title="Set entire site to Dark Mode"
+                title="Switch Theme to Dark (Dashboard & Website)"
               >
-                <Moon className="w-3.5 h-3.5" />
+                <Moon className="w-3 h-3" />
                 <span>Dark</span>
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  setConfig({ ...config, themeMode: 'light' });
-                  setPreviewTheme('light');
-                  toast.info('Theme set to Light Mode', {
-                    description: 'Remember to save changes to persist.',
-                  });
-                }}
-                className={`flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded transition-colors cursor-pointer ${
-                  config.themeMode === 'light'
-                    ? 'bg-zinc-800 text-white font-semibold shadow-sm'
+                onClick={() => handleUnifiedThemeChange('light')}
+                className={`flex items-center gap-1 px-2.5 py-0.5 text-xs font-medium rounded transition-colors cursor-pointer ${
+                  dashboardTheme === 'light'
+                    ? 'bg-zinc-800 text-[#aeff00] font-semibold shadow-sm'
                     : 'text-zinc-400 hover:text-zinc-200'
                 }`}
-                title="Set entire site to Light Mode"
+                title="Switch Theme to Light (Dashboard & Website)"
               >
-                <Sun className="w-3.5 h-3.5" />
+                <Sun className="w-3 h-3" />
                 <span>Light</span>
               </button>
             </div>
@@ -531,9 +613,23 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
 
         {/* Dashboard Workspace */}
         <div className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 xl:gap-8">
-            {/* Left/Middle Active Tab Content Panel */}
-            <div className="lg:col-span-7 xl:col-span-8 space-y-6">
+          {activeTab === 'projects' ? (
+            /* Full Width exclusively for Projects Showcase Tab */
+            <div className="w-full space-y-6">
+              <ProjectsTab
+                projects={config.projects}
+                onChange={(updated) => setConfig({ ...config, projects: updated })}
+                onSave={async (updatedProjects) => {
+                  const newConfig = { ...config, projects: updatedProjects };
+                  setConfig(newConfig);
+                  await handleSave(newConfig);
+                }}
+                isSaving={isSaving}
+              />
+            </div>
+          ) : (
+            /* Full-Width Content Container for all tabs (Just like Projects) */
+            <div className="space-y-6 w-full">
               {activeTab === 'brand' && (
                 <BrandTab
                   brand={config.brand}
@@ -554,8 +650,7 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
                   colors={config.colors}
                   themeMode={config.themeMode}
                   onThemeModeChange={(mode) => {
-                    setConfig({ ...config, themeMode: mode });
-                    setPreviewTheme(mode);
+                    handleUnifiedThemeChange(mode);
                   }}
                   onChange={(updated) => setConfig({ ...config, colors: updated })}
                 />
@@ -604,13 +699,6 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
                 />
               )}
 
-              {activeTab === 'projects' && (
-                <ProjectsTab
-                  projects={config.projects}
-                  onChange={(updated) => setConfig({ ...config, projects: updated })}
-                />
-              )}
-
               {activeTab === 'clientStories' && (
                 <ClientStoriesTab
                   stories={config.clientStories}
@@ -625,46 +713,18 @@ export function DashboardClient({ initialConfig, adminEmail }: DashboardClientPr
                 />
               )}
 
-              {activeTab === 'database' && <DatabaseTab config={config} />}
-            </div>
+              {activeTab === 'database' && (
+                <DatabaseTab config={config} isCloudinaryReady={isCloudinaryReady} />
+              )}
 
-            {/* Right Side Live Specimen Preview */}
-            <div className="lg:col-span-5 xl:col-span-4 space-y-3 lg:sticky lg:top-24">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-zinc-400">Specimen Preview</span>
-
-                {/* Theme mode toggle */}
-                <div className="flex items-center p-0.5 bg-zinc-900 border border-zinc-800 rounded">
-                  <button
-                    type="button"
-                    onClick={() => setPreviewTheme('dark')}
-                    className={`p-1 rounded text-xs transition-colors cursor-pointer ${
-                      previewTheme === 'dark'
-                        ? 'bg-zinc-800 text-white'
-                        : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
-                    title="Dark Preview"
-                  >
-                    <Moon className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setPreviewTheme('light')}
-                    className={`p-1 rounded text-xs transition-colors cursor-pointer ${
-                      previewTheme === 'light'
-                        ? 'bg-zinc-800 text-white'
-                        : 'text-zinc-500 hover:text-zinc-300'
-                    }`}
-                    title="Light Preview"
-                  >
-                    <Sun className="w-3.5 h-3.5" />
-                  </button>
+              {/* 
+                Live Component Preview Section (Commented out - enable whenever needed)
+                <div className="mt-8 border-t border-zinc-800 pt-6">
+                  <LivePreview config={config} previewMode={dashboardTheme} activeTab={activeTab} />
                 </div>
-              </div>
-
-              <LivePreview config={config} previewMode={previewTheme} />
+              */}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

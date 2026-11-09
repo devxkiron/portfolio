@@ -14,6 +14,7 @@ import {
   User,
 } from 'lucide-react';
 import { toast } from '@/components/ui/sonner';
+import { ImageUpload } from './image-upload';
 
 interface ClientStoriesTabProps {
   stories?: ClientStory[];
@@ -346,17 +347,15 @@ export function ClientStoriesTab({
                       </div>
                     </div>
 
-                    {/* Row 4: Avatar URL */}
-                    <div className="space-y-1">
-                      <label className="text-[11px] font-medium text-zinc-300 block">
-                        Author Avatar URL
-                      </label>
-                      <input
-                        type="text"
-                        value={story.authorAvatar}
-                        onChange={(e) => handleUpdateField(story.id, 'authorAvatar', e.target.value)}
-                        placeholder="https://images.unsplash.com/..."
-                        className="w-full px-3 py-1.5 bg-zinc-900 border border-zinc-800 rounded-lg text-xs text-zinc-100 focus:outline-none focus:border-[#aeff00]"
+                    {/* Row 4: Avatar Upload & URL */}
+                    <div className="pt-1">
+                      <ImageUpload
+                        value={story.authorAvatar || ''}
+                        onChange={(url) => handleUpdateField(story.id, 'authorAvatar', url)}
+                        folder="portfolio/avatars"
+                        label="Author Avatar Image"
+                        placeholder="https://res.cloudinary.com/... or https://images.unsplash.com/..."
+                        aspectRatio="square"
                       />
                     </div>
 

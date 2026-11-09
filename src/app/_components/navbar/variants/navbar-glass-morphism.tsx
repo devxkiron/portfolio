@@ -23,17 +23,27 @@ export const NavbarGlassmorphism: React.FC<NavbarVariantProps> = ({
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Brand Logo */}
           <a href={brand.href} className="flex items-center gap-3 group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-neon to-emerald-500 flex items-center justify-center text-black font-bold text-sm shadow-[0_0_12px_rgba(174,255,0,0.3)]">
-              {activeBrandName.slice(0, 1).toUpperCase()}
-            </div>
-            <div className="flex flex-col">
-              <span className="font-motech text-base font-bold tracking-wider uppercase text-foreground group-hover:text-brand-neon transition-colors">
-                {activeBrandName}
-              </span>
-              <span className="text-[10px] text-muted-foreground tracking-widest uppercase font-mono">
-                AI Engineering
-              </span>
-            </div>
+            {brandOverride?.logoType === 'image' && brandOverride.logoUrl ? (
+              <img
+                src={brandOverride.logoUrl}
+                alt={activeBrandName}
+                className="h-10 w-auto object-contain"
+              />
+            ) : (
+              <>
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-neon to-emerald-500 flex items-center justify-center text-black font-bold text-sm shadow-[0_0_12px_rgba(174,255,0,0.3)]">
+                  {activeBrandName.slice(0, 1).toUpperCase()}
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-motech text-base font-bold tracking-wider uppercase text-foreground group-hover:text-brand-neon transition-colors">
+                    {activeBrandName}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground tracking-widest uppercase font-mono">
+                    AI Engineering
+                  </span>
+                </div>
+              </>
+            )}
           </a>
 
           {/* Center Links with Smooth Neon Underline Indicator */}

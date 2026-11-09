@@ -18,6 +18,11 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({
   containerRef,
   className = '',
 }) => {
+  const validSrc =
+    imageUrl && imageUrl.trim() !== ''
+      ? imageUrl
+      : 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop';
+
   return (
     <div
       ref={containerRef}
@@ -29,8 +34,8 @@ export const ProjectCardImage: React.FC<ProjectCardImageProps> = ({
         className="absolute -top-[12%] -left-[5%] h-[124%] w-[110%] will-change-transform"
       >
         <Image
-          src={imageUrl}
-          alt={imageAlt}
+          src={validSrc}
+          alt={imageAlt || 'Project showcase visual'}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 65vw, 60vw"
           className="object-cover object-center transition-filter duration-300"

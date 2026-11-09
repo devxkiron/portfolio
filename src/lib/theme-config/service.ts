@@ -46,13 +46,12 @@ function mergeConfigs(saved: Partial<SiteConfigData> | null | undefined): SiteCo
       navbarStyle: saved.navbarStyle || saved.layout?.navbarStyle || DEFAULT_SITE_CONFIG.layout.navbarStyle,
     },
     heroBackground: saved.heroBackground || saved.layout?.heroBackground || DEFAULT_SITE_CONFIG.layout.heroBackground,
-    navbarStyle: saved.navbarStyle || saved.layout?.navbarStyle || DEFAULT_SITE_CONFIG.layout.navbarStyle,
-    projects: (saved as any)?.projects && Array.isArray((saved as any).projects) && (saved as any).projects.length > 0
+    projects: (saved as any)?.projects && Array.isArray((saved as any).projects)
       ? (saved as any).projects
-      : DEFAULT_SITE_CONFIG.projects,
-    clientStories: (saved as any)?.clientStories && Array.isArray((saved as any).clientStories) && (saved as any).clientStories.length > 0
+      : (DEFAULT_SITE_CONFIG.projects || []),
+    clientStories: (saved as any)?.clientStories && Array.isArray((saved as any).clientStories)
       ? (saved as any).clientStories
-      : DEFAULT_SITE_CONFIG.clientStories,
+      : (DEFAULT_SITE_CONFIG.clientStories || []),
     updatedAt: saved.updatedAt || new Date().toISOString(),
   };
 }

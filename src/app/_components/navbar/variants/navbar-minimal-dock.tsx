@@ -20,13 +20,23 @@ export const NavbarMinimalDock: React.FC<NavbarVariantProps> = ({
         <div className="flex h-12 items-center justify-between rounded-xl border border-border/80 bg-background/90 px-3 sm:px-4 shadow-[0_12px_24px_-6px_rgba(0,0,0,0.15)] dark:shadow-[0_12px_28px_-6px_rgba(0,0,0,0.7)] backdrop-blur-2xl transition-all duration-200">
           {/* Brand & Availability Status */}
           <a href={brand.href} className="flex items-center gap-2 group">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-            </span>
-            <span className="font-motech text-xs font-bold tracking-wider uppercase text-foreground group-hover:text-brand-neon transition-colors">
-              {activeBrandName}
-            </span>
+            {brandOverride?.logoType === 'image' && brandOverride.logoUrl ? (
+              <img
+                src={brandOverride.logoUrl}
+                alt={activeBrandName}
+                className="h-8 w-auto object-contain"
+              />
+            ) : (
+              <>
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                </span>
+                <span className="font-motech text-xs font-bold tracking-wider uppercase text-foreground group-hover:text-brand-neon transition-colors">
+                  {activeBrandName}
+                </span>
+              </>
+            )}
           </a>
 
           {/* Minimalist Center Dock Links with Micro Dot */}

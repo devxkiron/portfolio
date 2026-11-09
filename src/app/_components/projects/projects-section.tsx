@@ -3,6 +3,7 @@
 import React from 'react';
 import { SectionHeader } from '@/components/ui/section-header';
 import { ProjectCard } from './project-card';
+import { ProjectsSkeleton } from './projects-skeleton';
 import { projectsConfig } from './projects.config';
 import { ProjectItem } from './types';
 
@@ -13,7 +14,9 @@ interface ProjectsSectionProps {
 export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projectsOverride }) => {
   const { sectionTitle, subtitle, projects } = projectsConfig;
   const activeProjects =
-    projectsOverride && projectsOverride.length > 0 ? projectsOverride : projects;
+    projectsOverride && projectsOverride.length > 0
+      ? projectsOverride
+      : projects;
 
   return (
     <section
@@ -41,3 +44,4 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ projectsOverri
     </section>
   );
 };
+

@@ -112,12 +112,17 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({
     >
       {/* ~60% Image Frame — scales with scroll */}
       <div className="w-full lg:w-[60%]">
-        <ProjectCardImage
-          imageUrl={project.imageUrl}
-          imageAlt={project.imageAlt}
-          containerRef={imageContainerRef}
-          imageRef={imageRef}
-        />
+        <a
+          href={project.details ? `/project/${project.id}` : (project.href || '#')}
+          className="block cursor-pointer"
+        >
+          <ProjectCardImage
+            imageUrl={project.imageUrl}
+            imageAlt={project.imageAlt}
+            containerRef={imageContainerRef}
+            imageRef={imageRef}
+          />
+        </a>
       </div>
 
       {/* ~40% Text Info — fades/slides in separately */}

@@ -6,6 +6,7 @@ import { CityFilterBar } from './city-filter-bar';
 import { GlobeCanvas } from './globe-canvas';
 import { GlobeControls } from './globe-controls';
 import { TestimonialCard } from './testimonial-card';
+import { ClientStoriesSkeleton } from './client-stories-skeleton';
 import type { City, ClientStory } from './types';
 
 interface ClientStoriesSectionProps {
@@ -87,6 +88,30 @@ export const ClientStoriesSection: React.FC<ClientStoriesSectionProps> = ({
     return Array.from(map.values());
   }, [stories]);
 
+  const computedArcs = useMemo(() => {
+    if (arcs && arcs.length > 0) {
+      const validArcs = arcs.filter(
+        (a) =>
+          cities.some((c) => c.id === a.fromCityId) &&
+          cities.some((c) => c.id === a.toCityId)
+      );
+      if (validArcs.length > 0) return validArcs;
+    }
+    if (cities.length >= 2) {
+      const generated: { fromCityId: string; toCityId: string }[] = [];
+      for (let i = 0; i < cities.length; i++) {
+        const next = (i + 1) % cities.length;
+        generated.push({ fromCityId: cities[i].id, toCityId: cities[next].id });
+        if (cities.length > 3 && i % 2 === 0) {
+          const cross = (i + 2) % cities.length;
+          generated.push({ fromCityId: cities[i].id, toCityId: cities[cross].id });
+        }
+      }
+      return generated;
+    }
+    return arcs || [];
+  }, [arcs, cities]);
+
   const [selectedCityId, setSelectedCityId] = useState<string>('sf');
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
   const [zoomLevel, setZoomLevel] = useState<number>(3);
@@ -137,6 +162,7 @@ export const ClientStoriesSection: React.FC<ClientStoriesSectionProps> = ({
     setAutoRotate(true);
   }, []);
 
+
   return (
     <section
       id="stories"
@@ -147,7 +173,7 @@ export const ClientStoriesSection: React.FC<ClientStoriesSectionProps> = ({
         <GlobeCanvas
           cities={cities}
           stories={stories}
-          arcs={arcs}
+          arcs={computedArcs}
           selectedCity={selectedCity}
           autoRotate={autoRotate}
           zoomLevel={zoomLevel}

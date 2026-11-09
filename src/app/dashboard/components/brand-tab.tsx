@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { BrandConfig } from '@/lib/theme-config/types';
+import { ImageUpload } from './image-upload';
 
 interface BrandTabProps {
   brand: BrandConfig;
@@ -93,18 +94,16 @@ export function BrandTab({ brand, onChange }: BrandTabProps) {
           </div>
 
           {brand.logoType === 'image' && (
-            <div className="mt-3 space-y-1.5 max-w-lg">
-              <label className="text-xs font-medium text-zinc-300 block">Logo Image URL</label>
-              <input
-                type="text"
+            <div className="mt-3 max-w-lg">
+              <ImageUpload
                 value={brand.logoUrl || ''}
-                onChange={(e) => onChange({ logoUrl: e.target.value })}
-                placeholder="https://example.com/logo.svg or /logo.png"
-                className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-md text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:ring-1 focus:ring-zinc-500 font-mono text-xs"
+                onChange={(url) => onChange({ logoUrl: url })}
+                folder="portfolio/branding"
+                label="Logo Image / SVG"
+                placeholder="https://res.cloudinary.com/... or /logo.svg"
+                helpText="Upload brand logo SVG, PNG, or WEBP (transparent background recommended)."
+                aspectRatio="square"
               />
-              <p className="text-[11px] text-zinc-500">
-                Provide an absolute URL or local path to your SVG/PNG image.
-              </p>
             </div>
           )}
         </div>
