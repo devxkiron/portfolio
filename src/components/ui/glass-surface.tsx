@@ -221,10 +221,13 @@ export const GlassSurface: React.FC<GlassSurfaceProps> = ({
     return div.style.backdropFilter !== '';
   };
 
-  const supportsBackdropFilter = () => {
-    if (typeof window === 'undefined') return false;
-    return CSS.supports('backdrop-filter', 'blur(10px)');
-  };
+  const [backdropFilterSupported, setBackdropFilterSupported] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof CSS !== 'undefined' && CSS.supports) {
+      setBackdropFilterSupported(CSS.supports('backdrop-filter', 'blur(10px)'));
+    }
+  }, []);
 
   const getContainerStyles = (): React.CSSProperties => {
     const baseStyles: React.CSSProperties = {
@@ -232,11 +235,9 @@ export const GlassSurface: React.FC<GlassSurfaceProps> = ({
       width: typeof width === 'number' ? `${width}px` : width,
       height: typeof height === 'number' ? `${height}px` : height,
       borderRadius: `${borderRadius}px`,
-      '--glass-frost': backgroundOpacity,
-      '--glass-saturation': saturation,
+      ['--glass-frost' as any]: `${backgroundOpacity}`,
+      ['--glass-saturation' as any]: `${saturation}`,
     } as React.CSSProperties;
-
-    const backdropFilterSupported = supportsBackdropFilter();
 
     if (svgSupported) {
       return {

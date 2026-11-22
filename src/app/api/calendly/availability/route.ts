@@ -9,8 +9,13 @@ export async function GET(request: Request) {
 
     if (!token) {
       return NextResponse.json(
-        { success: false, error: 'Calendly token not configured' },
-        { status: 500 }
+        {
+          success: false,
+          error: 'Calendly token not configured',
+          availableDates: [],
+          slotsByDate: {},
+        },
+        { status: 200 }
       );
     }
 
