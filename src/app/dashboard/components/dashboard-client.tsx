@@ -66,31 +66,47 @@ export function DashboardClient({
   const [savedConfig, setSavedConfig] = useState<SiteConfigData>(initialConfig);
 
   // Tab routing synced with URL search params and localStorage
-  const [activeTab, setActiveTabState] = useState<DashboardTabId>(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const tabParam = params.get('tab') as DashboardTabId;
-      if (tabParam && VALID_TABS.includes(tabParam)) return tabParam;
-      const hash = window.location.hash.replace('#', '') as DashboardTabId;
-      if (hash && VALID_TABS.includes(hash)) return hash;
-      const saved = localStorage.getItem('portfolio_admin_active_tab') as DashboardTabId;
-      if (saved && VALID_TABS.includes(saved)) return saved;
-    }
-    return 'brand';
-  });
+  const [activeTab, setActiveTabState] = useState<DashboardTabId>('brand');
 
   // Unified Theme state (Dark / Light)
-  const [dashboardTheme, setDashboardTheme] = useState<'dark' | 'light'>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('portfolio_dashboard_theme') || localStorage.getItem('portfolio_theme_mode');
-      if (saved === 'light' || saved === 'dark') return saved;
-    }
-    return initialConfig.themeMode || 'dark';
-  });
+  const [dashboardTheme, setDashboardTheme] = useState<'dark' | 'light'>(
+    initialConfig.themeMode || 'dark'
+  );
 
   const [previewTheme, setPreviewTheme] = useState<'dark' | 'light'>(
     initialConfig.themeMode || 'dark'
   );
+
+  // Sync client storage (activeTab, theme, sidebar) after initial hydration mount
+  useEffect(() => {
+    try {
+      // Restore tab
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab') as DashboardTabId;
+      if (tabParam && VALID_TABS.includes(tabParam)) {
+        setActiveTabState(tabParam);
+      } else {
+        const hash = window.location.hash.replace('#', '') as DashboardTabId;
+        if (hash && VALID_TABS.includes(hash)) {
+          setActiveTabState(hash);
+        } else {
+          const savedTab = localStorage.getItem('portfolio_admin_active_tab') as DashboardTabId;
+          if (savedTab && VALID_TABS.includes(savedTab)) {
+            setActiveTabState(savedTab);
+          }
+        }
+      }
+
+      // Restore theme
+      const savedTheme = localStorage.getItem('portfolio_dashboard_theme') || localStorage.getItem('portfolio_theme_mode');
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        setDashboardTheme(savedTheme);
+        setPreviewTheme(savedTheme);
+      }
+    } catch {
+      // Ignore localStorage errors
+    }
+  }, []);
   const [isSaving, setIsSaving] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);

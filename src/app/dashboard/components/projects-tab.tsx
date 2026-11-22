@@ -107,6 +107,8 @@ const ACCENT_COLOR_PRESETS = [
 export function ProjectsTab({
   projects = [],
   onChange,
+  onSave,
+  isSaving = false,
 }: ProjectsTabProps) {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [expandedDesignId, setExpandedDesignId] = useState<string | null>(null);
@@ -230,14 +232,28 @@ export function ProjectsTab({
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleAddProject}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#aeff00] hover:bg-[#b8ff1a] text-black text-xs font-semibold transition-colors cursor-pointer shrink-0 shadow-sm"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span>Add Project</span>
-        </button>
+        <div className="flex items-center gap-2">
+          {onSave && (
+            <button
+              type="button"
+              disabled={isSaving}
+              onClick={() => onSave(projects)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-100 text-xs font-medium transition-colors cursor-pointer shrink-0 border border-zinc-700 disabled:opacity-50"
+            >
+              <Check className="w-3.5 h-3.5 text-[#aeff00]" />
+              <span>{isSaving ? 'Saving...' : 'Save Projects'}</span>
+            </button>
+          )}
+
+          <button
+            type="button"
+            onClick={handleAddProject}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#aeff00] hover:bg-[#b8ff1a] text-black text-xs font-semibold transition-colors cursor-pointer shrink-0 shadow-sm"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Add Project</span>
+          </button>
+        </div>
       </div>
 
       {/* Projects List */}
