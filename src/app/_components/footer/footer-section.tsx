@@ -13,6 +13,8 @@ interface FooterSectionProps {
   brandOverride?: {
     name?: string;
     tagline?: string;
+    logoType?: string;
+    logoUrl?: string;
   };
 }
 
@@ -28,8 +30,8 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ brandOverride }) =
     legalLinks,
   } = footerConfig;
 
-  const activeBrandName = brandOverride?.name || brandName;
-  const activeBrandTagline = brandOverride?.tagline || brandTagline;
+  const activeBrandName = brandOverride?.name ?? brandName;
+  const activeBrandTagline = brandOverride?.tagline ?? brandTagline;
 
   const footerRef = useRef<HTMLElement | null>(null);
   const topBarRef = useRef<HTMLDivElement | null>(null);
@@ -94,18 +96,34 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ brandOverride }) =
           className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 pb-10 border-b border-border"
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-            <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-neon text-black font-extrabold text-sm shadow-[0_0_12px_rgba(174,255,0,0.3)]">
-                G
+            {(activeBrandName || (brandOverride?.logoType === 'image' && brandOverride.logoUrl)) && (
+              <div className="flex items-center gap-2.5">
+                {brandOverride?.logoType === 'image' && brandOverride.logoUrl ? (
+                  <img
+                    src={brandOverride.logoUrl}
+                    alt={activeBrandName || 'Logo'}
+                    className="h-8 w-auto object-contain"
+                  />
+                ) : activeBrandName ? (
+                  <div className="flex h-8 w-8 items-center justify-center rounded-md bg-brand-neon text-black font-extrabold text-sm shadow-[0_0_12px_rgba(174,255,0,0.3)]">
+                    {activeBrandName.charAt(0).toUpperCase()}
+                  </div>
+                ) : null}
+                {activeBrandName && (
+                  <span className="text-lg sm:text-xl font-motech tracking-tight text-foreground">
+                    {activeBrandName}
+                  </span>
+                )}
               </div>
-              <span className="text-lg sm:text-xl font-motech tracking-tight text-foreground">
-                {activeBrandName}
-              </span>
-            </div>
-            <span className="hidden sm:inline text-border">|</span>
-            <p className="text-xs text-muted-foreground font-normal max-w-md">
-              {activeBrandTagline}
-            </p>
+            )}
+            {activeBrandName && activeBrandTagline && (
+              <span className="hidden sm:inline text-border">|</span>
+            )}
+            {activeBrandTagline && (
+              <p className="text-xs text-muted-foreground font-normal max-w-md">
+                {activeBrandTagline}
+              </p>
+            )}
           </div>
 
           <div>
@@ -172,7 +190,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({ brandOverride }) =
 
         {/* Bottom Bar: Copyright & Legal */}
         <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-subtle-foreground">
-          <p>{copyrightText}</p>
+          <p>© {new Date().getFullYear()} {activeBrandName}. All rights reserved.</p>
           <div className="flex items-center gap-5">
             {legalLinks.map((link) => (
               <a

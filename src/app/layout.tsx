@@ -4,10 +4,16 @@ import { getSiteConfig } from "@/lib/theme-config/service";
 import { generateThemeCss } from "@/lib/theme-config/css-generator";
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Goodspeed | High-Performance AI Engineering & Products",
-  description: "Crafting bespoke AI systems, autonomous agent workflows, and world-class digital products.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteConfig = await getSiteConfig();
+  const brandName = siteConfig.brand?.name || "Portfolio";
+  const tagline = siteConfig.brand?.tagline || "High-Performance AI Engineering & Products";
+
+  return {
+    title: `${brandName} | ${tagline}`,
+    description: tagline,
+  };
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;

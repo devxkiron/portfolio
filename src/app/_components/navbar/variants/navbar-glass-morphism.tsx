@@ -12,7 +12,7 @@ export const NavbarGlassmorphism: React.FC<NavbarVariantProps> = ({
   setMobileMenuOpen,
 }) => {
   const { brand, links, cta } = navbarConfig;
-  const activeBrandName = brandOverride?.name || brand.name;
+  const activeBrandName = brandOverride?.name ?? brand.name;
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 w-full transition-all duration-300">

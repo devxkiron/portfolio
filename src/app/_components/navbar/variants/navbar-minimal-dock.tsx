@@ -12,7 +12,7 @@ export const NavbarMinimalDock: React.FC<NavbarVariantProps> = ({
   setMobileMenuOpen,
 }) => {
   const { brand, links, cta } = navbarConfig;
-  const activeBrandName = brandOverride?.name || brand.name;
+  const activeBrandName = brandOverride?.name ?? brand.name;
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 px-4 pointer-events-none transition-all duration-300">
