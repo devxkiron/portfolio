@@ -18,17 +18,17 @@ export interface NavbarConfig {
 export const navbarConfig: NavbarConfig = {
   brand: {
     name: 'helloworld',
-    href: '#hero',
+    href: '/#hero',
   },
   links: [
-    { label: 'Projects', href: '#projects' },
-    { label: 'Process', href: '#process' },
-    { label: 'Architecture', href: '#architecture' },
-    { label: 'Stories', href: '#stories' },
-    { label: 'Tech Stack', href: '#tech-stack' },
+    { label: 'Projects', href: '/#projects' },
+    { label: 'Process', href: '/#process' },
+    { label: 'Architecture', href: '/#architecture' },
+    { label: 'Stories', href: '/#stories' },
+    { label: 'Tech Stack', href: '/#tech-stack' },
   ],
   cta: {
     text: 'Get in Touch',
-    href: '#contact',
+    href: '/#contact',
   },
 };

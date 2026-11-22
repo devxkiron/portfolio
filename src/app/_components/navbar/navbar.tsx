@@ -28,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   // Active section tracking via IntersectionObserver
   useEffect(() => {
-    const sectionIds = links.map((l) => l.href.replace('#', ''));
+    const sectionIds = links.map((l) => l.href.replace('/#', '').replace('#', ''));
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

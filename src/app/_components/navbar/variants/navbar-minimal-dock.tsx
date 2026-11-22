@@ -42,7 +42,7 @@ export const NavbarMinimalDock: React.FC<NavbarVariantProps> = ({
           {/* Minimalist Center Dock Links with Micro Dot */}
           <nav className="hidden md:flex items-center gap-5">
             {links.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
+              const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <a
                   key={link.href}
@@ -96,7 +96,7 @@ export const NavbarMinimalDock: React.FC<NavbarVariantProps> = ({
           <div className="mt-2 rounded-xl border border-border bg-background/95 p-2 shadow-xl backdrop-blur-2xl md:hidden">
             <div className="flex flex-col space-y-0.5">
               {links.map((link) => {
-                const isActive = activeSection === link.href.replace('#', '');
+                const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
                 return (
                   <a
                     key={link.href}

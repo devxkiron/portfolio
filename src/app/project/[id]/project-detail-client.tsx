@@ -58,7 +58,12 @@ export const ProjectDetailClient: React.FC<ProjectDetailClientProps> = ({
 
   const design = project.details?.design || {};
   const animation = design.animation || 'fade-up';
-  const bgColor = design.backgroundColor || '';
+  const customBg = design.backgroundColor;
+  const isCustomDarkDefault = customBg === '#09090b' || customBg === '#000000';
+  // If the user selected an intentional custom color, respect it; if empty or default #09090b, adapt to system theme
+  const hasCustomBg = customBg && !isCustomDarkDefault;
+  const bgColor = hasCustomBg ? customBg : (theme === 'light' ? 'var(--background)' : customBg || '');
+
   const pattern = design.backgroundPattern || 'none';
   const primaryClr = design.primaryColor || '';
   const textClr = design.textColor || '';
@@ -66,18 +71,29 @@ export const ProjectDetailClient: React.FC<ProjectDetailClientProps> = ({
   const headingFont = design.headingFont || '';
   const bodyFont = design.bodyFont || '';
 
-  const isLightBg = bgColor ? isLightColor(bgColor) : theme === 'light';
+  const isLightBg = hasCustomBg ? isLightColor(customBg) : theme === 'light';
 
   // Compute adaptive defaults based on background lightness
   const defaultHeadingColor = isLightBg ? '#0d1310' : '#fdfcf8';
-  const defaultTextColor = isLightBg ? '#374151' : '#d4d4d8';
-  const defaultBorderColor = isLightBg ? 'rgba(0, 0, 0, 0.12)' : 'rgba(255, 255, 255, 0.1)';
-  const defaultCardBg = isLightBg ? 'rgba(0, 0, 0, 0.04)' : 'rgba(255, 255, 255, 0.04)';
+  const defaultTextColor = isLightBg ? '#1f2937' : '#d4d4d8';
+  const defaultBorderColor = isLightBg ? 'rgba(0, 0, 0, 0.14)' : 'rgba(255, 255, 255, 0.1)';
+  const defaultCardBg = isLightBg ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.04)';
 
-  const effectiveHeadingColor = primaryClr || defaultHeadingColor;
-  const effectiveTextColor = textClr || defaultTextColor;
+  // Contrast safety guard: if user manually picked a color that clashes with light/dark background, ensure it remains legible
+  const getLegibleColor = (color: string | undefined, defaultColor: string) => {
+    if (!color) return defaultColor;
+    const isColorLight = isLightColor(color);
+    // If background is light but text color is also light, fallback to dark legible color
+    if (isLightBg && isColorLight) return defaultColor;
+    // If background is dark but text color is also dark, fallback to light legible color
+    if (!isLightBg && !isColorLight) return defaultColor;
+    return color;
+  };
 
-  const effectiveAccentColor = accentClr || (isLightBg ? '#168028' : '#aeff00');
+  const effectiveHeadingColor = getLegibleColor(primaryClr, defaultHeadingColor);
+  const effectiveTextColor = getLegibleColor(textClr, defaultTextColor);
+
+  const effectiveAccentColor = accentClr || (isLightBg ? '#15803d' : '#aeff00');
 
   // Build inline style overrides with CSS custom properties
   const pageStyle: React.CSSProperties & Record<string, string> = {
@@ -87,10 +103,12 @@ export const ProjectDetailClient: React.FC<ProjectDetailClientProps> = ({
     '--project-border': defaultBorderColor,
     '--project-card-bg': defaultCardBg,
   };
-  if (bgColor) pageStyle.backgroundColor = bgColor;
+  if (hasCustomBg) {
+    pageStyle.backgroundColor = customBg;
+  }
 
   const headingStyle: React.CSSProperties = {
-    color: effectiveAccentColor,
+    color: effectiveHeadingColor,
   };
   if (headingFont) headingStyle.fontFamily = `var(--font-${headingFont}, inherit)`;
 

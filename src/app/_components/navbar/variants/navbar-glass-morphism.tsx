@@ -49,7 +49,7 @@ export const NavbarGlassmorphism: React.FC<NavbarVariantProps> = ({
           {/* Center Links with Smooth Neon Underline Indicator */}
           <nav className="hidden md:flex items-center gap-8">
             {links.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
+              const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <a
                   key={link.href}
@@ -104,7 +104,7 @@ export const NavbarGlassmorphism: React.FC<NavbarVariantProps> = ({
           <div className="border-t border-border bg-background/95 p-4 backdrop-blur-2xl md:hidden">
             <div className="flex flex-col space-y-1">
               {links.map((link) => {
-                const isActive = activeSection === link.href.replace('#', '');
+                const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
                 return (
                   <a
                     key={link.href}

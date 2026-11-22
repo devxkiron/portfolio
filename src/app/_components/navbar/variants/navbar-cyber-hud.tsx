@@ -56,7 +56,7 @@ export const NavbarCyberHud: React.FC<NavbarVariantProps> = ({
         {/* Center Monospace Numbered Links */}
         <nav className="hidden md:flex items-center gap-6 font-mono text-xs">
           {links.map((link, idx) => {
-            const isActive = activeSection === link.href.replace('#', '');
+              const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
             const num = String(idx + 1).padStart(2, '0');
             return (
               <a
@@ -109,7 +109,7 @@ export const NavbarCyberHud: React.FC<NavbarVariantProps> = ({
         <div className="border-t border-border bg-background/95 p-4 font-mono text-xs md:hidden">
           <div className="flex flex-col space-y-2">
             {links.map((link, idx) => {
-              const isActive = activeSection === link.href.replace('#', '');
+              const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
               const num = String(idx + 1).padStart(2, '0');
               return (
                 <a

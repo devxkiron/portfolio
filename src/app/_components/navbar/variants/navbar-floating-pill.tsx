@@ -40,7 +40,7 @@ export const NavbarFloatingPill: React.FC<NavbarVariantProps> = ({
           {/* Center Navigation Links in Floating Pill */}
           <nav className="hidden md:flex items-center gap-1 p-1 rounded-full bg-background/50 border border-border/50">
             {links.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
+              const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <a
                   key={link.href}
@@ -93,7 +93,7 @@ export const NavbarFloatingPill: React.FC<NavbarVariantProps> = ({
           <div className="mt-2 rounded-2xl border border-border/80 bg-card/95 p-3 shadow-xl backdrop-blur-2xl md:hidden animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="flex flex-col space-y-1">
               {links.map((link) => {
-                const isActive = activeSection === link.href.replace('#', '');
+                const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
                 return (
                   <a
                     key={link.href}
