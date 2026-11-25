@@ -1,5 +1,6 @@
 import { Navbar } from './_components/navbar';
 import { HeroSection } from './_components/hero';
+import { CustomSoftwareSection } from './_components/custom-software';
 import { ProjectsSection } from './_components/projects';
 import { ProcessSection } from './_components/process';
 import { ArchitectureSection } from './_components/architecture';
@@ -23,6 +24,7 @@ export default async function Home() {
         brandOverride={siteConfig.brand}
         heroBackground={siteConfig.heroBackground || siteConfig.layout?.heroBackground}
       />
+      <CustomSoftwareSection />
       <ProjectsSection projectsOverride={siteConfig.projects} />
       <ProcessSection />
       <ArchitectureSection />
