@@ -10,9 +10,6 @@ import { FaqSection } from './_components/faq';
 import { FooterSection } from './_components/footer';
 import { getSiteConfig } from '@/lib/theme-config/service';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 export default async function Home() {
   const siteConfig = await getSiteConfig();
 

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidateTag, revalidatePath } from 'next/cache';
 import { getSiteConfig, updateSiteConfig } from '@/lib/theme-config/service';
 import { isAuthenticated } from '@/lib/auth';
 
@@ -29,6 +30,8 @@ export async function PUT(request: Request) {
 
     const body = await request.json();
     const updated = await updateSiteConfig(body);
+    revalidateTag('site-config', 'default');
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true, data: updated });
   } catch (error) {
     console.error('Error in PUT /api/config:', error);

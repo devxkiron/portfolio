@@ -35,10 +35,9 @@ export const CalendlyModal: React.FC<CalendlyModalProps> = ({
     return () => window.removeEventListener('message', handleMessage);
   }, [onEventScheduled]);
 
-  // Reset loading state on open
+  // Lock body scroll on open
   useEffect(() => {
     if (isOpen) {
-      setIframeLoading(true);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';

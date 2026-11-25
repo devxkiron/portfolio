@@ -172,7 +172,9 @@ export const GlobeCanvas: React.FC<GlobeCanvasProps> = ({
   } | null>(null);
 
   const hoveredStoryRef = useRef(hoveredStory);
-  hoveredStoryRef.current = hoveredStory;
+  useEffect(() => {
+    hoveredStoryRef.current = hoveredStory;
+  }, [hoveredStory]);
 
   const storiesRef = useRef(stories);
   useEffect(() => {

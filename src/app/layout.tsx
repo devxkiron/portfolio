@@ -8,15 +8,23 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteConfig = await getSiteConfig();
   const brandName = siteConfig.brand?.name || "Portfolio";
   const tagline = siteConfig.brand?.tagline || "High-Performance AI Engineering & Products";
+  const title = `${brandName} | ${tagline}`;
 
   return {
-    title: `${brandName} | ${tagline}`,
+    title,
     description: tagline,
+    openGraph: {
+      title,
+      description: tagline,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: tagline,
+    },
   };
 }
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const siteConfig = await getSiteConfig();

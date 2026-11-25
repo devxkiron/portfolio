@@ -6,10 +6,22 @@ const DEFAULT_SECRET = 'kiron_portfolio_secret_admin_token_2026_x92';
 const TOKEN_EXPIRY_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 function getSecretKey(): string {
-  return process.env.ADMIN_SESSION_SECRET || DEFAULT_SECRET;
+  if (process.env.ADMIN_SESSION_SECRET) {
+    return process.env.ADMIN_SESSION_SECRET;
+  }
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('ADMIN_SESSION_SECRET environment variable is required in production');
+  }
+  return DEFAULT_SECRET;
 }
 
 export function getAdminCredentials() {
+  if (process.env.NODE_ENV === 'production') {
+    return {
+      email: process.env.ADMIN_EMAIL || '',
+      password: process.env.ADMIN_PASSWORD || '',
+    };
+  }
   return {
     email: process.env.ADMIN_EMAIL || 'kiron@admin.com',
     password: process.env.ADMIN_PASSWORD || 'kiron@admin',

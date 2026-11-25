@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidateTag, revalidatePath } from 'next/cache';
 import { resetSiteConfig } from '@/lib/theme-config/service';
 import { isAuthenticated } from '@/lib/auth';
 
@@ -15,6 +16,8 @@ export async function POST() {
     }
 
     const reset = await resetSiteConfig();
+    revalidateTag('site-config', 'default');
+    revalidatePath('/', 'layout');
     return NextResponse.json({ success: true, data: reset, message: 'Configuration reset to defaults' });
   } catch (error) {
     console.error('Error in POST /api/config/reset:', error);

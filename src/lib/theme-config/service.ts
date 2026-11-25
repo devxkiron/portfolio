@@ -1,3 +1,4 @@
+import { unstable_cache } from 'next/cache';
 import { getPrismaClient } from '../prisma';
 import { SiteConfigData } from './types';
 import { DEFAULT_SITE_CONFIG } from './defaults';
@@ -56,7 +57,7 @@ function mergeConfigs(saved: Partial<SiteConfigData> | null | undefined): SiteCo
   };
 }
 
-export async function getSiteConfig(): Promise<SiteConfigData> {
+async function fetchSiteConfigFromDb(): Promise<SiteConfigData> {
   const prisma = getPrismaClient();
 
   if (!prisma) {
@@ -103,6 +104,12 @@ export async function getSiteConfig(): Promise<SiteConfigData> {
     return inMemoryConfig;
   }
 }
+
+export const getSiteConfig = unstable_cache(
+  fetchSiteConfigFromDb,
+  ['site-config'],
+  { tags: ['site-config'], revalidate: 3600 }
+);
 
 export async function updateSiteConfig(partial: Partial<SiteConfigData>): Promise<SiteConfigData> {
   const current = await getSiteConfig();

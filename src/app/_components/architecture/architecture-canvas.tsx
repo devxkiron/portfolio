@@ -104,7 +104,6 @@ const CanvasInner: React.FC<ArchitectureCanvasProps> = ({ activeTab }) => {
           minZoom={0.4}
           maxZoom={1.8}
           attributionPosition="bottom-right"
-          proOptions={{ hideAttribution: true }}
           nodesDraggable={true}
           nodesConnectable={false}
           elementsSelectable={true}

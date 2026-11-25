@@ -5,9 +5,6 @@ import { ProjectDetailClient } from './project-detail-client';
 import { Navbar } from '@/app/_components/navbar';
 import { FooterSection } from '@/app/_components/footer';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 interface Props {
   params: Promise<{ id: string }>;
 }
@@ -22,9 +19,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: 'Project Not Found' };
   }
 
+  const title = `${project.title} | ${siteConfig.brand?.name || 'Portfolio'}`;
   return {
-    title: `${project.title} | ${siteConfig.brand?.name || 'Portfolio'}`,
+    title,
     description: project.description,
+    openGraph: {
+      title,
+      description: project.description,
+      type: 'article',
+      images: project.imageUrl ? [{ url: project.imageUrl, alt: project.imageAlt || project.title }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: project.description,
+      images: project.imageUrl ? [project.imageUrl] : [],
+    },
   };
 }
 
