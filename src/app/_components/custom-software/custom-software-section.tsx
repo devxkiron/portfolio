@@ -172,6 +172,7 @@ export const CustomSoftwareSection: React.FC = () => {
           model.position.sub(center);
 
           if (screenTex) {
+            let matched = false;
             model.traverse((child) => {
               if ((child as THREE.Mesh).isMesh) {
                 const mesh = child as THREE.Mesh;
@@ -193,9 +194,26 @@ export const CustomSoftwareSection: React.FC = () => {
                     map: screenTex,
                     toneMapped: false,
                   });
+                  matched = true;
                 }
               }
             });
+
+            // Fallback for models like iPad where the screen mesh uses a generic name with a wallpaper map
+            if (!matched) {
+              model.traverse((child) => {
+                if ((child as THREE.Mesh).isMesh) {
+                  const mesh = child as THREE.Mesh;
+                  const mat = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material;
+                  if ((mat as THREE.MeshStandardMaterial)?.map) {
+                    mesh.material = new THREE.MeshBasicMaterial({
+                      map: screenTex,
+                      toneMapped: false,
+                    });
+                  }
+                }
+              });
+            }
           }
 
           targetGroup.clear();
@@ -278,7 +296,7 @@ export const CustomSoftwareSection: React.FC = () => {
       'Web App & SaaS'
     );
     const mobileImgTex = loadDummyImage(
-      'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=900&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1642790106117-e829e14a795f?q=80&w=900&auto=format&fit=crop',
       'Mobile App'
     );
     const portalImgTex = loadDummyImage(
@@ -472,12 +490,15 @@ export const CustomSoftwareSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Real Three.js 3D WebGL Canvas */}
-        <div
-          ref={canvasContainerRef}
-          className="w-full h-[420px] sm:h-[500px] md:h-[540px] cursor-grab active:cursor-grabbing"
-        />
+      </div>
 
+      {/* Full-Width Three.js 3D WebGL Canvas (prevents left/right/bottom clipping on drag) */}
+      <div
+        ref={canvasContainerRef}
+        className="w-full h-[500px] sm:h-[580px] md:h-[640px] cursor-grab active:cursor-grabbing"
+      />
+
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Minimal 1-Line Caption */}
         <p className="mt-2 text-center text-xs sm:text-sm font-medium text-muted-foreground">
           {activeItem.desc}
